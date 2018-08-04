@@ -49,9 +49,6 @@ import javax.xml.bind.annotation.XmlTransient;
             query = "SELECT c FROM Categoria c WHERE c.categoria = :categoriaPai")})
 public class Categoria implements IEntity, Serializable {
 
-  @OneToMany(mappedBy = "idCategoria")
-  private Collection<Categoria> categoriaCollection;
-
   private static final long serialVersionUID = 1L;
   @Id
   @Column(name = "ID")
@@ -165,15 +162,5 @@ public class Categoria implements IEntity, Serializable {
   @Override
   public String toString() {
     return "br.com.skull.core.model.Categoria[ id=" + id + " | nome=" + nome + " ]";
-  }
-
-  @XmlTransient
-  public Collection<Categoria> getCategoriaCollection() {
-    return categoriaCollection;
-  }
-
-  public void setCategoriaCollection(Collection<Categoria> categoriaCollection) {
-    this.categoriaCollection = categoriaCollection;
-  }
-  
+  }  
 }

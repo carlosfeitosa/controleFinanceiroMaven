@@ -67,21 +67,14 @@
       <scope>test</scope>
     </dependency>
     <!-- glassfish -->
-    <!--    <dependency>
+    <dependency>
       <groupId>org.glassfish.main.extras</groupId>
       <artifactId>glassfish-embedded-all</artifactId>
       <version>${glassfish.test.version}</version>
       <scope>test</scope>
-    </dependency>-->
+    </dependency>
     
     <!-- JEE -->
-
-    <dependency>
-      <groupId>org.apache.openejb</groupId>
-      <artifactId>openejb-core</artifactId>
-      <version>4.7.5</version>
-      <scope>test</scope>
-    </dependency>
     <dependency>
       <groupId>javax</groupId>
       <artifactId>javaee-api</artifactId>
