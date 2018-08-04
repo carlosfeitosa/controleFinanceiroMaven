@@ -1,5 +1,8 @@
 package br.com.skull.core.junit.runner;
 
+import br.com.skull.core.junit.listener.EnterpriseRunnerContainerListener;
+
+import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
@@ -14,6 +17,8 @@ import javax.ejb.embeddable.EJBContainer;
  */
 public class EnterpriseRunner extends BlockJUnit4ClassRunner {
 
+  private int testNumber;
+
   private static EJBContainer container;
 
   /**
@@ -26,14 +31,29 @@ public class EnterpriseRunner extends BlockJUnit4ClassRunner {
   public EnterpriseRunner(Class<?> klass) throws InitializationError {
     super(klass);
 
-    setUp();
+    testNumber = 0;
+
+    startContainer();
   }
 
   @Override
   protected Statement methodInvoker(FrameworkMethod method, Object test) {
-    System.out.println("|--> [*** Running EJB test: " + method.toString() + " *** ]");
+    testNumber++;
+
+    String testPosition = "(".concat(Integer.toString(testNumber))
+            .concat("/").concat(Integer.toString(testCount())).concat("): ");
+
+    System.out.println("|--> [*** Rodando teste EJB: "
+            .concat(testPosition).concat(method.toString()).concat(" *** ]"));
 
     return super.methodInvoker(method, test);
+  }
+
+  @Override
+  public void run(RunNotifier notifier) {
+    notifier.addListener(new EnterpriseRunnerContainerListener());
+
+    super.run(notifier);
   }
 
   /**
@@ -48,10 +68,10 @@ public class EnterpriseRunner extends BlockJUnit4ClassRunner {
   /**
    * Inicializa o container.
    */
-  public static void setUp() {
-    System.out.println("|--> [*** INICIANDO CONTAINER *** ]");
-
+  private static void startContainer() {
     if (null == container) {
+      System.out.println("|--> [*** Iniciando EJB container ***]");
+
       container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
     }
   }
@@ -59,9 +79,11 @@ public class EnterpriseRunner extends BlockJUnit4ClassRunner {
   /**
    * Finaliza o container.
    */
-  public static void tearDown() {
-    System.out.println("|--> [*** ENCERRANDO CONTAINER *** ]");
+  public static void closeContainer() {
+    if (null != container) {
+      System.out.println("|--> [*** Encerrando EJB container ***]");
 
-    container.close();
+      container.close();
+    }
   }
 }
