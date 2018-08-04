@@ -3,8 +3,8 @@ package br.com.skull.core.service.dao;
 import br.com.skull.core.service.dao.entity.impl.Categoria;
 import br.com.skull.core.service.dao.entity.impl.Log;
 import br.com.skull.core.service.dao.entity.impl.Usuario;
-import java.text.ParseException;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Remote;
