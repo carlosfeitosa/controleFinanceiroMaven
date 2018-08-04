@@ -56,7 +56,7 @@ public class AbstractService<E extends IEntity, S extends AbstractServiceRemote>
    * Configura o logger da classe.
    */
   private void setLogger(Class<S> servicoBase) {
-    this.logger = LoggerFactory.getLogger(servicoBase.getClass());
+    this.logger = LoggerFactory.getLogger(servicoBase);
   }
 
   @Override
