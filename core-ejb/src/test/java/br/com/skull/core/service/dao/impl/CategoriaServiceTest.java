@@ -38,6 +38,7 @@ public class CategoriaServiceTest {
           + " - não utilizar esta categoria";
   private static final long CODIGO_TIPO_CATEGORIA_TESTES
           = TipoCategoriaEnum.CATEGORIA.getCodigo();
+  private static final String DESCRICAO_TIPO_CATEGORIA_TESTES = "Categoria pai";
   private static final TipoCategoriaEnum TIPO_CATEGORIA_ENUM_TESTES = TipoCategoriaEnum.CATEGORIA;
 
   public CategoriaServiceTest() {
@@ -218,6 +219,8 @@ public class CategoriaServiceTest {
 
       assertEquals("Codigo do tipo de categoria diferente do esperado",
               categoriaRecuperada.getTipo(), CODIGO_TIPO_CATEGORIA_TESTES);
+      assertEquals("Descrição do tipo de categoria diferente do esperado",
+              DESCRICAO_TIPO_CATEGORIA_TESTES, TIPO_CATEGORIA_ENUM_TESTES.getDescricao());
     } else {
       assertTrue("Não é possível realizar o teste porque não existem categorias testáveis", false);
     }
