@@ -7,6 +7,7 @@ import br.com.skull.core.junit.rule.RepeatRule;
 import br.com.skull.core.junit.rule.RepeatRule.Repeat;
 import br.com.skull.core.service.dao.CategoriaServiceRemote;
 import br.com.skull.core.service.dao.ContaServiceRemote;
+import br.com.skull.core.service.dao.CoreServiceTestSuite;
 import br.com.skull.core.service.dao.entity.impl.Categoria;
 import br.com.skull.core.service.dao.entity.impl.Conta;
 import br.com.skull.core.service.dao.enums.TipoCategoriaEnum;
@@ -19,7 +20,6 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import javax.ejb.embeddable.EJBContainer;
 import javax.naming.NamingException;
 
 /**
@@ -29,7 +29,6 @@ import javax.naming.NamingException;
  */
 public class ContaServiceTest {
 
-  private static EJBContainer CONTAINER;
   private static ContaServiceRemote SERVICE;
   private static CategoriaServiceRemote SERVICE_CATEGORIA;
 
@@ -53,12 +52,10 @@ public class ContaServiceTest {
    */
   @BeforeClass
   public static void setUpClass() throws NamingException {
-    CONTAINER = javax.ejb.embeddable.EJBContainer.createEJBContainer();
-
-    SERVICE = (ContaServiceRemote) CONTAINER.getContext()
+    SERVICE = (ContaServiceRemote) CoreServiceTestSuite.getContainer().getContext()
             .lookup("java:global/classes/ContaService");
 
-    SERVICE_CATEGORIA = (CategoriaServiceRemote) CONTAINER.getContext()
+    SERVICE_CATEGORIA = (CategoriaServiceRemote) CoreServiceTestSuite.getContainer().getContext()
             .lookup("java:global/classes/CategoriaService");
   }
 
@@ -70,8 +67,6 @@ public class ContaServiceTest {
   @AfterClass
   public static void tearDownClass() throws NamingException {
     cleanUp();
-
-    CONTAINER.close();
   }
 
   /**

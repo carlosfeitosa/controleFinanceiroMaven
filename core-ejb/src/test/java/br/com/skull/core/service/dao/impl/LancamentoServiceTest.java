@@ -6,6 +6,7 @@ import br.com.skull.core.junit.rule.RepeatRule;
 import br.com.skull.core.junit.rule.RepeatRule.Repeat;
 import br.com.skull.core.service.dao.CategoriaServiceRemote;
 import br.com.skull.core.service.dao.ContaServiceRemote;
+import br.com.skull.core.service.dao.CoreServiceTestSuite;
 import br.com.skull.core.service.dao.LancamentoServiceRemote;
 import br.com.skull.core.service.dao.entity.impl.Categoria;
 import br.com.skull.core.service.dao.entity.impl.Conta;
@@ -20,7 +21,6 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import java.util.Calendar;
-import javax.ejb.embeddable.EJBContainer;
 import javax.naming.NamingException;
 
 /**
@@ -30,7 +30,6 @@ import javax.naming.NamingException;
  */
 public class LancamentoServiceTest {
 
-  private static EJBContainer CONTAINER;
   private static LancamentoServiceRemote SERVICE;
   private static CategoriaServiceRemote SERVICE_CATEGORIA;
   private static ContaServiceRemote SERVICE_CONTA;
@@ -64,15 +63,13 @@ public class LancamentoServiceTest {
    */
   @BeforeClass
   public static void setUpClass() throws NamingException {
-    CONTAINER = javax.ejb.embeddable.EJBContainer.createEJBContainer();
-
-    SERVICE = (LancamentoServiceRemote) CONTAINER.getContext()
+    SERVICE = (LancamentoServiceRemote) CoreServiceTestSuite.getContainer().getContext()
             .lookup("java:global/classes/LancamentoService");
 
-    SERVICE_CATEGORIA = (CategoriaServiceRemote) CONTAINER.getContext()
+    SERVICE_CATEGORIA = (CategoriaServiceRemote) CoreServiceTestSuite.getContainer().getContext()
             .lookup("java:global/classes/CategoriaService");
 
-    SERVICE_CONTA = (ContaServiceRemote) CONTAINER.getContext()
+    SERVICE_CONTA = (ContaServiceRemote) CoreServiceTestSuite.getContainer().getContext()
             .lookup("java:global/classes/ContaService");
   }
 
@@ -84,8 +81,6 @@ public class LancamentoServiceTest {
   @AfterClass
   public static void tearDownClass() throws NamingException {
     cleanUp();
-
-    CONTAINER.close();
   }
 
   /**

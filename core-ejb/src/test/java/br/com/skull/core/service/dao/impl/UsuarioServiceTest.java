@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import br.com.skull.core.junit.rule.RepeatRule;
 import br.com.skull.core.junit.rule.RepeatRule.Repeat;
+import br.com.skull.core.service.dao.CoreServiceTestSuite;
 import br.com.skull.core.service.dao.UsuarioServiceRemote;
 import br.com.skull.core.service.dao.entity.impl.Usuario;
 import br.com.skull.core.service.dao.enums.TipoUsuarioEnum;
@@ -17,7 +18,6 @@ import org.junit.Test;
 
 import java.util.Calendar;
 import java.util.List;
-import javax.ejb.embeddable.EJBContainer;
 import javax.naming.NamingException;
 
 /**
@@ -27,7 +27,6 @@ import javax.naming.NamingException;
  */
 public class UsuarioServiceTest {
 
-  private static EJBContainer CONTAINER;
   private static UsuarioServiceRemote SERVICE;
 
   private static final String NOME_USUARIO_TESTES = "__IGNORE-UsuarioTestes";
@@ -49,9 +48,7 @@ public class UsuarioServiceTest {
    */
   @BeforeClass
   public static void setUpClass() throws NamingException {
-    CONTAINER = javax.ejb.embeddable.EJBContainer.createEJBContainer();
-
-    SERVICE = (UsuarioServiceRemote) CONTAINER.getContext()
+    SERVICE = (UsuarioServiceRemote) CoreServiceTestSuite.getContainer().getContext()
             .lookup("java:global/classes/UsuarioService");
   }
 
@@ -61,8 +58,6 @@ public class UsuarioServiceTest {
   @AfterClass
   public static void tearDownClass() {
     cleanUp();
-
-    CONTAINER.close();
   }
 
   /**

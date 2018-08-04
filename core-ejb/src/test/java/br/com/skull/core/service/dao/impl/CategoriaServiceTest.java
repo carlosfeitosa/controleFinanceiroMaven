@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import br.com.skull.core.junit.rule.RepeatRule;
 import br.com.skull.core.junit.rule.RepeatRule.Repeat;
 import br.com.skull.core.service.dao.CategoriaServiceRemote;
+import br.com.skull.core.service.dao.CoreServiceTestSuite;
 import br.com.skull.core.service.dao.entity.impl.Categoria;
 import br.com.skull.core.service.dao.enums.TipoCategoriaEnum;
 
@@ -17,16 +18,14 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import javax.ejb.embeddable.EJBContainer;
 
 /**
- * Classe de testes para o serviço DAO de Categoria
+ * Classe de testes para o serviço DAO de Categoria.
  *
  * @author Carlos Feitosa (carlos.feitosa.nt@gmail.com)
  */
 public class CategoriaServiceTest {
 
-  private static EJBContainer CONTAINER;
   private static CategoriaServiceRemote SERVICE;
 
   private static final String NOME_CATEGORIA_TESTES = "__IGNORE-CategoriaTestes";
@@ -52,9 +51,7 @@ public class CategoriaServiceTest {
    */
   @BeforeClass
   public static void setUp() throws Exception {
-    CONTAINER = javax.ejb.embeddable.EJBContainer.createEJBContainer();
-
-    SERVICE = (CategoriaServiceRemote) CONTAINER.getContext()
+    SERVICE = (CategoriaServiceRemote) CoreServiceTestSuite.getContainer().getContext()
             .lookup("java:global/classes/CategoriaService");
   }
 
@@ -64,8 +61,6 @@ public class CategoriaServiceTest {
   @AfterClass
   public static void tearDown() {
     cleanUp();
-
-    CONTAINER.close();
   }
 
   /**
