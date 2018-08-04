@@ -102,7 +102,7 @@ public class CategoriaServiceTest {
     novaCategoria.setDescricao(DESCRICAO_CATEGORIA_TESTES);
     novaCategoria.setTipo(CODIGO_TIPO_CATEGORIA_TESTES);
 
-    novaCategoria = SERVICE.persist(novaCategoria);
+    SERVICE.persist(novaCategoria);
 
     List<Categoria> listaCategorias = SERVICE.getTodas();
 
