@@ -5,8 +5,8 @@ import static org.junit.Assert.assertTrue;
 
 import br.com.skull.core.junit.rule.RepeatRule;
 import br.com.skull.core.junit.rule.RepeatRule.Repeat;
+import br.com.skull.core.junit.runner.EnterpriseRunner;
 import br.com.skull.core.service.dao.CategoriaServiceRemote;
-import br.com.skull.core.service.dao.CoreServiceTestSuite;
 import br.com.skull.core.service.dao.entity.impl.Categoria;
 import br.com.skull.core.service.dao.enums.TipoCategoriaEnum;
 
@@ -14,6 +14,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -24,6 +25,7 @@ import java.util.List;
  *
  * @author Carlos Feitosa (carlos.feitosa.nt@gmail.com)
  */
+@RunWith(EnterpriseRunner.class)
 public class CategoriaServiceTest {
 
   private static CategoriaServiceRemote SERVICE;
@@ -51,7 +53,7 @@ public class CategoriaServiceTest {
    */
   @BeforeClass
   public static void setUp() throws Exception {
-    SERVICE = (CategoriaServiceRemote) CoreServiceTestSuite.getContainer().getContext()
+    SERVICE = (CategoriaServiceRemote) EnterpriseRunner.getContainer().getContext()
             .lookup("java:global/classes/CategoriaService");
   }
 

@@ -5,7 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import br.com.skull.core.junit.rule.RepeatRule;
 import br.com.skull.core.junit.rule.RepeatRule.Repeat;
-import br.com.skull.core.service.dao.CoreServiceTestSuite;
+import br.com.skull.core.junit.runner.EnterpriseRunner;
 import br.com.skull.core.service.dao.UsuarioServiceRemote;
 import br.com.skull.core.service.dao.entity.impl.Usuario;
 import br.com.skull.core.service.dao.enums.TipoUsuarioEnum;
@@ -15,6 +15,7 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.util.Calendar;
 import java.util.List;
@@ -25,6 +26,7 @@ import javax.naming.NamingException;
  *
  * @author Carlos Feitosa (carlos.feitosa.nt@gmail.com)
  */
+@RunWith(EnterpriseRunner.class)
 public class UsuarioServiceTest {
 
   private static UsuarioServiceRemote SERVICE;
@@ -48,7 +50,7 @@ public class UsuarioServiceTest {
    */
   @BeforeClass
   public static void setUpClass() throws NamingException {
-    SERVICE = (UsuarioServiceRemote) CoreServiceTestSuite.getContainer().getContext()
+    SERVICE = (UsuarioServiceRemote) EnterpriseRunner.getContainer().getContext()
             .lookup("java:global/classes/UsuarioService");
   }
 

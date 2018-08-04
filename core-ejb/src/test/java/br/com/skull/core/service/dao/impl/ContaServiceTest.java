@@ -5,9 +5,9 @@ import static org.junit.Assert.assertTrue;
 
 import br.com.skull.core.junit.rule.RepeatRule;
 import br.com.skull.core.junit.rule.RepeatRule.Repeat;
+import br.com.skull.core.junit.runner.EnterpriseRunner;
 import br.com.skull.core.service.dao.CategoriaServiceRemote;
 import br.com.skull.core.service.dao.ContaServiceRemote;
-import br.com.skull.core.service.dao.CoreServiceTestSuite;
 import br.com.skull.core.service.dao.entity.impl.Categoria;
 import br.com.skull.core.service.dao.entity.impl.Conta;
 import br.com.skull.core.service.dao.enums.TipoCategoriaEnum;
@@ -16,6 +16,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -27,6 +28,7 @@ import javax.naming.NamingException;
  *
  * @author Carlos Feitosa (carlos.feitosa.nt@gmail.com)
  */
+@RunWith(EnterpriseRunner.class)
 public class ContaServiceTest {
 
   private static ContaServiceRemote SERVICE;
@@ -52,10 +54,10 @@ public class ContaServiceTest {
    */
   @BeforeClass
   public static void setUpClass() throws NamingException {
-    SERVICE = (ContaServiceRemote) CoreServiceTestSuite.getContainer().getContext()
+    SERVICE = (ContaServiceRemote) EnterpriseRunner.getContainer().getContext()
             .lookup("java:global/classes/ContaService");
 
-    SERVICE_CATEGORIA = (CategoriaServiceRemote) CoreServiceTestSuite.getContainer().getContext()
+    SERVICE_CATEGORIA = (CategoriaServiceRemote) EnterpriseRunner.getContainer().getContext()
             .lookup("java:global/classes/CategoriaService");
   }
 
