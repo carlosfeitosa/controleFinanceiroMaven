@@ -83,10 +83,6 @@ public class Categoria implements IEntity, Serializable {
   public Categoria() {
   }
 
-  public Categoria(Long id) {
-    this.id = id;
-  }
-
   @Override
   public Long getId() {
     return id;

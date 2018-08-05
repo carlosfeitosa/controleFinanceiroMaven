@@ -44,15 +44,6 @@ public class AbstractService<E extends IEntity, S extends AbstractServiceRemote>
   }
 
   /**
-   * Sobrescreve o entity manager padrão.
-   * 
-   * @param em entity manager para ser utilizado
-   */
-  protected void setEntityManager(EntityManager em) {
-    this.em = em;
-  }
-
-  /**
    * Configura o logger da classe.
    */
   private void setLogger(Class<S> servicoBase) {
