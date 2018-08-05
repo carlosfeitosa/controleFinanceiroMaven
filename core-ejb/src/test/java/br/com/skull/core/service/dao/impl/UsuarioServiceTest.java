@@ -19,6 +19,7 @@ import org.junit.runner.RunWith;
 
 import java.util.Calendar;
 import java.util.List;
+import javax.ejb.EJBException;
 import javax.naming.NamingException;
 
 /**
@@ -68,8 +69,6 @@ public class UsuarioServiceTest {
   @Test
   @Repeat(times = 3)
   public void testPersistEmailsDiferentes() {
-    System.out.println("|--> [persist() - unicos]");
-
     String incremento = Integer.toString(Calendar.getInstance().get(Calendar.MILLISECOND));
 
     Usuario novoUsuario = new Usuario();
@@ -91,8 +90,6 @@ public class UsuarioServiceTest {
    */
   @Test
   public void testRemovePorUsuario() {
-    System.out.println("|--> [remove(Usuaario)]");
-
     List<Usuario> listaUsuarios = SERVICE.getByNome(NOME_USUARIO_TESTES);
 
     if (listaUsuarios.size() > 0) {
@@ -107,8 +104,6 @@ public class UsuarioServiceTest {
    */
   @Test
   public void testRemovePorId() {
-    System.out.println("|--> [remove(id)]");
-
     List<Usuario> listaUsuarios = SERVICE.getByNome(NOME_USUARIO_TESTES);
 
     if (listaUsuarios.size() > 0) {
@@ -123,8 +118,6 @@ public class UsuarioServiceTest {
    */
   @Test
   public void testGetTodos() {
-    System.out.println("|--> [getTodos()");
-
     String incremento = Integer.toString(Calendar.getInstance().get(Calendar.MILLISECOND));
 
     Usuario novoUsuario = new Usuario();
@@ -148,8 +141,6 @@ public class UsuarioServiceTest {
    */
   @Test
   public void testGetById() {
-    System.out.println("|--> [testGetById()");
-
     List<Usuario> listaUsuarios = SERVICE.getByNome(NOME_USUARIO_TESTES);
 
     if (listaUsuarios.size() > 0) {
@@ -167,8 +158,6 @@ public class UsuarioServiceTest {
    */
   @Test
   public void testGetByNome() {
-    System.out.println("|--> [testGetByNome()");
-
     String incremento = Integer.toString(Calendar.getInstance().get(Calendar.MILLISECOND));
 
     Usuario novoUsuario = new Usuario();

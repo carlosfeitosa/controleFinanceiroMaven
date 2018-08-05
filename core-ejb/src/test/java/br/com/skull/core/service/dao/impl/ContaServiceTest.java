@@ -77,8 +77,6 @@ public class ContaServiceTest {
   @Test
   @Repeat(times = 3)
   public void testPersist() {
-    System.out.println("|--> [persist()]");
-
     String sulfixo = Calendar.getInstance().getTime().toString();
 
     Conta novaConta = new Conta();
@@ -106,8 +104,6 @@ public class ContaServiceTest {
    */
   @Test
   public void testGetTodas() {
-    System.out.println("|--> [getTodas()]");
-
     Conta novaConta = new Conta();
 
     novaConta.setNome(NOME_CONTA_TESTES);
@@ -135,8 +131,6 @@ public class ContaServiceTest {
    */
   @Test
   public void testRemovePorId() {
-    System.out.println("|--> [remove(id)]");
-
     List<Conta> listaContas = SERVICE.getByNome(NOME_CONTA_TESTES);
 
     if (listaContas.size() > 0) {
@@ -151,8 +145,6 @@ public class ContaServiceTest {
    */
   @Test
   public void testRemovePorCategoria() {
-    System.out.println("|--> [remove(Categoria)]");
-
     List<Conta> listaContas = SERVICE.getByNome(NOME_CONTA_TESTES);
 
     if (listaContas.size() > 0) {
@@ -167,8 +159,6 @@ public class ContaServiceTest {
    */
   @Test
   public void testGetById() {
-    System.out.println("|--> [getById()]");
-
     List<Conta> listaContas = SERVICE.getTodas();
 
     if (listaContas.size() > 0) {
@@ -186,8 +176,6 @@ public class ContaServiceTest {
    */
   @Test
   public void testGetByName() {
-    System.out.println("|--> [getByNome()]");
-
     List<Conta> listaContas = SERVICE.getByNome(NOME_CONTA_TESTES);
 
     if (listaContas.size() > 0) {
@@ -208,8 +196,6 @@ public class ContaServiceTest {
    */
   @Test
   public void testGetByCategoria() {
-    System.out.println("|--> [testGetByCategoria(Categoria)]");
-
     Conta novaConta = new Conta();
 
     novaConta.setNome(NOME_CONTA_TESTES);
@@ -240,8 +226,6 @@ public class ContaServiceTest {
    * Limpa as entidades criadas no teste.
    */
   private static void cleanUp() {
-    System.out.println("|--> *** Limpando entidades criadas para o teste");
-
     List<Conta> listaContas = new ArrayList<>();
 
     listaContas.addAll(SERVICE.getByNome(NOME_CONTA_TESTES));

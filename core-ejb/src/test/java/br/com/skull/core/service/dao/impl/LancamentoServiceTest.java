@@ -94,8 +94,6 @@ public class LancamentoServiceTest {
   @Repeat(times = 3)
   @Ignore
   public void testPersist() {
-    System.out.println("|--> [persist()]");
-
     Categoria novaCategoriaLancamento = new Categoria();
 
     novaCategoriaLancamento.setNome(NOME_CATEGORIA_TESTES);

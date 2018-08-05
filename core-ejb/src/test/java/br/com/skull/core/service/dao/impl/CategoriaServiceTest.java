@@ -19,6 +19,7 @@ import org.junit.runner.RunWith;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import javax.ejb.EJBException;
 
 /**
  * Classe de testes para o serviço DAO de Categoria.
@@ -71,8 +72,6 @@ public class CategoriaServiceTest {
   @Test
   @Repeat(times = 3)
   public void testPersist() {
-    System.out.println("|--> [persist()]");
-
     String sulfixo = Calendar.getInstance().getTime().toString();
 
     Categoria novaCategoria = new Categoria();
@@ -87,12 +86,27 @@ public class CategoriaServiceTest {
   }
 
   /**
+   * Test of persist method, of class CategoriaService.
+   */
+  @Test(expected = EJBException.class)
+  public void testPersistFail() {
+    String sulfixo = Calendar.getInstance().getTime().toString();
+
+    Categoria novaCategoria = new Categoria();
+
+    novaCategoria.setDescricao(DESCRICAO_CATEGORIA_TESTES.concat(sulfixo));
+    novaCategoria.setTipo(CODIGO_TIPO_CATEGORIA_TESTES);
+
+    novaCategoria = SERVICE.persist(novaCategoria);
+
+    assertTrue("Id da categoria não é maior que zero", (novaCategoria.getId() > 0));
+  }
+
+  /**
    * Test of getCategoriasTodas method, of class CategoriaService.
    */
   @Test
   public void testGetTodas() {
-    System.out.println("|--> [getTodas()]");
-
     Categoria novaCategoria = new Categoria();
 
     novaCategoria.setNome(NOME_CATEGORIA_TESTES);
@@ -111,8 +125,6 @@ public class CategoriaServiceTest {
    */
   @Test
   public void testRemovePorId() {
-    System.out.println("|--> [remove(id)]");
-
     List<Categoria> listaCategorias = SERVICE.getByNome(NOME_CATEGORIA_TESTES);
 
     if (listaCategorias.size() > 0) {
@@ -127,8 +139,6 @@ public class CategoriaServiceTest {
    */
   @Test
   public void testRemovePorCategoria() {
-    System.out.println("|--> [remove(Categoria)]");
-
     List<Categoria> listaCategorias = SERVICE.getByNome(NOME_CATEGORIA_TESTES);
 
     if (listaCategorias.size() > 0) {
@@ -143,8 +153,6 @@ public class CategoriaServiceTest {
    */
   @Test
   public void testGetById() {
-    System.out.println("|--> [getById()]");
-
     List<Categoria> listaCategorias = SERVICE.getTodas();
 
     if (listaCategorias.size() > 0) {
@@ -162,8 +170,6 @@ public class CategoriaServiceTest {
    */
   @Test
   public void testGetPorNome() {
-    System.out.println("|--> [getByNome()]");
-
     List<Categoria> listaCategorias = SERVICE.getByNome(NOME_CATEGORIA_TESTES);
 
     if (listaCategorias.size() > 0) {
@@ -184,8 +190,6 @@ public class CategoriaServiceTest {
    */
   @Test
   public void testGetCategoriaspPorNomeAproximado() {
-    System.out.println("|--> [getByNomeAproximado()]");
-
     List<Categoria> listaCategorias = SERVICE.getByNomeAproximado(NOME_CATEGORIA_TESTES_PARCIAL);
 
     if (listaCategorias.size() > 0) {
@@ -206,8 +210,6 @@ public class CategoriaServiceTest {
    */
   @Test
   public void testGetCategoriasPorTipoCodigo() {
-    System.out.println("|--> [getByTipo(codigo)]");
-
     List<Categoria> listaCategorias = SERVICE.getByTipo(CODIGO_TIPO_CATEGORIA_TESTES);
 
     if (listaCategorias.size() > 0) {
@@ -228,8 +230,6 @@ public class CategoriaServiceTest {
    */
   @Test
   public void testGetCategoriasPorTipoEnumTipoCategoria() {
-    System.out.println("|--> [getByTipo(Enum)]");
-
     List<Categoria> listaCategorias = SERVICE.getByTipo(TIPO_CATEGORIA_ENUM_TESTES);
 
     if (listaCategorias.size() > 0) {
@@ -250,8 +250,6 @@ public class CategoriaServiceTest {
    */
   @Test
   public void testGetFilhasPorCategoriaPai() {
-    System.out.println("|--> [getFilhas(Categoria)]");
-
     Categoria categoriaPai = new Categoria();
 
     categoriaPai.setNome(NOME_CATEGORIA_TESTES_PAI);
@@ -282,8 +280,6 @@ public class CategoriaServiceTest {
    * Limpa as entidades criadas no teste.
    */
   private static void cleanUp() {
-    System.out.println("|--> *** Limpando entidades criadas para o teste");
-
     List<Categoria> listaCategorias = new ArrayList<>();
 
     listaCategorias.addAll(SERVICE.getByNome(NOME_CATEGORIA_TESTES));
