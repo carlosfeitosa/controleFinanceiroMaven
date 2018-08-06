@@ -20,7 +20,6 @@ import br.com.skull.core.service.dao.enums.TipoUsuarioEnum;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,7 +30,7 @@ import java.util.List;
 import javax.naming.NamingException;
 
 /**
- * Classe de testes para o serviço DAO de Lancamento.
+ * Classe de testes para o serviço DAO de Lançamento.
  *
  * @author Carlos Feitosa (carlos.feitosa.nt@gmail.com)
  */
