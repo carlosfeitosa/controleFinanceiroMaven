@@ -1,6 +1,5 @@
 package br.com.skull.core.util;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -21,15 +20,17 @@ public class CoreDateUtil {
    * Retorna o início default de data.
    *
    * @return data default de início
-   *
-   * @throws java.text.ParseException caso haja problema de conversão de datas
    */
-  public static Date firstDate() throws ParseException {
+  public static Date firstDate() {
     SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
 
-    Date dataFormatada = formato.parse(DATABASE_DATE_INICIO);
+    Date dataFormatada = null;
 
-    return dataFormatada;
+    try {
+      dataFormatada = formato.parse(DATABASE_DATE_INICIO);
+    } finally {
+      return dataFormatada;
+    }
   }
 
   /**

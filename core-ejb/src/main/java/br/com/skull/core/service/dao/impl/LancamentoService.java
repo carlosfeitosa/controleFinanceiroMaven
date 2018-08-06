@@ -49,7 +49,7 @@ public class LancamentoService extends AbstractService<Lancamento, LancamentoSer
   }
 
   @Override
-  public List<Lancamento> getByConta(Conta conta, Date inicio, Date termino) throws ParseException {
+  public List<Lancamento> getByConta(Conta conta, Date inicio, Date termino) {
     logger.info("Recuperando lançamento por conta");
     logger.debug("Conta: {}", conta);
     logger.debug("Início: {}", inicio);
@@ -68,7 +68,7 @@ public class LancamentoService extends AbstractService<Lancamento, LancamentoSer
 
   @Override
   public List<Lancamento> getByContaTipo(Conta conta, TipoLancamentoEnum tipo,
-          Date inicio, Date termino) throws ParseException {
+          Date inicio, Date termino) {
     logger.info("Recuperando lançamento por conta e tipo");
     logger.debug("Conta: {}", conta);
     logger.debug("Tipo: {}", tipo);
@@ -89,7 +89,7 @@ public class LancamentoService extends AbstractService<Lancamento, LancamentoSer
 
   @Override
   public List<Lancamento> getByContaTipo(Conta conta, long tipo,
-          Date inicio, Date termino) throws ParseException {
+          Date inicio, Date termino) {
     logger.info("Recuperando lançamento por conta e tipo");
     logger.debug("Conta: {}", conta);
     logger.debug("Tipo: {}", tipo);
@@ -110,7 +110,7 @@ public class LancamentoService extends AbstractService<Lancamento, LancamentoSer
 
   @Override
   public List<Lancamento> getByContaCategoria(Conta conta, Categoria categoria,
-          Date inicio, Date termino) throws ParseException {
+          Date inicio, Date termino) {
     logger.info("Recuperando lançamento por conta e categoria");
     logger.debug("Conta: {}", conta);
     logger.debug("Categoria: {}", categoria);
@@ -130,8 +130,8 @@ public class LancamentoService extends AbstractService<Lancamento, LancamentoSer
   }
 
   @Override
-  public List<Lancamento> getByContaTipoCategoriaMomento(Conta conta, TipoLancamentoEnum tipo,
-          Categoria categoria, Date inicio, Date termino) throws ParseException {
+  public List<Lancamento> getByContaTipoCategoria(Conta conta, TipoLancamentoEnum tipo,
+          Categoria categoria, Date inicio, Date termino) {
     logger.info("Recuperando lançamento por conta, tipo e categoria");
     logger.debug("Conta: {}", conta);
     logger.debug("Tipo: {}", tipo);
@@ -153,8 +153,8 @@ public class LancamentoService extends AbstractService<Lancamento, LancamentoSer
   }
 
   @Override
-  public List<Lancamento> getByContaTipoCategoriaMomento(Conta conta, long codigoTipo,
-          Categoria categoria, Date inicio, Date termino) throws ParseException {
+  public List<Lancamento> getByContaTipoCategoria(Conta conta, long codigoTipo,
+          Categoria categoria, Date inicio, Date termino) {
     logger.info("Recuperando lançamento por conta, tipo e categoria");
     logger.debug("Conta: {}", conta);
     logger.debug("Tipo: {}", codigoTipo);

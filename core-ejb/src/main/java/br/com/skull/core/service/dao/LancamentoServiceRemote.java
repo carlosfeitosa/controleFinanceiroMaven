@@ -35,10 +35,8 @@ public interface LancamentoServiceRemote extends AbstractServiceRemote<Lancament
    * @param termino data de término do lançamento
    *
    * @return lista de lançamentos
-   * 
-   * @throws java.text.ParseException caso hajam problemas de conversão de data
    */
-  List<Lancamento> getByConta(Conta conta, Date inicio, Date termino) throws ParseException;
+  List<Lancamento> getByConta(Conta conta, Date inicio, Date termino);
 
   /**
    * Lista lançamentos por conta e tipo de lançamento.
@@ -49,11 +47,8 @@ public interface LancamentoServiceRemote extends AbstractServiceRemote<Lancament
    * @param termino data de término do lançamento
    *
    * @return lista de lançamentos
-   * 
-   * @throws java.text.ParseException caso hajam problemas de conversão de data
    */
-  List<Lancamento> getByContaTipo(Conta conta, TipoLancamentoEnum tipo, 
-          Date inicio, Date termino) throws ParseException;
+  List<Lancamento> getByContaTipo(Conta conta, TipoLancamentoEnum tipo, Date inicio, Date termino);
 
   /**
    * Lista lançamentos por conta e tipo de lançamento.
@@ -64,11 +59,8 @@ public interface LancamentoServiceRemote extends AbstractServiceRemote<Lancament
    * @param termino data de término do lançamento
    *
    * @return lista de lançamentos
-   * 
-   * @throws java.text.ParseException caso hajam problemas de conversão de data
    */
-  List<Lancamento> getByContaTipo(Conta conta, long tipo, 
-          Date inicio, Date termino) throws ParseException;
+  List<Lancamento> getByContaTipo(Conta conta, long tipo, Date inicio, Date termino);
 
   /**
    * Lista lançamentos por conta e categoria.
@@ -79,11 +71,8 @@ public interface LancamentoServiceRemote extends AbstractServiceRemote<Lancament
    * @param termino data de término do lançamento
    *
    * @return lista de lançamentos
-   * 
-   * @throws java.text.ParseException caso hajam problemas de conversão de data
    */
-  List<Lancamento> getByContaCategoria(Conta conta, Categoria categoria, 
-          Date inicio, Date termino) throws ParseException;
+  List<Lancamento> getByContaCategoria(Conta conta, Categoria categoria, Date inicio, Date termino);
 
   /**
    * Lista lançamentos por conta, tipo de lançamento e categoria.
@@ -95,11 +84,9 @@ public interface LancamentoServiceRemote extends AbstractServiceRemote<Lancament
    * @param termino data de termino do lançamento
    *
    * @return lista de lançamentos
-   * 
-   * @throws java.text.ParseException caso hajam problemas de conversão de data
    */
-  List<Lancamento> getByContaTipoCategoriaMomento(Conta conta, TipoLancamentoEnum tipo,
-          Categoria categoria, Date inicio, Date termino) throws ParseException;
+  List<Lancamento> getByContaTipoCategoria(Conta conta, TipoLancamentoEnum tipo,
+          Categoria categoria, Date inicio, Date termino);
 
   /**
    * Lista lançamentos por conta, tipo de lançamento e categoria.
@@ -111,9 +98,7 @@ public interface LancamentoServiceRemote extends AbstractServiceRemote<Lancament
    * @param termino data de termino do lançamento
    *
    * @return lista de lançamentos
-   * 
-   * @throws java.text.ParseException caso hajam problemas de conversão de data
    */
-  List<Lancamento> getByContaTipoCategoriaMomento(Conta conta, long codigoTipo,
-          Categoria categoria, Date inicio, Date termino) throws ParseException;
+  List<Lancamento> getByContaTipoCategoria(Conta conta, long codigoTipo,
+          Categoria categoria, Date inicio, Date termino);
 }
