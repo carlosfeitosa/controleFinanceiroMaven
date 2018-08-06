@@ -41,9 +41,6 @@ public class CategoriaServiceTest {
           = TipoCategoriaEnum.CATEGORIA.getCodigo();
   private static final TipoCategoriaEnum TIPO_CATEGORIA_ENUM_TESTES = TipoCategoriaEnum.CATEGORIA;
 
-  public CategoriaServiceTest() {
-  }
-
   @Rule
   public RepeatRule repeatRule = new RepeatRule();
 

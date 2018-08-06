@@ -65,9 +65,6 @@ public class LancamentoServiceTest {
           = TIPO_LANCAMENTO_TESTES.CREDITO.getCodigo();
   private static final double VALOR_LANCAMENTO_TESTES = 99321123;
 
-  public LancamentoServiceTest() {
-  }
-
   @Rule
   public RepeatRule repeatRule = new RepeatRule();
 
@@ -93,11 +90,9 @@ public class LancamentoServiceTest {
 
   /**
    * Finaliza serviços pendentes.
-   *
-   * @throws javax.naming.NamingException caso não consiga recuperar os serviços para limpeza
    */
   @AfterClass
-  public static void tearDownClass() throws NamingException {
+  public static void tearDownClass() {
     cleanUp();
   }
 

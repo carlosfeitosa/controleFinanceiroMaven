@@ -39,9 +39,6 @@ public class UsuarioServiceTest {
   private static final TipoUsuarioEnum TIPO_USUARIO_TESTES = TipoUsuarioEnum.REGULAR;
   private static final long CODIGO_TIPO_USUARIO_TESTES = TIPO_USUARIO_TESTES.getCodigo();
 
-  public UsuarioServiceTest() {
-  }
-
   @Rule
   public RepeatRule repeatRule = new RepeatRule();
 
@@ -88,7 +85,7 @@ public class UsuarioServiceTest {
 
   /**
    * Test of persist method, of class UsuarioService.
-   * 
+   *
    * @throws javax.naming.NamingException caso não encontre o bean
    */
   @Test(expected = EJBException.class)

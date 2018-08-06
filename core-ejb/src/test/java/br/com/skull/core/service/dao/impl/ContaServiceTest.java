@@ -41,9 +41,6 @@ public class ContaServiceTest {
   private static final String DESCRICAO_CATEGORIA_CONTA_TESTES = "Descrição categoria conta "
           + "de testes - não utilizar esta conta";
 
-  public ContaServiceTest() {
-  }
-
   @Rule
   public RepeatRule repeatRule = new RepeatRule();
 
