@@ -82,10 +82,6 @@ public class Conta implements IEntity, Serializable {
   public Conta() {
   }
 
-  public Conta(Long id) {
-    this.id = id;
-  }
-
   @Override
   public Long getId() {
     return id;

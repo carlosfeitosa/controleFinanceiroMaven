@@ -87,10 +87,6 @@ public class Log implements IEntity, Serializable {
   public Log() {
   }
 
-  public Log(Long id) {
-    this.id = id;
-  }
-
   @Override
   public Long getId() {
     return id;

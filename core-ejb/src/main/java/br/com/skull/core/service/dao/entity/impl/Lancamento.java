@@ -106,10 +106,6 @@ public class Lancamento implements IEntity, Serializable {
   public Lancamento() {
   }
 
-  public Lancamento(Long id) {
-    this.id = id;
-  }
-
   @Override
   public Long getId() {
     return id;

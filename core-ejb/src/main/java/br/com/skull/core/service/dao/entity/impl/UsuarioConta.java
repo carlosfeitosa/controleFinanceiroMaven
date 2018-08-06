@@ -69,10 +69,6 @@ public class UsuarioConta implements IEntity, Serializable {
   public UsuarioConta() {
   }
 
-  public UsuarioConta(Long id) {
-    this.id = id;
-  }
-
   @Override
   public Long getId() {
     return id;

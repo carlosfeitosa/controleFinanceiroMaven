@@ -12,14 +12,12 @@ import br.com.skull.core.service.dao.enums.TipoUsuarioEnum;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.Calendar;
 import java.util.List;
-import javax.ejb.EJBException;
 import javax.naming.NamingException;
 
 /**
@@ -33,10 +31,12 @@ public class UsuarioServiceTest {
   private static UsuarioServiceRemote SERVICE;
 
   private static final String NOME_USUARIO_TESTES = "__IGNORE-UsuarioTestes";
+  private static final String NOME_APROXIMADO_USUARIO_TESTES = "__IGNORE-Usuario";
   private static final String EMAIL_NOME_USUARIO_TESTES = "testes";
   private static final String EMAIL_DOMINIO_USUARIO_TESTES = "@testes.com";
   private static final String PASSWORD_USUARIO_TESTES = "passwd";
-  private static final long TIPO_USUARIO_TESTES = TipoUsuarioEnum.REGULAR.getCodigo();
+  private static final TipoUsuarioEnum TIPO_USUARIO_TESTES = TipoUsuarioEnum.REGULAR;
+  private static final long CODIGO_TIPO_USUARIO_TESTES = TIPO_USUARIO_TESTES.getCodigo();
 
   public UsuarioServiceTest() {
   }
@@ -73,7 +73,7 @@ public class UsuarioServiceTest {
 
     Usuario novoUsuario = new Usuario();
 
-    novoUsuario.setTipo(TIPO_USUARIO_TESTES);
+    novoUsuario.setTipo(CODIGO_TIPO_USUARIO_TESTES);
     novoUsuario.setNome(NOME_USUARIO_TESTES);
     novoUsuario.setEmail(EMAIL_NOME_USUARIO_TESTES
             .concat(incremento)
@@ -122,7 +122,7 @@ public class UsuarioServiceTest {
 
     Usuario novoUsuario = new Usuario();
 
-    novoUsuario.setTipo(TIPO_USUARIO_TESTES);
+    novoUsuario.setTipo(CODIGO_TIPO_USUARIO_TESTES);
     novoUsuario.setNome(NOME_USUARIO_TESTES);
     novoUsuario.setEmail(EMAIL_NOME_USUARIO_TESTES
             .concat(incremento)
@@ -162,7 +162,7 @@ public class UsuarioServiceTest {
 
     Usuario novoUsuario = new Usuario();
 
-    novoUsuario.setTipo(TIPO_USUARIO_TESTES);
+    novoUsuario.setTipo(CODIGO_TIPO_USUARIO_TESTES);
     novoUsuario.setNome(NOME_USUARIO_TESTES);
     novoUsuario.setEmail(EMAIL_NOME_USUARIO_TESTES
             .concat(incremento)
@@ -180,39 +180,83 @@ public class UsuarioServiceTest {
    * Test of getByNomeAproximado method, of class UsuarioService.
    */
   @Test
-  @Ignore
   public void testGetByNomeAproximado() {
+    List<Usuario> listaUsuarios = SERVICE.getByNomeAproximado(NOME_APROXIMADO_USUARIO_TESTES);
+
+    assertTrue("Lista de usuários menor que zero: ", listaUsuarios.size() > 0);
   }
 
   /**
    * Test of getByEmail method, of class UsuarioService.
    */
   @Test
-  @Ignore
   public void testGetByEmail() {
+    List<Usuario> listaUsuarios = SERVICE.getByNomeAproximado(NOME_APROXIMADO_USUARIO_TESTES);
+
+    if (listaUsuarios.size() > 0) {
+      Usuario usuario = SERVICE.getByEmail(listaUsuarios.get(0).getEmail());
+
+      assertEquals("E-mail diferente do esperado", listaUsuarios.get(0), usuario);
+    } else {
+      assertTrue("Não é possível realizar o teste porque não existem usuários testáveis", false);
+    }
   }
 
   /**
    * Test of getByTipo method, of class UsuarioService.
    */
   @Test
-  @Ignore
-  public void testGetByTipo_TipoUsuarioEnum() {
+  public void testGetByTipoEnum() {
+    String incremento = Integer.toString(Calendar.getInstance().get(Calendar.MILLISECOND));
+
+    Usuario novoUsuario = new Usuario();
+
+    novoUsuario.setTipo(CODIGO_TIPO_USUARIO_TESTES);
+    novoUsuario.setNome(NOME_USUARIO_TESTES);
+    novoUsuario.setEmail(EMAIL_NOME_USUARIO_TESTES
+            .concat(incremento)
+            .concat(EMAIL_DOMINIO_USUARIO_TESTES));
+    novoUsuario.setPassword(PASSWORD_USUARIO_TESTES);
+
+    SERVICE.persist(novoUsuario);
+
+    List<Usuario> listaUsuarios = SERVICE.getByTipo(TIPO_USUARIO_TESTES);
+
+    assertTrue("Lista de usuários menor que zero: ", listaUsuarios.size() > 0);
   }
 
   /**
    * Test of getByTipo method, of class UsuarioService.
    */
   @Test
-  @Ignore
-  public void testGetByTipo_long() {
+  public void testGetByTipoCodigo() {
+    String incremento = Integer.toString(Calendar.getInstance().get(Calendar.MILLISECOND));
+
+    Usuario novoUsuario = new Usuario();
+
+    novoUsuario.setTipo(CODIGO_TIPO_USUARIO_TESTES);
+    novoUsuario.setNome(NOME_USUARIO_TESTES);
+    novoUsuario.setEmail(EMAIL_NOME_USUARIO_TESTES
+            .concat(incremento)
+            .concat(EMAIL_DOMINIO_USUARIO_TESTES));
+    novoUsuario.setPassword(PASSWORD_USUARIO_TESTES);
+
+    SERVICE.persist(novoUsuario);
+
+    List<Usuario> listaUsuarios = SERVICE.getByTipo(CODIGO_TIPO_USUARIO_TESTES);
+
+    assertTrue("Lista de usuários menor que zero: ", listaUsuarios.size() > 0);
   }
 
   /**
    * Limpa as entidades criadas no teste.
    */
   private static void cleanUp() {
+    List<Usuario> listaUsuario = SERVICE.getByNomeAproximado(NOME_APROXIMADO_USUARIO_TESTES);
 
+    listaUsuario.forEach((usuario) -> {
+      SERVICE.remove(usuario);
+    });
   }
 
 }

@@ -137,6 +137,7 @@
         <configuration>
           <excludes>
             <exclude>br/com/skull/core/service/dao/enums/**/*</exclude>
+            <exclude>br/com/skull/core/service/dao/entity/**/*</exclude>
           </excludes>
         </configuration>
         <executions>

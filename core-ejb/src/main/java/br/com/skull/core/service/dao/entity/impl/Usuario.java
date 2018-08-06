@@ -93,10 +93,6 @@ public class Usuario implements IEntity, Serializable {
   public Usuario() {
   }
 
-  public Usuario(Long value) {
-    this.id = value;
-  }
-
   @Override
   public Long getId() {
     return id;
