@@ -61,7 +61,7 @@ public class Usuario implements IEntity, Serializable {
   @Basic(optional = false)
   @NotNull
   @Size(min = 1, max = 300)
-  @Column(name = "EMAIL")
+  @Column(name = "EMAIL", unique = true)
   private String email;
   @Basic(optional = false)
   @NotNull

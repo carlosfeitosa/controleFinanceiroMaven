@@ -68,6 +68,11 @@ public class AbstractService<E extends IEntity, S extends AbstractServiceRemote>
               .concat(ex.getConstraintViolations().toString()));
 
       throw ex;
+    } catch (Exception ex) {
+      logger.error("Exceção não mapeada ao tentar persistir: "
+              .concat(ex.getMessage()));
+
+      throw ex;
     }
 
     return entidade;

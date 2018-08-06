@@ -18,6 +18,7 @@ import org.junit.runner.RunWith;
 
 import java.util.Calendar;
 import java.util.List;
+import javax.ejb.EJBException;
 import javax.naming.NamingException;
 
 /**
@@ -83,6 +84,42 @@ public class UsuarioServiceTest {
     novoUsuario = SERVICE.persist(novoUsuario);
 
     assertTrue("Id do usuário não é maior que zero", (novoUsuario.getId() > 0));
+  }
+
+  /**
+   * Test of persist method, of class UsuarioService.
+   * 
+   * @throws javax.naming.NamingException caso não encontre o bean
+   */
+  @Test(expected = EJBException.class)
+  public void testPersistEmailsIguais() throws NamingException {
+    String incremento = Integer.toString(Calendar.getInstance().get(Calendar.MILLISECOND));
+
+    Usuario novoUsuario = new Usuario();
+
+    novoUsuario.setTipo(CODIGO_TIPO_USUARIO_TESTES);
+    novoUsuario.setNome(NOME_USUARIO_TESTES);
+    novoUsuario.setEmail(EMAIL_NOME_USUARIO_TESTES
+            .concat(incremento)
+            .concat(EMAIL_DOMINIO_USUARIO_TESTES));
+    novoUsuario.setPassword(PASSWORD_USUARIO_TESTES);
+
+    SERVICE.persist(novoUsuario);
+
+    novoUsuario = new Usuario();
+
+    novoUsuario.setTipo(CODIGO_TIPO_USUARIO_TESTES);
+    novoUsuario.setNome(NOME_USUARIO_TESTES);
+    novoUsuario.setEmail(EMAIL_NOME_USUARIO_TESTES
+            .concat(incremento)
+            .concat(EMAIL_DOMINIO_USUARIO_TESTES));
+    novoUsuario.setPassword(PASSWORD_USUARIO_TESTES);
+
+    try {
+      SERVICE.persist(novoUsuario);
+    } finally {
+      setUpClass();
+    }
   }
 
   /**
