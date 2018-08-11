@@ -49,6 +49,9 @@ public class LogServiceTest {
   private static CategoriaServiceRemote SERVICE_CATEGORIA;
   private static UsuarioServiceRemote SERVICE_USUARIO;
 
+  private static Categoria CATEGORIA_TESTES;
+  private static Usuario USUARIO_TESTES;
+
   @Rule
   public RepeatRule repeatRule = new RepeatRule();
 
@@ -68,6 +71,7 @@ public class LogServiceTest {
     SERVICE_USUARIO = (UsuarioServiceRemote) EnterpriseRunner.getContainer().getContext()
             .lookup("java:global/classes/UsuarioService");
 
+    init();
   }
 
   @AfterClass
@@ -81,31 +85,10 @@ public class LogServiceTest {
   @Test
   @Repeat(times = 3)
   public void testPersist() {
-    Categoria novaCategoria = new Categoria();
-
-    novaCategoria.setNome(NOME_CATEGORIA_TESTES);
-    novaCategoria.setDescricao(DESCRICAO_CATEGORIA_TESTES);
-    novaCategoria.setTipo(CODIGO_TIPO_CATEGORIA_TESTES);
-
-    novaCategoria = SERVICE_CATEGORIA.persist(novaCategoria);
-
-    Usuario novoUsuario = new Usuario();
-
-    String incremento = Integer.toString(Calendar.getInstance().get(Calendar.MILLISECOND));
-
-    novoUsuario.setTipo(CODIGO_TIPO_USUARIO_TESTES);
-    novoUsuario.setNome(NOME_USUARIO_TESTES);
-    novoUsuario.setEmail(EMAIL_NOME_USUARIO_TESTES
-            .concat(incremento)
-            .concat(EMAIL_DOMINIO_USUARIO_TESTES));
-    novoUsuario.setPassword(PASSWORD_USUARIO_TESTES);
-
-    novoUsuario = SERVICE_USUARIO.persist(novoUsuario);
-
     Log logTeste = new Log();
 
-    logTeste.setCategoria(novaCategoria);
-    logTeste.setUsuario(novoUsuario);
+    logTeste.setCategoria(CATEGORIA_TESTES);
+    logTeste.setUsuario(USUARIO_TESTES);
     logTeste.setDescricao(DESCRICAO_LOG_TESTES);
     logTeste.setMomento(Calendar.getInstance().getTime());
 
@@ -124,8 +107,6 @@ public class LogServiceTest {
     assertTrue("Lista de logs não é maior que zero", listaLogs.size() > 0);
 
     SERVICE.remove(listaLogs.get(0));
-    SERVICE_CATEGORIA.remove(listaLogs.get(0).getCategoria());
-    SERVICE_USUARIO.remove(listaLogs.get(0).getUsuario());
   }
 
   /**
@@ -138,8 +119,6 @@ public class LogServiceTest {
     assertTrue("Lista de logs não é maior que zero", listaLogs.size() > 0);
 
     SERVICE.remove(listaLogs.get(0).getId());
-    SERVICE_CATEGORIA.remove(listaLogs.get(0).getCategoria());
-    SERVICE_USUARIO.remove(listaLogs.get(0).getUsuario());
   }
 
   /**
@@ -176,15 +155,11 @@ public class LogServiceTest {
    */
   @Test
   public void testGetByCategoria() {
-    List<Categoria> listaCategorias = SERVICE_CATEGORIA.getByNome(NOME_CATEGORIA_TESTES);
-
-    assertTrue("Lista de categorias não é maior que zero", listaCategorias.size() > 0);
-
-    List<Log> listaLogs = SERVICE.getByCategoria(listaCategorias.get(0), null, null);
+    List<Log> listaLogs = SERVICE.getByCategoria(CATEGORIA_TESTES, null, null);
 
     assertTrue("Lista de logs não é maior que zero", listaLogs.size() > 0);
 
-    assertEquals("Categoria diferente da esperada", listaCategorias.get(0),
+    assertEquals("Categoria diferente da esperada", CATEGORIA_TESTES,
             listaLogs.get(0).getCategoria());
   }
 
@@ -193,15 +168,11 @@ public class LogServiceTest {
    */
   @Test
   public void testGetByUsuario() {
-    List<Usuario> listaUsuarios = SERVICE_USUARIO.getByNome(NOME_USUARIO_TESTES);
-
-    assertTrue("Lista de usuários não é maior que zero", listaUsuarios.size() > 0);
-
-    List<Log> listaLogs = SERVICE.getByUsuario(listaUsuarios.get(0), null, null);
+    List<Log> listaLogs = SERVICE.getByUsuario(USUARIO_TESTES, null, null);
 
     assertTrue("Lista de logs não é maior que zero", listaLogs.size() > 0);
 
-    assertEquals("Usuário diferente do esperado", listaUsuarios.get(0),
+    assertEquals("Usuário diferente do esperado", USUARIO_TESTES,
             listaLogs.get(0).getUsuario());
   }
 
@@ -228,11 +199,33 @@ public class LogServiceTest {
   private static void cleanUp() {
     List<Log> listaLogs = SERVICE.getByMomento(null, null);
 
-    listaLogs.forEach((log) -> {
-      SERVICE.remove(log);
-      SERVICE_CATEGORIA.remove(log.getCategoria());
-      SERVICE_USUARIO.remove(log.getUsuario());
-    });
+    listaLogs.forEach(SERVICE::remove);
+
+    SERVICE_USUARIO.remove(USUARIO_TESTES);
+    SERVICE_CATEGORIA.remove(CATEGORIA_TESTES);
+  }
+
+  /**
+   * Inicializa as entidades do teste.
+   */
+  private static void init() {
+    CATEGORIA_TESTES = new Categoria();
+
+    CATEGORIA_TESTES.setNome(NOME_CATEGORIA_TESTES);
+    CATEGORIA_TESTES.setDescricao(DESCRICAO_CATEGORIA_TESTES);
+    CATEGORIA_TESTES.setTipo(CODIGO_TIPO_CATEGORIA_TESTES);
+
+    CATEGORIA_TESTES = SERVICE_CATEGORIA.persist(CATEGORIA_TESTES);
+
+    USUARIO_TESTES = new Usuario();
+
+    USUARIO_TESTES.setTipo(CODIGO_TIPO_USUARIO_TESTES);
+    USUARIO_TESTES.setNome(NOME_USUARIO_TESTES);
+    USUARIO_TESTES.setEmail(EMAIL_NOME_USUARIO_TESTES
+            .concat(EMAIL_DOMINIO_USUARIO_TESTES));
+    USUARIO_TESTES.setPassword(PASSWORD_USUARIO_TESTES);
+
+    USUARIO_TESTES = SERVICE_USUARIO.persist(USUARIO_TESTES);
   }
 
 }

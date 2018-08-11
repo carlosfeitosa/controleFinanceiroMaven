@@ -269,8 +269,6 @@ public class CategoriaServiceTest {
     listaCategorias.addAll(SERVICE.getByNome(NOME_CATEGORIA_TESTES_FILHA));
     listaCategorias.addAll(SERVICE.getByNome(NOME_CATEGORIA_TESTES_PAI));
 
-    listaCategorias.forEach((categoria) -> {
-      SERVICE.remove(categoria);
-    });
+    listaCategorias.forEach(SERVICE::remove);
   }
 }

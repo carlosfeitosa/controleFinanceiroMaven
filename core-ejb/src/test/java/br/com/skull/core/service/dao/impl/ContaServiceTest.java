@@ -18,7 +18,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import javax.naming.NamingException;
@@ -41,6 +40,8 @@ public class ContaServiceTest {
   private static final String DESCRICAO_CATEGORIA_CONTA_TESTES = "Descrição categoria conta "
           + "de testes - não utilizar esta conta";
 
+  private static Categoria CATEGORIA_TESTES;
+
   @Rule
   public RepeatRule repeatRule = new RepeatRule();
 
@@ -56,6 +57,8 @@ public class ContaServiceTest {
 
     SERVICE_CATEGORIA = (CategoriaServiceRemote) EnterpriseRunner.getContainer().getContext()
             .lookup("java:global/classes/CategoriaService");
+
+    init();
   }
 
   /**
@@ -80,16 +83,7 @@ public class ContaServiceTest {
 
     novaConta.setNome(NOME_CONTA_TESTES);
     novaConta.setDescricao(DESCRICAO_CONTA_TESTES.concat(sulfixo));
-
-    Categoria categoriaConta = new Categoria();
-
-    categoriaConta.setNome(NOME_CATEGORIA_CONTA_TESTES);
-    categoriaConta.setDescricao(DESCRICAO_CATEGORIA_CONTA_TESTES);
-    categoriaConta.setTipo(TipoCategoriaEnum.CONTA.getCodigo());
-
-    categoriaConta = SERVICE_CATEGORIA.persist(categoriaConta);
-
-    novaConta.setCategoria(categoriaConta);
+    novaConta.setCategoria(CATEGORIA_TESTES);
 
     novaConta = SERVICE.persist(novaConta);
 
@@ -106,15 +100,7 @@ public class ContaServiceTest {
     novaConta.setNome(NOME_CONTA_TESTES);
     novaConta.setDescricao(DESCRICAO_CONTA_TESTES);
 
-    Categoria categoriaConta = new Categoria();
-
-    categoriaConta.setNome(NOME_CATEGORIA_CONTA_TESTES);
-    categoriaConta.setDescricao(DESCRICAO_CATEGORIA_CONTA_TESTES);
-    categoriaConta.setTipo(TipoCategoriaEnum.CONTA.getCodigo());
-
-    categoriaConta = SERVICE_CATEGORIA.persist(categoriaConta);
-
-    novaConta.setCategoria(categoriaConta);
+    novaConta.setCategoria(CATEGORIA_TESTES);
 
     SERVICE.persist(novaConta);
 
@@ -185,48 +171,36 @@ public class ContaServiceTest {
    */
   @Test
   public void testGetByCategoria() {
-    Conta novaConta = new Conta();
-
-    novaConta.setNome(NOME_CONTA_TESTES);
-    novaConta.setDescricao(DESCRICAO_CONTA_TESTES);
-
-    Categoria categoriaConta = new Categoria();
-
-    categoriaConta.setNome(NOME_CATEGORIA_CONTA_TESTES);
-    categoriaConta.setDescricao(DESCRICAO_CATEGORIA_CONTA_TESTES);
-    categoriaConta.setTipo(TipoCategoriaEnum.CONTA.getCodigo());
-
-    categoriaConta = SERVICE_CATEGORIA.persist(categoriaConta);
-
-    novaConta.setCategoria(categoriaConta);
-
-    novaConta = SERVICE.persist(novaConta);
-
-    List<Conta> listaContas = SERVICE.getByCategoria(categoriaConta);
+    List<Conta> listaContas = SERVICE.getByCategoria(CATEGORIA_TESTES);
 
     assertTrue("Lista de contas não é maior que zero",
             (listaContas.size() > 0));
 
-    assertEquals("Contas comparadas não são iguais",
-            novaConta, listaContas.get(0));
+    assertEquals("Categorias comparadas não são iguais",
+            CATEGORIA_TESTES, listaContas.get(0).getCategoria());
   }
 
   /**
    * Limpa as entidades criadas no teste.
    */
   private static void cleanUp() {
-    List<Conta> listaContas = new ArrayList<>();
+    List<Conta> listaContas = SERVICE.getByNome(NOME_CONTA_TESTES);
 
-    listaContas.addAll(SERVICE.getByNome(NOME_CONTA_TESTES));
+    listaContas.forEach(SERVICE::remove);
 
-    List<Categoria> listaCategorias = SERVICE_CATEGORIA.getByNome(NOME_CATEGORIA_CONTA_TESTES);
+    SERVICE_CATEGORIA.remove(CATEGORIA_TESTES);
+  }
 
-    listaContas.forEach((conta) -> {
-      SERVICE.remove(conta);
-    });
+  /**
+   * Inicializa as entidades necessárias para os testes.
+   */
+  private static void init() {
+    CATEGORIA_TESTES = new Categoria();
 
-    listaCategorias.forEach((categoria) -> {
-      SERVICE_CATEGORIA.remove(categoria);
-    });
+    CATEGORIA_TESTES.setNome(NOME_CATEGORIA_CONTA_TESTES);
+    CATEGORIA_TESTES.setDescricao(DESCRICAO_CATEGORIA_CONTA_TESTES);
+    CATEGORIA_TESTES.setTipo(TipoCategoriaEnum.CONTA.getCodigo());
+
+    CATEGORIA_TESTES = SERVICE_CATEGORIA.persist(CATEGORIA_TESTES);
   }
 }

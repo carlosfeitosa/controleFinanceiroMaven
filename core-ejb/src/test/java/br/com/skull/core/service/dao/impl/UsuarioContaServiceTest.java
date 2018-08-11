@@ -23,7 +23,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.Calendar;
 import java.util.List;
 import javax.naming.NamingException;
 
@@ -53,6 +52,10 @@ public class UsuarioContaServiceTest {
   private static ContaServiceRemote SERVICE_CONTA;
   private static CategoriaServiceRemote SERVICE_CATEGORIA;
 
+  private static Categoria CATEGORIA_TESTES;
+  private static Conta CONTA_TESTES;
+  private static Usuario USUARIO_TESTES;
+
   @Rule
   public RepeatRule repeatRule = new RepeatRule();
 
@@ -74,6 +77,8 @@ public class UsuarioContaServiceTest {
 
     SERVICE_CATEGORIA = (CategoriaServiceRemote) EnterpriseRunner.getContainer().getContext()
             .lookup("java:global/classes/CategoriaService");
+
+    init();
   }
 
   @AfterClass
@@ -87,42 +92,10 @@ public class UsuarioContaServiceTest {
   @Test
   @Repeat(times = 3)
   public void testPersist() {
-    String incremento = Integer.toString(Calendar.getInstance().get(Calendar.MILLISECOND));
-
-    Usuario novoUsuario = new Usuario();
-
-    novoUsuario.setTipo(CODIGO_TIPO_USUARIO_TESTES);
-    novoUsuario.setNome(NOME_USUARIO_TESTES);
-    novoUsuario.setEmail(EMAIL_NOME_USUARIO_TESTES
-            .concat(incremento)
-            .concat(EMAIL_DOMINIO_USUARIO_TESTES));
-    novoUsuario.setPassword(PASSWORD_USUARIO_TESTES);
-
-    novoUsuario = SERVICE_USUARIO.persist(novoUsuario);
-
-    String sulfixo = Calendar.getInstance().getTime().toString();
-
-    Conta novaConta = new Conta();
-
-    novaConta.setNome(NOME_CONTA_TESTES);
-    novaConta.setDescricao(DESCRICAO_CONTA_TESTES.concat(sulfixo));
-
-    Categoria categoriaConta = new Categoria();
-
-    categoriaConta.setNome(NOME_CATEGORIA_CONTA_TESTES);
-    categoriaConta.setDescricao(DESCRICAO_CATEGORIA_CONTA_TESTES);
-    categoriaConta.setTipo(TipoCategoriaEnum.CONTA.getCodigo());
-
-    categoriaConta = SERVICE_CATEGORIA.persist(categoriaConta);
-
-    novaConta.setCategoria(categoriaConta);
-
-    novaConta = SERVICE_CONTA.persist(novaConta);
-
     UsuarioConta usuarioContaTeste = new UsuarioConta();
 
-    usuarioContaTeste.setConta(novaConta);
-    usuarioContaTeste.setUsuario(novoUsuario);
+    usuarioContaTeste.setConta(CONTA_TESTES);
+    usuarioContaTeste.setUsuario(USUARIO_TESTES);
 
     usuarioContaTeste = SERVICE.persist(usuarioContaTeste);
 
@@ -135,17 +108,11 @@ public class UsuarioContaServiceTest {
    */
   @Test
   public void testRemovePorUsuarioConta() {
-    List<Conta> listaContas = SERVICE_CONTA.getByNome(NOME_CONTA_TESTES);
-
-    assertTrue("Lista de contas não é maior que zero", listaContas.size() > 0);
-
-    List<UsuarioConta> listaUsuarioContaTeste = SERVICE.getByConta(listaContas.get(0));
+    List<UsuarioConta> listaUsuarioContaTeste = SERVICE.getByConta(CONTA_TESTES);
 
     assertTrue("Lista de usuários não é maior que zero", listaUsuarioContaTeste.size() > 0);
 
     SERVICE.remove(listaUsuarioContaTeste.get(0));
-    SERVICE_USUARIO.remove(listaUsuarioContaTeste.get(0).getUsuario());
-    SERVICE_CONTA.remove(listaUsuarioContaTeste.get(0).getConta());
   }
 
   /**
@@ -153,17 +120,11 @@ public class UsuarioContaServiceTest {
    */
   @Test
   public void testRemovePorId() {
-    List<Conta> listaContas = SERVICE_CONTA.getByNome(NOME_CONTA_TESTES);
-
-    assertTrue("Lista de contas não é maior que zero", listaContas.size() > 0);
-
-    List<UsuarioConta> listaUsuarioContaTeste = SERVICE.getByConta(listaContas.get(0));
+    List<UsuarioConta> listaUsuarioContaTeste = SERVICE.getByConta(CONTA_TESTES);
 
     assertTrue("Lista de usuários não é maior que zero", listaUsuarioContaTeste.size() > 0);
 
     SERVICE.remove(listaUsuarioContaTeste.get(0).getId());
-    SERVICE_USUARIO.remove(listaUsuarioContaTeste.get(0).getUsuario());
-    SERVICE_CONTA.remove(listaUsuarioContaTeste.get(0).getConta());
   }
 
   /**
@@ -171,11 +132,7 @@ public class UsuarioContaServiceTest {
    */
   @Test
   public void testGetById() {
-    List<Conta> listaContas = SERVICE_CONTA.getByNome(NOME_CONTA_TESTES);
-
-    assertTrue("Lista de contas não é maior que zero", listaContas.size() > 0);
-
-    List<UsuarioConta> listaUsuarioContaTeste = SERVICE.getByConta(listaContas.get(0));
+    List<UsuarioConta> listaUsuarioContaTeste = SERVICE.getByConta(CONTA_TESTES);
 
     assertTrue("Lista de relações entre usuários e conta não é maior que zero",
             listaUsuarioContaTeste.size() > 0);
@@ -191,16 +148,12 @@ public class UsuarioContaServiceTest {
    */
   @Test
   public void testGetByConta() {
-    List<Conta> listaContas = SERVICE_CONTA.getByNome(NOME_CONTA_TESTES);
-
-    assertTrue("Lista de contas não é maior que zero", listaContas.size() > 0);
-
-    List<UsuarioConta> listaUsuarioContaTeste = SERVICE.getByConta(listaContas.get(0));
+    List<UsuarioConta> listaUsuarioContaTeste = SERVICE.getByConta(CONTA_TESTES);
 
     assertTrue("Lista de relações entre usuário e conta não é maior que zero",
             listaUsuarioContaTeste.size() > 0);
 
-    assertEquals("Conta diferente da esperada", listaContas.get(0),
+    assertEquals("Conta diferente da esperada", CONTA_TESTES,
             listaUsuarioContaTeste.get(0).getConta());
   }
 
@@ -209,16 +162,12 @@ public class UsuarioContaServiceTest {
    */
   @Test
   public void testGetByUsuario() {
-    List<Usuario> listaUsuarios = SERVICE_USUARIO.getByNome(NOME_USUARIO_TESTES);
-
-    assertTrue("Lista de usuários não é maior que zero", listaUsuarios.size() > 0);
-
-    List<UsuarioConta> listaUsuarioContaTeste = SERVICE.getByUsuario(listaUsuarios.get(0));
+    List<UsuarioConta> listaUsuarioContaTeste = SERVICE.getByUsuario(USUARIO_TESTES);
 
     assertTrue("Lista de relações entre usuário e conta não é maior que zero",
             listaUsuarioContaTeste.size() > 0);
 
-    assertEquals("Usuário diferente do esperado", listaUsuarios.get(0),
+    assertEquals("Usuário diferente do esperado", USUARIO_TESTES,
             listaUsuarioContaTeste.get(0).getUsuario());
   }
 
@@ -226,20 +175,43 @@ public class UsuarioContaServiceTest {
    * Limpa as entidades criadas no teste.
    */
   private static void cleanUp() {
-    List<Usuario> listaUsuarios = SERVICE_USUARIO.getByNome(NOME_USUARIO_TESTES);
+    List<UsuarioConta> listaUsuarioContaTeste = SERVICE.getByUsuario(USUARIO_TESTES);
 
-    listaUsuarios.forEach((usuario) -> {
-      List<UsuarioConta> listaUsuariosContas = SERVICE.getByUsuario(usuario);
+    listaUsuarioContaTeste.forEach(SERVICE::remove);
 
-      listaUsuariosContas.forEach((usuarioConta) -> {
-        SERVICE.remove(usuarioConta);
-
-        SERVICE_CONTA.remove(usuarioConta.getConta());
-        SERVICE_CATEGORIA.remove(usuarioConta.getConta().getCategoria());
-      });
-
-      SERVICE_USUARIO.remove(usuario);
-    });
+    SERVICE_CONTA.remove(CONTA_TESTES);
+    SERVICE_CATEGORIA.remove(CATEGORIA_TESTES);
+    SERVICE_USUARIO.remove(USUARIO_TESTES);
   }
 
+  /**
+   * Inicializa as entidades para os testes.
+   */
+  private static void init() {
+    USUARIO_TESTES = new Usuario();
+
+    USUARIO_TESTES.setTipo(CODIGO_TIPO_USUARIO_TESTES);
+    USUARIO_TESTES.setNome(NOME_USUARIO_TESTES);
+    USUARIO_TESTES.setEmail(EMAIL_NOME_USUARIO_TESTES
+            .concat(EMAIL_DOMINIO_USUARIO_TESTES));
+    USUARIO_TESTES.setPassword(PASSWORD_USUARIO_TESTES);
+
+    USUARIO_TESTES = SERVICE_USUARIO.persist(USUARIO_TESTES);
+
+    CATEGORIA_TESTES = new Categoria();
+
+    CATEGORIA_TESTES.setNome(NOME_CATEGORIA_CONTA_TESTES);
+    CATEGORIA_TESTES.setDescricao(DESCRICAO_CATEGORIA_CONTA_TESTES);
+    CATEGORIA_TESTES.setTipo(TipoCategoriaEnum.CONTA.getCodigo());
+
+    CATEGORIA_TESTES = SERVICE_CATEGORIA.persist(CATEGORIA_TESTES);
+
+    CONTA_TESTES = new Conta();
+
+    CONTA_TESTES.setNome(NOME_CONTA_TESTES);
+    CONTA_TESTES.setDescricao(DESCRICAO_CONTA_TESTES);
+    CONTA_TESTES.setCategoria(CATEGORIA_TESTES);
+
+    CONTA_TESTES = SERVICE_CONTA.persist(CONTA_TESTES);
+  }
 }
