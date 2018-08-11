@@ -4,7 +4,6 @@ import br.com.skull.core.service.dao.entity.impl.Categoria;
 import br.com.skull.core.service.dao.entity.impl.Log;
 import br.com.skull.core.service.dao.entity.impl.Usuario;
 
-import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Remote;
@@ -33,10 +32,8 @@ public interface LogServiceRemote extends AbstractServiceRemote<Log> {
    * @param termino momento final
    *
    * @return lista de logs
-   *
-   * @throws java.text.ParseException caso hajam problemas para coverter datas
    */
-  List<Log> getByMomento(Date inicio, Date termino) throws ParseException;
+  List<Log> getByMomento(Date inicio, Date termino);
 
   /**
    * Lista log por categoria e momento.
@@ -46,11 +43,8 @@ public interface LogServiceRemote extends AbstractServiceRemote<Log> {
    * @param termino momento final
    *
    * @return lista de logs
-   *
-   * @throws java.text.ParseException caso hajam problemas para coverter datas
    */
-  List<Log> getByCategoriaMomento(Categoria categoria, Date inicio, Date termino)
-          throws ParseException;
+  List<Log> getByCategoria(Categoria categoria, Date inicio, Date termino);
 
   /**
    * Lista log por usuário e momento.
@@ -60,10 +54,8 @@ public interface LogServiceRemote extends AbstractServiceRemote<Log> {
    * @param termino momento final
    *
    * @return lista de logs
-   *
-   * @throws java.text.ParseException caso hajam problemas para coverter datas
    */
-  List<Log> getByUsuarioMomento(Usuario usuario, Date inicio, Date termino) throws ParseException;
+  List<Log> getByUsuario(Usuario usuario, Date inicio, Date termino);
 
   /**
    * Lista log por categoria, usuário e momento.
@@ -74,9 +66,7 @@ public interface LogServiceRemote extends AbstractServiceRemote<Log> {
    * @param termino momento final
    *
    * @return lista de logs.
-   *
-   * @throws java.text.ParseException caso hajam problemas para coverter datas
    */
-  List<Log> getByCategoriaUsuarioMomento(Categoria categoria, Usuario usuario,
-          Date inicio, Date termino) throws ParseException;
+  List<Log> getByCategoriaUsuario(Categoria categoria, Usuario usuario,
+          Date inicio, Date termino);
 }

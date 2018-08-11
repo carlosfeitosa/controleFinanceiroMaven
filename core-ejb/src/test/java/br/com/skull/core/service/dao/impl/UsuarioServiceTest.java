@@ -126,11 +126,9 @@ public class UsuarioServiceTest {
   public void testRemovePorUsuario() {
     List<Usuario> listaUsuarios = SERVICE.getByNome(NOME_USUARIO_TESTES);
 
-    if (listaUsuarios.size() > 0) {
-      SERVICE.remove(listaUsuarios.get(0));
-    } else {
-      assertTrue("Não é possível realizar o teste porque não existem usuários testáveis", false);
-    }
+    assertTrue("Lista de usuários não é maior que zero", listaUsuarios.size() > 0);
+
+    SERVICE.remove(listaUsuarios.get(0));
   }
 
   /**
@@ -140,11 +138,9 @@ public class UsuarioServiceTest {
   public void testRemovePorId() {
     List<Usuario> listaUsuarios = SERVICE.getByNome(NOME_USUARIO_TESTES);
 
-    if (listaUsuarios.size() > 0) {
-      SERVICE.remove(listaUsuarios.get(0).getId());
-    } else {
-      assertTrue("Não é possível realizar o teste porque não existem usuários testáveis", false);
-    }
+    assertTrue("Lista de usuários não é maior que zero", listaUsuarios.size() > 0);
+
+    SERVICE.remove(listaUsuarios.get(0).getId());
   }
 
   /**
@@ -177,14 +173,12 @@ public class UsuarioServiceTest {
   public void testGetById() {
     List<Usuario> listaUsuarios = SERVICE.getByNome(NOME_USUARIO_TESTES);
 
-    if (listaUsuarios.size() > 0) {
-      Usuario usuarioEsperado = listaUsuarios.get(0);
-      Usuario usuarioTeste = SERVICE.getById(usuarioEsperado.getId());
+    assertTrue("Lista de usuários não é maior que zero", listaUsuarios.size() > 0);
 
-      assertEquals("Usuários comparados não são iguais", usuarioEsperado, usuarioTeste);
-    } else {
-      assertTrue("Não é possível realizar o teste porque não existem usuários testáveis", false);
-    }
+    Usuario usuarioEsperado = listaUsuarios.get(0);
+    Usuario usuarioTeste = SERVICE.getById(usuarioEsperado.getId());
+
+    assertEquals("Usuários comparados não são iguais", usuarioEsperado, usuarioTeste);
   }
 
   /**
@@ -208,6 +202,8 @@ public class UsuarioServiceTest {
     List<Usuario> listaUsuarios = SERVICE.getByNome(NOME_USUARIO_TESTES);
 
     assertTrue("Lista de usuários menor que zero: ", listaUsuarios.size() > 0);
+
+    assertEquals(NOME_USUARIO_TESTES, listaUsuarios.get(0).getNome());
   }
 
   /**
@@ -227,13 +223,11 @@ public class UsuarioServiceTest {
   public void testGetByEmail() {
     List<Usuario> listaUsuarios = SERVICE.getByNomeAproximado(NOME_APROXIMADO_USUARIO_TESTES);
 
-    if (listaUsuarios.size() > 0) {
-      Usuario usuario = SERVICE.getByEmail(listaUsuarios.get(0).getEmail());
+    assertTrue("Lista de usuários não é maior que zero", listaUsuarios.size() > 0);
 
-      assertEquals("E-mail diferente do esperado", listaUsuarios.get(0), usuario);
-    } else {
-      assertTrue("Não é possível realizar o teste porque não existem usuários testáveis", false);
-    }
+    Usuario usuario = SERVICE.getByEmail(listaUsuarios.get(0).getEmail());
+
+    assertEquals("E-mail diferente do esperado", listaUsuarios.get(0), usuario);
   }
 
   /**
@@ -257,6 +251,9 @@ public class UsuarioServiceTest {
     List<Usuario> listaUsuarios = SERVICE.getByTipo(TIPO_USUARIO_TESTES);
 
     assertTrue("Lista de usuários menor que zero: ", listaUsuarios.size() > 0);
+
+    assertEquals("Tipo de usuário diferente do esperado", TIPO_USUARIO_TESTES.getCodigo(),
+            listaUsuarios.get(0).getTipo());
   }
 
   /**
@@ -280,6 +277,9 @@ public class UsuarioServiceTest {
     List<Usuario> listaUsuarios = SERVICE.getByTipo(CODIGO_TIPO_USUARIO_TESTES);
 
     assertTrue("Lista de usuários menor que zero: ", listaUsuarios.size() > 0);
+
+    assertEquals("Tipo de usuário diferente do esperado", CODIGO_TIPO_USUARIO_TESTES,
+            listaUsuarios.get(0).getTipo());
   }
 
   /**

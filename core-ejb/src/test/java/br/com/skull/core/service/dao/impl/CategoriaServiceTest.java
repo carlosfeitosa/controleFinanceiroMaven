@@ -124,11 +124,9 @@ public class CategoriaServiceTest {
   public void testRemovePorId() {
     List<Categoria> listaCategorias = SERVICE.getByNome(NOME_CATEGORIA_TESTES);
 
-    if (listaCategorias.size() > 0) {
-      SERVICE.remove(listaCategorias.get(0).getId());
-    } else {
-      assertTrue("Não é possível realizar o teste porque não existem categorias testáveis", false);
-    }
+    assertTrue("Lista de categoria não é maior que zero", listaCategorias.size() > 0);
+
+    SERVICE.remove(listaCategorias.get(0).getId());
   }
 
   /**
@@ -138,11 +136,9 @@ public class CategoriaServiceTest {
   public void testRemovePorCategoria() {
     List<Categoria> listaCategorias = SERVICE.getByNome(NOME_CATEGORIA_TESTES);
 
-    if (listaCategorias.size() > 0) {
-      SERVICE.remove(listaCategorias.get(0));
-    } else {
-      assertTrue("Não é possível realizar o teste porque não existem categorias testáveis", false);
-    }
+    assertTrue("Lista de categoria não é maior que zero", listaCategorias.size() > 0);
+
+    SERVICE.remove(listaCategorias.get(0));
   }
 
   /**
@@ -152,14 +148,12 @@ public class CategoriaServiceTest {
   public void testGetById() {
     List<Categoria> listaCategorias = SERVICE.getTodas();
 
-    if (listaCategorias.size() > 0) {
-      Categoria categoriaEsperada = listaCategorias.get(0);
-      Categoria categoriaTeste = SERVICE.getById(categoriaEsperada.getId());
+    assertTrue("Lista de categoria não é maior que zero", listaCategorias.size() > 0);
 
-      assertEquals("Categorias comparadas não são iguais", categoriaEsperada, categoriaTeste);
-    } else {
-      assertTrue("Não é possível realizar o teste porque não existem categorias testáveis", false);
-    }
+    Categoria categoriaEsperada = listaCategorias.get(0);
+    Categoria categoriaTeste = SERVICE.getById(categoriaEsperada.getId());
+
+    assertEquals("Categorias comparadas não são iguais", categoriaEsperada, categoriaTeste);
   }
 
   /**
@@ -169,17 +163,15 @@ public class CategoriaServiceTest {
   public void testGetPorNome() {
     List<Categoria> listaCategorias = SERVICE.getByNome(NOME_CATEGORIA_TESTES);
 
-    if (listaCategorias.size() > 0) {
-      Categoria categoriaRecuperada = listaCategorias.get(0);
+    assertTrue("Lista de categoria não é maior que zero", listaCategorias.size() > 0);
 
-      assertTrue("Não foi possível recuperar categoria de testes",
-              (categoriaRecuperada.getId() > 0));
+    Categoria categoriaRecuperada = listaCategorias.get(0);
 
-      assertEquals("Nome da categoria diferente da experada", NOME_CATEGORIA_TESTES,
-              categoriaRecuperada.getNome());
-    } else {
-      assertTrue("Não é possível realizar o teste porque não existem categorias testáveis", false);
-    }
+    assertTrue("Não foi possível recuperar categoria de testes",
+            (categoriaRecuperada.getId() > 0));
+
+    assertEquals("Nome da categoria diferente da experada", NOME_CATEGORIA_TESTES,
+            categoriaRecuperada.getNome());
   }
 
   /**
@@ -189,17 +181,15 @@ public class CategoriaServiceTest {
   public void testGetCategoriaspPorNomeAproximado() {
     List<Categoria> listaCategorias = SERVICE.getByNomeAproximado(NOME_CATEGORIA_TESTES_PARCIAL);
 
-    if (listaCategorias.size() > 0) {
-      Categoria categoriaRecuperada = listaCategorias.get(0);
+    assertTrue("Lista de categoria não é maior que zero", listaCategorias.size() > 0);
 
-      assertTrue("Não foi possível recuperar categoria de testes",
-              (categoriaRecuperada.getId() > 0));
+    Categoria categoriaRecuperada = listaCategorias.get(0);
 
-      assertTrue("Nome da categoria diferente da experada",
-              categoriaRecuperada.getNome().contains(NOME_CATEGORIA_TESTES_PARCIAL));
-    } else {
-      assertTrue("Não é possível realizar o teste porque não existem categorias testáveis", false);
-    }
+    assertTrue("Não foi possível recuperar categoria de testes",
+            (categoriaRecuperada.getId() > 0));
+
+    assertTrue("Nome da categoria diferente da experada",
+            categoriaRecuperada.getNome().contains(NOME_CATEGORIA_TESTES_PARCIAL));
   }
 
   /**
@@ -209,17 +199,15 @@ public class CategoriaServiceTest {
   public void testGetCategoriasPorTipoCodigo() {
     List<Categoria> listaCategorias = SERVICE.getByTipo(CODIGO_TIPO_CATEGORIA_TESTES);
 
-    if (listaCategorias.size() > 0) {
-      Categoria categoriaRecuperada = listaCategorias.get(0);
+    assertTrue("Lista de categoria não é maior que zero", listaCategorias.size() > 0);
 
-      assertTrue("Não foi possível recuperar categoria de testes",
-              (categoriaRecuperada.getId() > 0));
+    Categoria categoriaRecuperada = listaCategorias.get(0);
 
-      assertEquals("Codigo do tipo de categoria diferente do esperado",
-              categoriaRecuperada.getTipo(), CODIGO_TIPO_CATEGORIA_TESTES);
-    } else {
-      assertTrue("Não é possível realizar o teste porque não existem categorias testáveis", false);
-    }
+    assertTrue("Não foi possível recuperar categoria de testes",
+            (categoriaRecuperada.getId() > 0));
+
+    assertEquals("Codigo do tipo de categoria diferente do esperado",
+            categoriaRecuperada.getTipo(), CODIGO_TIPO_CATEGORIA_TESTES);
   }
 
   /**
@@ -229,17 +217,15 @@ public class CategoriaServiceTest {
   public void testGetCategoriasPorTipoEnumTipoCategoria() {
     List<Categoria> listaCategorias = SERVICE.getByTipo(TIPO_CATEGORIA_ENUM_TESTES);
 
-    if (listaCategorias.size() > 0) {
-      Categoria categoriaRecuperada = listaCategorias.get(0);
+    assertTrue("Lista de categoria não é maior que zero", listaCategorias.size() > 0);
 
-      assertTrue("Não foi possível recuperar categoria de testes",
-              (categoriaRecuperada.getId() > 0));
+    Categoria categoriaRecuperada = listaCategorias.get(0);
 
-      assertEquals("Tipo de categoria diferente do esperado",
-              categoriaRecuperada.getTipo(), TIPO_CATEGORIA_ENUM_TESTES.getCodigo());
-    } else {
-      assertTrue("Não é possível realizar o teste porque não existem categorias testáveis", false);
-    }
+    assertTrue("Não foi possível recuperar categoria de testes",
+            (categoriaRecuperada.getId() > 0));
+
+    assertEquals("Tipo de categoria diferente do esperado",
+            categoriaRecuperada.getTipo(), TIPO_CATEGORIA_ENUM_TESTES.getCodigo());
   }
 
   /**

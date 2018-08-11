@@ -130,11 +130,9 @@ public class ContaServiceTest {
   public void testRemovePorId() {
     List<Conta> listaContas = SERVICE.getByNome(NOME_CONTA_TESTES);
 
-    if (listaContas.size() > 0) {
-      SERVICE.remove(listaContas.get(0).getId());
-    } else {
-      assertTrue("Não é possível realizar o teste porque não existem contas testáveis", false);
-    }
+    assertTrue("Lista de contas não é maior que zero", listaContas.size() > 0);
+
+    SERVICE.remove(listaContas.get(0).getId());
   }
 
   /**
@@ -144,11 +142,9 @@ public class ContaServiceTest {
   public void testRemovePorCategoria() {
     List<Conta> listaContas = SERVICE.getByNome(NOME_CONTA_TESTES);
 
-    if (listaContas.size() > 0) {
-      SERVICE.remove(listaContas.get(0));
-    } else {
-      assertTrue("Não é possível realizar o teste porque não existem contas testáveis", false);
-    }
+    assertTrue("Lista de contas não é maior que zero", listaContas.size() > 0);
+
+    SERVICE.remove(listaContas.get(0));
   }
 
   /**
@@ -158,14 +154,12 @@ public class ContaServiceTest {
   public void testGetById() {
     List<Conta> listaContas = SERVICE.getTodas();
 
-    if (listaContas.size() > 0) {
-      Conta contaEsperada = listaContas.get(0);
-      Conta contaTeste = SERVICE.getById(contaEsperada.getId());
+    assertTrue("Lista de contas não é maior que zero", listaContas.size() > 0);
 
-      assertEquals("Contas comparadas não são iguais", contaEsperada, contaTeste);
-    } else {
-      assertTrue("Não é possível realizar o teste porque não existem contas testáveis", false);
-    }
+    Conta contaEsperada = listaContas.get(0);
+    Conta contaTeste = SERVICE.getById(contaEsperada.getId());
+
+    assertEquals("Contas comparadas não são iguais", contaEsperada, contaTeste);
   }
 
   /**
@@ -175,17 +169,15 @@ public class ContaServiceTest {
   public void testGetByName() {
     List<Conta> listaContas = SERVICE.getByNome(NOME_CONTA_TESTES);
 
-    if (listaContas.size() > 0) {
-      Conta contaRecuperada = listaContas.get(0);
+    assertTrue("Lista de contas não é maior que zero", listaContas.size() > 0);
 
-      assertTrue("Não foi possível recuperar categoria de testes",
-              (contaRecuperada.getId() > 0));
+    Conta contaRecuperada = listaContas.get(0);
 
-      assertEquals("Nome da conta diferente da experada", NOME_CONTA_TESTES,
-              contaRecuperada.getNome());
-    } else {
-      assertTrue("Não é possível realizar o teste porque não existem categorias testáveis", false);
-    }
+    assertTrue("Não foi possível recuperar categoria de testes",
+            (contaRecuperada.getId() > 0));
+
+    assertEquals("Nome da conta diferente da experada", NOME_CONTA_TESTES,
+            contaRecuperada.getNome());
   }
 
   /**

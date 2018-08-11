@@ -61,8 +61,7 @@ public class LancamentoServiceTest {
   private static final String DESCRICAO_LANCAMENTO_TESTES = "Descrição lançamento de testes"
           + " - não utilizar este lançamento";
   private static final TipoLancamentoEnum TIPO_LANCAMENTO_TESTES = TipoLancamentoEnum.CREDITO;
-  private static final long CODIGO_TIPO_LANCAMENTO_TESTES
-          = TIPO_LANCAMENTO_TESTES.CREDITO.getCodigo();
+  private static final long CODIGO_TIPO_LANCAMENTO_TESTES = TipoLancamentoEnum.CREDITO.getCodigo();
   private static final double VALOR_LANCAMENTO_TESTES = 99321123;
 
   @Rule
@@ -156,20 +155,15 @@ public class LancamentoServiceTest {
   public void testRemoveByLancamento() {
     List<Conta> listaContasTestes = SERVICE_CONTA.getByNome(NOME_CONTA_TESTES);
 
-    if (listaContasTestes.size() > 0) {
-      List<Lancamento> listaLancamentos = SERVICE.getByConta(listaContasTestes.get(0), null, null);
+    assertTrue("Lista de contas não é maior que zero", listaContasTestes.size() > 0);
 
-      if (listaLancamentos.size() > 0) {
-        SERVICE.remove(listaLancamentos.get(0));
-        SERVICE_CONTA.remove(listaContasTestes.get(0));
-        SERVICE_CATEGORIA.remove(listaLancamentos.get(0).getCategoria());
-      } else {
-        assertTrue("Não é possível realizar o teste porque não existem lançamentos testáveis",
-                false);
-      }
-    } else {
-      assertTrue("Não é possível realizar o teste porque não existem contas testáveis", false);
-    }
+    List<Lancamento> listaLancamentos = SERVICE.getByConta(listaContasTestes.get(0), null, null);
+
+    assertTrue("Lista de lançamentos não é maior que zero", listaLancamentos.size() > 0);
+
+    SERVICE.remove(listaLancamentos.get(0));
+    SERVICE_CONTA.remove(listaContasTestes.get(0));
+    SERVICE_CATEGORIA.remove(listaLancamentos.get(0).getCategoria());
   }
 
   /**
@@ -179,20 +173,15 @@ public class LancamentoServiceTest {
   public void testRemoveById() {
     List<Conta> listaContasTestes = SERVICE_CONTA.getByNome(NOME_CONTA_TESTES);
 
-    if (listaContasTestes.size() > 0) {
-      List<Lancamento> listaLancamentos = SERVICE.getByConta(listaContasTestes.get(0), null, null);
+    assertTrue("Lista de contas não é maior que zero", listaContasTestes.size() > 0);
 
-      if (listaLancamentos.size() > 0) {
-        SERVICE.remove(listaLancamentos.get(0).getId());
-        SERVICE_CONTA.remove(listaContasTestes.get(0));
-        SERVICE_CATEGORIA.remove(listaLancamentos.get(0).getCategoria());
-      } else {
-        assertTrue("Não é possível realizar o teste porque não existem lançamentos testáveis",
-                false);
-      }
-    } else {
-      assertTrue("Não é possível realizar o teste porque não existem contas testáveis", false);
-    }
+    List<Lancamento> listaLancamentos = SERVICE.getByConta(listaContasTestes.get(0), null, null);
+
+    assertTrue("Lista de lançamentos não é maior que zero", listaLancamentos.size() > 0);
+
+    SERVICE.remove(listaLancamentos.get(0).getId());
+    SERVICE_CONTA.remove(listaContasTestes.get(0));
+    SERVICE_CATEGORIA.remove(listaLancamentos.get(0).getCategoria());
   }
 
   /**
@@ -202,21 +191,16 @@ public class LancamentoServiceTest {
   public void testGetById() {
     List<Conta> listaContasTestes = SERVICE_CONTA.getByNome(NOME_CONTA_TESTES);
 
-    if (listaContasTestes.size() > 0) {
-      List<Lancamento> listaLancamentos = SERVICE.getByConta(listaContasTestes.get(0), null, null);
+    assertTrue("Lista de contas não é maior que zero", listaContasTestes.size() > 0);
 
-      if (listaLancamentos.size() > 0) {
-        Lancamento lancamentoExp = listaLancamentos.get(0);
-        Lancamento lancamentoResult = SERVICE.getById(lancamentoExp.getId());
+    List<Lancamento> listaLancamentos = SERVICE.getByConta(listaContasTestes.get(0), null, null);
 
-        assertEquals("Lançamento diferente do esperado", lancamentoExp, lancamentoResult);
-      } else {
-        assertTrue("Não é possível realizar o teste porque não existem lançamentos testáveis",
-                false);
-      }
-    } else {
-      assertTrue("Não é possível realizar o teste porque não existem contas testáveis", false);
-    }
+    assertTrue("Lista de lançamentos não é maior que zero", listaLancamentos.size() > 0);
+
+    Lancamento lancamentoExp = listaLancamentos.get(0);
+    Lancamento lancamentoResult = SERVICE.getById(lancamentoExp.getId());
+
+    assertEquals("Lançamento diferente do esperado", lancamentoExp, lancamentoResult);
   }
 
   /**
@@ -226,13 +210,14 @@ public class LancamentoServiceTest {
   public void testGetByConta() {
     List<Conta> listaContasTestes = SERVICE_CONTA.getByNome(NOME_CONTA_TESTES);
 
-    if (listaContasTestes.size() > 0) {
-      List<Lancamento> listaLancamentos = SERVICE.getByConta(listaContasTestes.get(0), null, null);
+    assertTrue("Lista de contas não é maior que zero", listaContasTestes.size() > 0);
 
-      assertTrue("Quantidade de lançamentos não é maior que zero", listaLancamentos.size() > 0);
-    } else {
-      assertTrue("Não é possível realizar o teste porque não existem contas testáveis", false);
-    }
+    List<Lancamento> listaLancamentos = SERVICE.getByConta(listaContasTestes.get(0), null, null);
+
+    assertTrue("Quantidade de lançamentos não é maior que zero", listaLancamentos.size() > 0);
+
+    assertEquals("Conta diferente da esperada", listaContasTestes.get(0),
+            listaLancamentos.get(0).getConta());
   }
 
   /**
@@ -242,14 +227,15 @@ public class LancamentoServiceTest {
   public void testGetByContaTipoEnum() {
     List<Conta> listaContasTestes = SERVICE_CONTA.getByNome(NOME_CONTA_TESTES);
 
-    if (listaContasTestes.size() > 0) {
-      List<Lancamento> listaLancamentos = SERVICE.getByContaTipo(listaContasTestes.get(0),
-              TIPO_LANCAMENTO_TESTES, null, null);
+    assertTrue("Lista de contas não é maior que zero", listaContasTestes.size() > 0);
 
-      assertTrue("Quantidade de lançamentos não é maior que zero", listaLancamentos.size() > 0);
-    } else {
-      assertTrue("Não é possível realizar o teste porque não existem contas testáveis", false);
-    }
+    List<Lancamento> listaLancamentos = SERVICE.getByContaTipo(listaContasTestes.get(0),
+            TIPO_LANCAMENTO_TESTES, null, null);
+
+    assertTrue("Quantidade de lançamentos não é maior que zero", listaLancamentos.size() > 0);
+
+    assertEquals("Conta diferente da esperada", TIPO_LANCAMENTO_TESTES.getCodigo(),
+            listaLancamentos.get(0).getTipo());
   }
 
   /**
@@ -259,14 +245,15 @@ public class LancamentoServiceTest {
   public void testGetByContaTipoCodigo() {
     List<Conta> listaContasTestes = SERVICE_CONTA.getByNome(NOME_CONTA_TESTES);
 
-    if (listaContasTestes.size() > 0) {
-      List<Lancamento> listaLancamentos = SERVICE.getByContaTipo(listaContasTestes.get(0),
-              CODIGO_TIPO_LANCAMENTO_TESTES, null, null);
+    assertTrue("Lista de contas não é maior que zero", listaContasTestes.size() > 0);
 
-      assertTrue("Quantidade de lançamentos não é maior que zero", listaLancamentos.size() > 0);
-    } else {
-      assertTrue("Não é possível realizar o teste porque não existem contas testáveis", false);
-    }
+    List<Lancamento> listaLancamentos = SERVICE.getByContaTipo(listaContasTestes.get(0),
+            CODIGO_TIPO_LANCAMENTO_TESTES, null, null);
+
+    assertTrue("Quantidade de lançamentos não é maior que zero", listaLancamentos.size() > 0);
+
+    assertEquals("Conta diferente da esperada", TIPO_LANCAMENTO_TESTES.getCodigo(),
+            listaLancamentos.get(0).getTipo());
   }
 
   /**
@@ -275,16 +262,23 @@ public class LancamentoServiceTest {
   @Test
   public void testGetByContaCategoria() {
     List<Conta> listaContasTestes = SERVICE_CONTA.getByNome(NOME_CONTA_TESTES);
+
+    assertTrue("Lista de contas não é maior que zero", listaContasTestes.size() > 0);
+
     List<Categoria> listaCategoriasTestes = SERVICE_CATEGORIA.getByNome(NOME_CATEGORIA_TESTES);
 
-    if ((listaContasTestes.size() > 0) && (listaCategoriasTestes.size() > 0)) {
-      List<Lancamento> listaLancamentos = SERVICE.getByContaCategoria(listaContasTestes.get(0),
-              listaCategoriasTestes.get(0), null, null);
+    assertTrue("Lista de categorias não é maior que zero", listaCategoriasTestes.size() > 0);
 
-      assertTrue("Quantidade de lançamentos não é maior que zero", listaLancamentos.size() > 0);
-    } else {
-      assertTrue("Não é possível realizar o teste porque não existem categorias testáveis", false);
-    }
+    List<Lancamento> listaLancamentos = SERVICE.getByContaCategoria(listaContasTestes.get(0),
+            listaCategoriasTestes.get(0), null, null);
+
+    assertTrue("Quantidade de lançamentos não é maior que zero", listaLancamentos.size() > 0);
+
+    assertEquals("Conta diferente da esperada", listaContasTestes.get(0),
+            listaLancamentos.get(0).getConta());
+
+    assertEquals("Categoria diferente da esperada", listaCategoriasTestes.get(0),
+            listaLancamentos.get(0).getCategoria());
   }
 
   /**
@@ -339,6 +333,15 @@ public class LancamentoServiceTest {
             TIPO_LANCAMENTO_TESTES, novaCategoriaLancamento, null, null);
 
     assertTrue("Quantidade de lançamentos não é maior que zero", listaLancamentos.size() > 0);
+
+    assertEquals("Conta diferente da esperada", novaContaLancamento,
+            listaLancamentos.get(0).getConta());
+
+    assertEquals("Tipo diferente do esperado", TIPO_LANCAMENTO_TESTES.getCodigo(),
+            listaLancamentos.get(0).getTipo());
+
+    assertEquals("Categoria diferente da esperada", novaCategoriaLancamento,
+            listaLancamentos.get(0).getCategoria());
   }
 
   /**
@@ -349,15 +352,22 @@ public class LancamentoServiceTest {
     List<Conta> listaContasTestes = SERVICE_CONTA.getByNome(NOME_CONTA_TESTES);
     List<Categoria> listaCategoriasTestes = SERVICE_CATEGORIA.getByNome(NOME_CATEGORIA_TESTES);
 
-    if ((listaContasTestes.size() > 0) && (listaCategoriasTestes.size() > 0)) {
-      List<Lancamento> listaLancamentos = SERVICE.getByContaTipoCategoria(listaContasTestes.get(0),
-              CODIGO_TIPO_LANCAMENTO_TESTES, listaCategoriasTestes.get(0), null, null);
+    assertTrue("Lista de contas não é maior que zero", listaContasTestes.size() > 0);
+    assertTrue("Lista de categorias não é maior que zero", listaCategoriasTestes.size() > 0);
 
-      assertTrue("Quantidade de lançamentos não é maior que zero", listaLancamentos.size() > 0);
-    } else {
-      assertTrue("Não é possível realizar o teste porque não existem contas e categorias testáveis",
-              false);
-    }
+    List<Lancamento> listaLancamentos = SERVICE.getByContaTipoCategoria(listaContasTestes.get(0),
+            CODIGO_TIPO_LANCAMENTO_TESTES, listaCategoriasTestes.get(0), null, null);
+
+    assertTrue("Quantidade de lançamentos não é maior que zero", listaLancamentos.size() > 0);
+
+    assertEquals("Conta diferente da esperada", listaContasTestes.get(0),
+            listaLancamentos.get(0).getConta());
+
+    assertEquals("Tipo diferente do esperado", CODIGO_TIPO_LANCAMENTO_TESTES,
+            listaLancamentos.get(0).getTipo());
+
+    assertEquals("Categoria diferente da esperada", listaCategoriasTestes.get(0),
+            listaLancamentos.get(0).getCategoria());
   }
 
   /**

@@ -6,7 +6,6 @@ import br.com.skull.core.service.dao.entity.impl.Log;
 import br.com.skull.core.service.dao.entity.impl.Usuario;
 import br.com.skull.core.util.CoreDateUtil;
 
-import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -46,7 +45,7 @@ public class LogService extends AbstractService<Log, LogService> implements LogS
   }
 
   @Override
-  public List<Log> getByMomento(Date inicio, Date termino) throws ParseException {
+  public List<Log> getByMomento(Date inicio, Date termino) {
     logger.info("Recuperando log por momento");
     logger.debug("Início: {}", inicio);
     logger.debug("Término: {}", termino);
@@ -62,8 +61,7 @@ public class LogService extends AbstractService<Log, LogService> implements LogS
   }
 
   @Override
-  public List<Log> getByCategoriaMomento(Categoria categoria, Date inicio, Date termino)
-          throws ParseException {
+  public List<Log> getByCategoria(Categoria categoria, Date inicio, Date termino) {
     logger.info("Recuperando log por categoria e momento");
     logger.debug("Categoria: {}", categoria);
     logger.debug("Início: {}", inicio);
@@ -81,8 +79,7 @@ public class LogService extends AbstractService<Log, LogService> implements LogS
   }
 
   @Override
-  public List<Log> getByUsuarioMomento(Usuario usuario, Date inicio, Date termino)
-          throws ParseException {
+  public List<Log> getByUsuario(Usuario usuario, Date inicio, Date termino) {
     logger.info("Recuperando log por usuário e momento");
     logger.debug("Usuário: {}", usuario);
     logger.debug("Início: {}", inicio);
@@ -100,8 +97,8 @@ public class LogService extends AbstractService<Log, LogService> implements LogS
   }
 
   @Override
-  public List<Log> getByCategoriaUsuarioMomento(Categoria categoria, Usuario usuario,
-          Date inicio, Date termino) throws ParseException {
+  public List<Log> getByCategoriaUsuario(Categoria categoria, Usuario usuario,
+          Date inicio, Date termino) {
     logger.info("Recuperando log por categoria, usuário e momento");
     logger.debug("Categoria: {}", categoria);
     logger.debug("Usuário: {}", usuario);

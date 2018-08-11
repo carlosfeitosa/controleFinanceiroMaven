@@ -49,6 +49,7 @@ public class CoreDateUtilTest {
     Date valorDefault = Calendar.getInstance().getTime();
     Date expResult = Calendar.getInstance().getTime();
     Date result = CoreDateUtil.valorDefaulSeValorNulo(valor, valorDefault);
+
     assertEquals("Valor default deferente do esperado", expResult.toString(), result.toString());
   }
 
@@ -61,6 +62,7 @@ public class CoreDateUtilTest {
     Date valorDefault = null;
     Date expResult = valor;
     Date result = CoreDateUtil.valorDefaulSeValorNulo(valor, valorDefault);
+
     assertEquals("Valor default deferente do esperado", expResult.toString(), result.toString());
   }
 }

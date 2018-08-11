@@ -137,23 +137,15 @@ public class UsuarioContaServiceTest {
   public void testRemovePorUsuarioConta() {
     List<Conta> listaContas = SERVICE_CONTA.getByNome(NOME_CONTA_TESTES);
 
-    if (listaContas.size() > 0) {
-      List<UsuarioConta> listaUsuarioContaTeste = SERVICE.getByConta(listaContas.get(0));
+    assertTrue("Lista de contas não é maior que zero", listaContas.size() > 0);
 
-      if (listaUsuarioContaTeste.size() > 0) {
-        SERVICE.remove(listaUsuarioContaTeste.get(0));
-        SERVICE_USUARIO.remove(listaUsuarioContaTeste.get(0).getUsuario());
-        SERVICE_CONTA.remove(listaUsuarioContaTeste.get(0).getConta());
-      } else {
-        assertTrue("Não é possível realizar o teste porque não existem relações de usuários com "
-                + "contas testáveis", false);
-      }
+    List<UsuarioConta> listaUsuarioContaTeste = SERVICE.getByConta(listaContas.get(0));
 
-      assertTrue("Lista de relações entre usuário e conta não é maior que zero",
-              listaUsuarioContaTeste.size() > 0);
-    } else {
-      assertTrue("Não é possível realizar o teste porque não existem contas testáveis", false);
-    }
+    assertTrue("Lista de usuários não é maior que zero", listaUsuarioContaTeste.size() > 0);
+
+    SERVICE.remove(listaUsuarioContaTeste.get(0));
+    SERVICE_USUARIO.remove(listaUsuarioContaTeste.get(0).getUsuario());
+    SERVICE_CONTA.remove(listaUsuarioContaTeste.get(0).getConta());
   }
 
   /**
@@ -163,23 +155,15 @@ public class UsuarioContaServiceTest {
   public void testRemovePorId() {
     List<Conta> listaContas = SERVICE_CONTA.getByNome(NOME_CONTA_TESTES);
 
-    if (listaContas.size() > 0) {
-      List<UsuarioConta> listaUsuarioContaTeste = SERVICE.getByConta(listaContas.get(0));
+    assertTrue("Lista de contas não é maior que zero", listaContas.size() > 0);
 
-      if (listaUsuarioContaTeste.size() > 0) {
-        SERVICE.remove(listaUsuarioContaTeste.get(0).getId());
-        SERVICE_USUARIO.remove(listaUsuarioContaTeste.get(0).getUsuario());
-        SERVICE_CONTA.remove(listaUsuarioContaTeste.get(0).getConta());
-      } else {
-        assertTrue("Não é possível realizar o teste porque não existem relações de usuários com "
-                + "contas testáveis", false);
-      }
+    List<UsuarioConta> listaUsuarioContaTeste = SERVICE.getByConta(listaContas.get(0));
 
-      assertTrue("Lista de relações entre usuário e conta não é maior que zero",
-              listaUsuarioContaTeste.size() > 0);
-    } else {
-      assertTrue("Não é possível realizar o teste porque não existem contas testáveis", false);
-    }
+    assertTrue("Lista de usuários não é maior que zero", listaUsuarioContaTeste.size() > 0);
+
+    SERVICE.remove(listaUsuarioContaTeste.get(0).getId());
+    SERVICE_USUARIO.remove(listaUsuarioContaTeste.get(0).getUsuario());
+    SERVICE_CONTA.remove(listaUsuarioContaTeste.get(0).getConta());
   }
 
   /**
@@ -189,24 +173,17 @@ public class UsuarioContaServiceTest {
   public void testGetById() {
     List<Conta> listaContas = SERVICE_CONTA.getByNome(NOME_CONTA_TESTES);
 
-    if (listaContas.size() > 0) {
-      List<UsuarioConta> listaUsuarioContaTeste = SERVICE.getByConta(listaContas.get(0));
+    assertTrue("Lista de contas não é maior que zero", listaContas.size() > 0);
 
-      if (listaUsuarioContaTeste.size() > 0) {
-        UsuarioConta usuarioContaTeste = SERVICE.getById(listaUsuarioContaTeste.get(0).getId());
+    List<UsuarioConta> listaUsuarioContaTeste = SERVICE.getByConta(listaContas.get(0));
 
-        assertEquals("Relação entre usuário e conta diferente do esperado",
-                listaUsuarioContaTeste.get(0), usuarioContaTeste);
-      } else {
-        assertTrue("Não é possível realizar o teste porque não existem relações de usuários com "
-                + "contas testáveis", false);
-      }
+    assertTrue("Lista de relações entre usuários e conta não é maior que zero",
+            listaUsuarioContaTeste.size() > 0);
 
-      assertTrue("Lista de relações entre usuário e conta não é maior que zero",
-              listaUsuarioContaTeste.size() > 0);
-    } else {
-      assertTrue("Não é possível realizar o teste porque não existem contas testáveis", false);
-    }
+    UsuarioConta usuarioContaTeste = SERVICE.getById(listaUsuarioContaTeste.get(0).getId());
+
+    assertEquals("Relação entre usuário e conta diferente do esperado",
+            listaUsuarioContaTeste.get(0), usuarioContaTeste);
   }
 
   /**
@@ -216,14 +193,15 @@ public class UsuarioContaServiceTest {
   public void testGetByConta() {
     List<Conta> listaContas = SERVICE_CONTA.getByNome(NOME_CONTA_TESTES);
 
-    if (listaContas.size() > 0) {
-      List<UsuarioConta> listaUsuarioContaTeste = SERVICE.getByConta(listaContas.get(0));
+    assertTrue("Lista de contas não é maior que zero", listaContas.size() > 0);
 
-      assertTrue("Lista de relações entre usuário e conta não é maior que zero",
-              listaUsuarioContaTeste.size() > 0);
-    } else {
-      assertTrue("Não é possível realizar o teste porque não existem contas testáveis", false);
-    }
+    List<UsuarioConta> listaUsuarioContaTeste = SERVICE.getByConta(listaContas.get(0));
+
+    assertTrue("Lista de relações entre usuário e conta não é maior que zero",
+            listaUsuarioContaTeste.size() > 0);
+
+    assertEquals("Conta diferente da esperada", listaContas.get(0),
+            listaUsuarioContaTeste.get(0).getConta());
   }
 
   /**
@@ -233,14 +211,15 @@ public class UsuarioContaServiceTest {
   public void testGetByUsuario() {
     List<Usuario> listaUsuarios = SERVICE_USUARIO.getByNome(NOME_USUARIO_TESTES);
 
-    if (listaUsuarios.size() > 0) {
-      List<UsuarioConta> listaUsuarioContaTeste = SERVICE.getByUsuario(listaUsuarios.get(0));
+    assertTrue("Lista de usuários não é maior que zero", listaUsuarios.size() > 0);
 
-      assertTrue("Lista de relações entre usuário e conta não é maior que zero",
-              listaUsuarioContaTeste.size() > 0);
-    } else {
-      assertTrue("Não é possível realizar o teste porque não existem usuários testáveis", false);
-    }
+    List<UsuarioConta> listaUsuarioContaTeste = SERVICE.getByUsuario(listaUsuarios.get(0));
+
+    assertTrue("Lista de relações entre usuário e conta não é maior que zero",
+            listaUsuarioContaTeste.size() > 0);
+
+    assertEquals("Usuário diferente do esperado", listaUsuarios.get(0),
+            listaUsuarioContaTeste.get(0).getUsuario());
   }
 
   /**
