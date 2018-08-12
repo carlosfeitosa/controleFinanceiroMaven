@@ -11,7 +11,6 @@ import br.com.skull.core.service.dao.ContaServiceRemote;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -74,7 +73,6 @@ public class ServiceCacheTest {
   /**
    * Test of addService method, of class ServiceCache.
    */
-  @Ignore
   @Test
   @Repeat(times = 3)
   public void testAddService() {

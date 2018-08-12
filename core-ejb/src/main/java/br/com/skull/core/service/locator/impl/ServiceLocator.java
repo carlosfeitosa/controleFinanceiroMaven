@@ -26,38 +26,26 @@ public class ServiceLocator implements IServiceLocator {
   /**
    * Inicializa o logger e cache.
    */
-  private ServiceLocator() {
+  private ServiceLocator() throws NamingException {
     logger = LoggerFactory.getLogger(this.getClass());
     cache = new ServiceCache();
 
-    try {
-      contexto = new InitialContext();
-    } catch (NamingException ex) {
-      logger.error("Erro ao iniciar contexto: ".concat(ex.getExplanation()));
-    }
-
+    contexto = new InitialContext();
   }
 
   /**
    * Retorna instância do service locator.
    *
    * @return instância do service locator
+   *
+   * @throws javax.naming.NamingException caso não consiga recuperar o contexto inicial
    */
-  public static IServiceLocator getInstance() {
+  public static IServiceLocator getInstance() throws NamingException {
     if (null == instance) {
       instance = new ServiceLocator();
     }
 
     return instance;
-  }
-
-  /**
-   * Sobrescreve o contexto inicial.
-   *
-   * @param value contexto para sobrescrita
-   */
-  public static void setContext(Context value) {
-    contexto = value;
   }
 
   @Override
