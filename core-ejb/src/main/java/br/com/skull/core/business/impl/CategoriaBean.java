@@ -1,6 +1,7 @@
 package br.com.skull.core.business.impl;
 
 import br.com.skull.core.business.CategoriaBeanRemote;
+import br.com.skull.core.business.exception.CategoriaContasTipoErradoException;
 import br.com.skull.core.business.exception.CategoriaPaiNaoVaziaException;
 import br.com.skull.core.business.exception.CategoriaPaiTipoErradoException;
 import br.com.skull.core.business.model.CategoriaDto;
@@ -79,7 +80,8 @@ public class CategoriaBean extends AbstractBean<CategoriaBean> implements Catego
       logger.info("Uma categoria pai com tipo errado");
       logger.debug("Tipo: {}", TipoCategoriaEnum.valueOf(entidade.getTipo()));
 
-      throw new CategoriaPaiTipoErradoException(MSG_ERROR_CATEGORIA_PAI_TIPO_ERRADO);
+      throw new CategoriaPaiTipoErradoException(TipoCategoriaEnum.valueOf(
+              entidade.getTipo()).getDescricao());
     }
 
     entidade = service.persist(entidade);
@@ -88,6 +90,40 @@ public class CategoriaBean extends AbstractBean<CategoriaBean> implements Catego
     dto.setManutencao(entidade.getManutencao());
 
     return dto;
+  }
+
+  @Override
+  public CategoriaDto persistirCategoriaDeContas(CategoriaDto dto) throws
+          CategoriaContasTipoErradoException {
+    logger.info("Persistindo categoria de conta");
+    logger.debug("Categoria: {}", dto);
+
+    Categoria entidade = convert(dto);
+
+    if (entidade.getTipo() != TipoCategoriaEnum.CONTA.getCodigo()) {
+      logger.info("Uma categoria pai com tipo errado");
+      logger.debug("Tipo: {}", TipoCategoriaEnum.valueOf(entidade.getTipo()));
+
+      throw new CategoriaContasTipoErradoException(TipoCategoriaEnum.valueOf(
+              entidade.getTipo()).getDescricao());
+    }
+
+    entidade = service.persist(entidade);
+
+    dto.setId(entidade.getId());
+    dto.setManutencao(entidade.getManutencao());
+
+    return dto;
+  }
+
+  @Override
+  public CategoriaDto persistirCategoriaDeLancamento(CategoriaDto dto) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  @Override
+  public CategoriaDto persistirCategoriaDeLog(CategoriaDto dto) {
+    throw new UnsupportedOperationException("Not supported yet.");
   }
 
   @Override

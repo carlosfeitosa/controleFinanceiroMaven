@@ -1,5 +1,6 @@
 package br.com.skull.core.business;
 
+import br.com.skull.core.business.exception.CategoriaContasTipoErradoException;
 import br.com.skull.core.business.exception.CategoriaPaiNaoVaziaException;
 import br.com.skull.core.business.exception.CategoriaPaiTipoErradoException;
 import br.com.skull.core.business.model.CategoriaDto;
@@ -44,7 +45,7 @@ public interface CategoriaBeanRemote {
   public List<CategoriaDto> listarCategoriasDeLog();
 
   /**
-   * Persite uma categoria.
+   * Persistir uma categoria pai.
    *
    * @param dto categoria para adicionar
    *
@@ -55,6 +56,36 @@ public interface CategoriaBeanRemote {
    */
   public CategoriaDto persistirCategoriaPai(CategoriaDto dto)
           throws CategoriaPaiNaoVaziaException, CategoriaPaiTipoErradoException;
+
+  /**
+   * Persistir uma categoria de contas.
+   *
+   * @param dto categoria para adicionar
+   *
+   * @return DTO atualizado
+   *
+   * @throws CategoriaContasTipoErradoException caso informado o tipo errado
+   */
+  public CategoriaDto persistirCategoriaDeContas(CategoriaDto dto) throws
+          CategoriaContasTipoErradoException;
+
+  /**
+   * Persistir uma categoria de lançamento.
+   *
+   * @param dto categoria para adicionar
+   *
+   * @return DTO atualizado
+   */
+  public CategoriaDto persistirCategoriaDeLancamento(CategoriaDto dto);
+
+  /**
+   * Persistir uma categoria de log.
+   *
+   * @param dto categoria para adicionar
+   *
+   * @return DTO atualizado
+   */
+  public CategoriaDto persistirCategoriaDeLog(CategoriaDto dto);
 
   /**
    * Remove uma categoria.
