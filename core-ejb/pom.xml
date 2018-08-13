@@ -138,6 +138,7 @@
           <excludes>
             <exclude>br/com/skull/core/service/dao/enums/**/*</exclude>
             <exclude>br/com/skull/core/service/dao/entity/**/*</exclude>
+            <exclude>br/com/skull/core/business/model/**/*</exclude>
           </excludes>
         </configuration>
         <executions>

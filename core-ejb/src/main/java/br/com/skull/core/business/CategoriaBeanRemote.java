@@ -1,6 +1,8 @@
 package br.com.skull.core.business;
 
 import br.com.skull.core.business.exception.CategoriaContasTipoErradoException;
+import br.com.skull.core.business.exception.CategoriaLancamentoTipoErradoException;
+import br.com.skull.core.business.exception.CategoriaLogTipoErradoException;
 import br.com.skull.core.business.exception.CategoriaPaiNaoVaziaException;
 import br.com.skull.core.business.exception.CategoriaPaiTipoErradoException;
 import br.com.skull.core.business.model.CategoriaDto;
@@ -75,8 +77,11 @@ public interface CategoriaBeanRemote {
    * @param dto categoria para adicionar
    *
    * @return DTO atualizado
+   *
+   * @throws CategoriaLancamentoTipoErradoException caso informado o tipo errado
    */
-  public CategoriaDto persistirCategoriaDeLancamento(CategoriaDto dto);
+  public CategoriaDto persistirCategoriaDeLancamento(CategoriaDto dto) throws
+          CategoriaLancamentoTipoErradoException;
 
   /**
    * Persistir uma categoria de log.
@@ -84,8 +89,11 @@ public interface CategoriaBeanRemote {
    * @param dto categoria para adicionar
    *
    * @return DTO atualizado
+   *
+   * @throws CategoriaLogTipoErradoException caso informado o tipo errado
    */
-  public CategoriaDto persistirCategoriaDeLog(CategoriaDto dto);
+  public CategoriaDto persistirCategoriaDeLog(CategoriaDto dto) throws
+          CategoriaLogTipoErradoException;
 
   /**
    * Remove uma categoria.

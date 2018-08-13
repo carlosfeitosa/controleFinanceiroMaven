@@ -2,6 +2,8 @@ package br.com.skull.core.business.impl;
 
 import br.com.skull.core.business.CategoriaBeanRemote;
 import br.com.skull.core.business.exception.CategoriaContasTipoErradoException;
+import br.com.skull.core.business.exception.CategoriaLancamentoTipoErradoException;
+import br.com.skull.core.business.exception.CategoriaLogTipoErradoException;
 import br.com.skull.core.business.exception.CategoriaPaiNaoVaziaException;
 import br.com.skull.core.business.exception.CategoriaPaiTipoErradoException;
 import br.com.skull.core.business.model.CategoriaDto;
@@ -117,12 +119,14 @@ public class CategoriaBean extends AbstractBean<CategoriaBean> implements Catego
   }
 
   @Override
-  public CategoriaDto persistirCategoriaDeLancamento(CategoriaDto dto) {
+  public CategoriaDto persistirCategoriaDeLancamento(CategoriaDto dto) throws
+          CategoriaLancamentoTipoErradoException {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 
   @Override
-  public CategoriaDto persistirCategoriaDeLog(CategoriaDto dto) {
+  public CategoriaDto persistirCategoriaDeLog(CategoriaDto dto) throws
+          CategoriaLogTipoErradoException {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 
