@@ -40,13 +40,6 @@ public class AbstractService<E extends IEntity, S extends AbstractServiceRemote>
   protected AbstractService(Class<E> entidadeBase, Class<S> servicoBase) {
     this.entidadeBase = entidadeBase;
 
-    setLogger(servicoBase);
-  }
-
-  /**
-   * Configura o logger da classe.
-   */
-  private void setLogger(Class<S> servicoBase) {
     this.logger = LoggerFactory.getLogger(servicoBase);
   }
 

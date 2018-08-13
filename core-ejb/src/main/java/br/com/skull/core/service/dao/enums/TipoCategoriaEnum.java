@@ -1,5 +1,8 @@
 package br.com.skull.core.service.dao.enums;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Enum que representa o tipo de categoria.
  *
@@ -13,6 +16,14 @@ public enum TipoCategoriaEnum {
 
   private final long codigo;
   private final String descricao;
+
+  private static final Map<Long, TipoCategoriaEnum> map = new HashMap<Long, TipoCategoriaEnum>();
+
+  static {
+    for (TipoCategoriaEnum tipoErnum : TipoCategoriaEnum.values()) {
+      map.put(tipoErnum.codigo, tipoErnum);
+    }
+  }
 
   /**
    * Construtor privado.
@@ -31,5 +42,9 @@ public enum TipoCategoriaEnum {
 
   public String getDescricao() {
     return this.descricao;
+  }
+
+  public static TipoCategoriaEnum valueOf(Long codigo) {
+    return map.get(codigo);
   }
 }
