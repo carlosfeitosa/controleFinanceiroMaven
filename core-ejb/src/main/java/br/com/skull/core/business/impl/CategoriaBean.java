@@ -13,9 +13,9 @@ import br.com.skull.core.service.dao.enums.TipoCategoriaEnum;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.ejb.EJB;
 
 import javax.ejb.Stateless;
-import javax.inject.Inject;
 
 /**
  * Bean para controle de categorias.
@@ -25,10 +25,7 @@ import javax.inject.Inject;
 @Stateless
 public class CategoriaBean extends AbstractBean<CategoriaBean> implements CategoriaBeanRemote {
 
-  private static final String MSG_ERROR_CATEGORIA_PAI_TIPO_ERRADO
-          = "Não é possível persistir uma categoria pai que com o tipo";
-
-  @Inject
+  @EJB
   private CategoriaServiceRemote service;
 
   public CategoriaBean() {
@@ -121,13 +118,49 @@ public class CategoriaBean extends AbstractBean<CategoriaBean> implements Catego
   @Override
   public CategoriaDto persistirCategoriaDeLancamento(CategoriaDto dto) throws
           CategoriaLancamentoTipoErradoException {
-    throw new UnsupportedOperationException("Not supported yet.");
+    logger.info("Persistindo categoria de conta");
+    logger.debug("Categoria: {}", dto);
+
+    Categoria entidade = convert(dto);
+
+    if (entidade.getTipo() != TipoCategoriaEnum.LANCAMENTO.getCodigo()) {
+      logger.info("Uma categoria pai com tipo errado");
+      logger.debug("Tipo: {}", TipoCategoriaEnum.valueOf(entidade.getTipo()));
+
+      throw new CategoriaLancamentoTipoErradoException(TipoCategoriaEnum.valueOf(
+              entidade.getTipo()).getDescricao());
+    }
+
+    entidade = service.persist(entidade);
+
+    dto.setId(entidade.getId());
+    dto.setManutencao(entidade.getManutencao());
+
+    return dto;
   }
 
   @Override
   public CategoriaDto persistirCategoriaDeLog(CategoriaDto dto) throws
           CategoriaLogTipoErradoException {
-    throw new UnsupportedOperationException("Not supported yet.");
+    logger.info("Persistindo categoria de conta");
+    logger.debug("Categoria: {}", dto);
+
+    Categoria entidade = convert(dto);
+
+    if (entidade.getTipo() != TipoCategoriaEnum.LOG.getCodigo()) {
+      logger.info("Uma categoria pai com tipo errado");
+      logger.debug("Tipo: {}", TipoCategoriaEnum.valueOf(entidade.getTipo()));
+
+      throw new CategoriaLogTipoErradoException(TipoCategoriaEnum.valueOf(
+              entidade.getTipo()).getDescricao());
+    }
+
+    entidade = service.persist(entidade);
+
+    dto.setId(entidade.getId());
+    dto.setManutencao(entidade.getManutencao());
+
+    return dto;
   }
 
   @Override
@@ -211,9 +244,9 @@ public class CategoriaBean extends AbstractBean<CategoriaBean> implements Catego
 
     List<CategoriaDto> listaDtos = new ArrayList<>();
 
-    listaEntidade.forEach((entidade) -> {
+    for (Categoria entidade : listaEntidade) {
       listaDtos.add(convert(entidade));
-    });
+    }
 
     return listaDtos;
   }

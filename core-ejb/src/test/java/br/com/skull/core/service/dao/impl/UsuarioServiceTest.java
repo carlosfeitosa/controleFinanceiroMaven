@@ -288,9 +288,7 @@ public class UsuarioServiceTest {
   private static void cleanUp() {
     List<Usuario> listaUsuario = SERVICE.getByNomeAproximado(NOME_APROXIMADO_USUARIO_TESTES);
 
-    listaUsuario.forEach((usuario) -> {
-      SERVICE.remove(usuario);
-    });
+    listaUsuario.forEach(SERVICE::remove);
   }
 
 }
