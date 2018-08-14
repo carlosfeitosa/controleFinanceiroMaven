@@ -1,10 +1,9 @@
 package br.com.skull.core.business;
 
-import br.com.skull.core.business.exception.CategoriaContasTipoErradoException;
-import br.com.skull.core.business.exception.CategoriaLancamentoTipoErradoException;
-import br.com.skull.core.business.exception.CategoriaLogTipoErradoException;
+import br.com.skull.core.business.exception.CategoriaContaSemPaiException;
+import br.com.skull.core.business.exception.CategoriaLancamentoSemPaiException;
+import br.com.skull.core.business.exception.CategoriaLogSemPaiException;
 import br.com.skull.core.business.exception.CategoriaPaiNaoVaziaException;
-import br.com.skull.core.business.exception.CategoriaPaiTipoErradoException;
 import br.com.skull.core.business.model.CategoriaDto;
 
 import java.util.List;
@@ -54,10 +53,8 @@ public interface CategoriaBeanRemote {
    * @return DTO atualizado
    *
    * @throws CategoriaPaiNaoVaziaException caso a categoria tenha uma categoria pai
-   * @throws CategoriaPaiTipoErradoException caso o tipo de categoria esteja errada
    */
-  public CategoriaDto persistirCategoriaPai(CategoriaDto dto)
-          throws CategoriaPaiNaoVaziaException, CategoriaPaiTipoErradoException;
+  public CategoriaDto persistirCategoriaPai(CategoriaDto dto) throws CategoriaPaiNaoVaziaException;
 
   /**
    * Persistir uma categoria de contas.
@@ -66,10 +63,10 @@ public interface CategoriaBeanRemote {
    *
    * @return DTO atualizado
    *
-   * @throws CategoriaContasTipoErradoException caso informado o tipo errado
+   * @throws CategoriaContaSemPaiException caso a categoria não tenha pai
    */
-  public CategoriaDto persistirCategoriaDeContas(CategoriaDto dto) throws
-          CategoriaContasTipoErradoException;
+  public CategoriaDto persistirCategoriaDeConta(CategoriaDto dto) throws
+          CategoriaContaSemPaiException;
 
   /**
    * Persistir uma categoria de lançamento.
@@ -78,10 +75,10 @@ public interface CategoriaBeanRemote {
    *
    * @return DTO atualizado
    *
-   * @throws CategoriaLancamentoTipoErradoException caso informado o tipo errado
+   * @throws CategoriaLancamentoSemPaiException caso a categoria não tenha pai
    */
   public CategoriaDto persistirCategoriaDeLancamento(CategoriaDto dto) throws
-          CategoriaLancamentoTipoErradoException;
+          CategoriaLancamentoSemPaiException;
 
   /**
    * Persistir uma categoria de log.
@@ -90,10 +87,9 @@ public interface CategoriaBeanRemote {
    *
    * @return DTO atualizado
    *
-   * @throws CategoriaLogTipoErradoException caso informado o tipo errado
+   * @throws CategoriaLogSemPaiException caso a categoria não tenha pai
    */
-  public CategoriaDto persistirCategoriaDeLog(CategoriaDto dto) throws
-          CategoriaLogTipoErradoException;
+  public CategoriaDto persistirCategoriaDeLog(CategoriaDto dto) throws CategoriaLogSemPaiException;
 
   /**
    * Remove uma categoria.

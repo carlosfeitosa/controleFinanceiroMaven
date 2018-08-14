@@ -1,11 +1,10 @@
 package br.com.skull.core.business.impl;
 
 import br.com.skull.core.business.CategoriaBeanRemote;
-import br.com.skull.core.business.exception.CategoriaContasTipoErradoException;
-import br.com.skull.core.business.exception.CategoriaLancamentoTipoErradoException;
-import br.com.skull.core.business.exception.CategoriaLogTipoErradoException;
+import br.com.skull.core.business.exception.CategoriaContaSemPaiException;
+import br.com.skull.core.business.exception.CategoriaLancamentoSemPaiException;
+import br.com.skull.core.business.exception.CategoriaLogSemPaiException;
 import br.com.skull.core.business.exception.CategoriaPaiNaoVaziaException;
-import br.com.skull.core.business.exception.CategoriaPaiTipoErradoException;
 import br.com.skull.core.business.model.CategoriaDto;
 import br.com.skull.core.service.dao.CategoriaServiceRemote;
 import br.com.skull.core.service.dao.entity.impl.Categoria;
@@ -34,6 +33,7 @@ public class CategoriaBean extends AbstractBean<CategoriaBean> implements Catego
 
   @Override
   public List<CategoriaDto> listarCategoriasPai() {
+    logger.info("Listando todas as categorias pai");
     List<Categoria> listaEntidade = service.getByTipo(TipoCategoriaEnum.CATEGORIA);
 
     return convert(listaEntidade);
@@ -41,6 +41,7 @@ public class CategoriaBean extends AbstractBean<CategoriaBean> implements Catego
 
   @Override
   public List<CategoriaDto> listarCategoriasDeContas() {
+    logger.info("Listando todas as categorias de contas");
     List<Categoria> listaEntidade = service.getByTipo(TipoCategoriaEnum.CONTA);
 
     return convert(listaEntidade);
@@ -48,6 +49,7 @@ public class CategoriaBean extends AbstractBean<CategoriaBean> implements Catego
 
   @Override
   public List<CategoriaDto> listarCategoriasDeLancamentos() {
+    logger.info("Listando todas as categorias de lançamentos");
     List<Categoria> listaEntidade = service.getByTipo(TipoCategoriaEnum.LANCAMENTO);
 
     return convert(listaEntidade);
@@ -55,14 +57,14 @@ public class CategoriaBean extends AbstractBean<CategoriaBean> implements Catego
 
   @Override
   public List<CategoriaDto> listarCategoriasDeLog() {
+    logger.info("Listando todas as categorias de log");
     List<Categoria> listaEntidade = service.getByTipo(TipoCategoriaEnum.LOG);
 
     return convert(listaEntidade);
   }
 
   @Override
-  public CategoriaDto persistirCategoriaPai(CategoriaDto dto)
-          throws CategoriaPaiNaoVaziaException, CategoriaPaiTipoErradoException {
+  public CategoriaDto persistirCategoriaPai(CategoriaDto dto) throws CategoriaPaiNaoVaziaException {
     logger.info("Persistindo categoria pai");
     logger.debug("Categoria: {}", dto);
 
@@ -75,13 +77,7 @@ public class CategoriaBean extends AbstractBean<CategoriaBean> implements Catego
       throw new CategoriaPaiNaoVaziaException(entidade.getCategoria().getNome());
     }
 
-    if (entidade.getTipo() != TipoCategoriaEnum.CATEGORIA.getCodigo()) {
-      logger.info("Uma categoria pai com tipo errado");
-      logger.debug("Tipo: {}", TipoCategoriaEnum.valueOf(entidade.getTipo()));
-
-      throw new CategoriaPaiTipoErradoException(TipoCategoriaEnum.valueOf(
-              entidade.getTipo()).getDescricao());
-    }
+    entidade.setTipo(TipoCategoriaEnum.CATEGORIA.getCodigo());
 
     entidade = service.persist(entidade);
 
@@ -92,20 +88,20 @@ public class CategoriaBean extends AbstractBean<CategoriaBean> implements Catego
   }
 
   @Override
-  public CategoriaDto persistirCategoriaDeContas(CategoriaDto dto) throws
-          CategoriaContasTipoErradoException {
+  public CategoriaDto persistirCategoriaDeConta(CategoriaDto dto) throws
+          CategoriaContaSemPaiException {
     logger.info("Persistindo categoria de conta");
     logger.debug("Categoria: {}", dto);
 
     Categoria entidade = convert(dto);
 
-    if (entidade.getTipo() != TipoCategoriaEnum.CONTA.getCodigo()) {
-      logger.info("Uma categoria pai com tipo errado");
-      logger.debug("Tipo: {}", TipoCategoriaEnum.valueOf(entidade.getTipo()));
+    if (null == entidade.getCategoria()) {
+      logger.info("A categoria precisa de uma categoria pai");
 
-      throw new CategoriaContasTipoErradoException(TipoCategoriaEnum.valueOf(
-              entidade.getTipo()).getDescricao());
+      throw new CategoriaContaSemPaiException();
     }
+
+    entidade.setTipo(TipoCategoriaEnum.CONTA.getCodigo());
 
     entidade = service.persist(entidade);
 
@@ -117,19 +113,19 @@ public class CategoriaBean extends AbstractBean<CategoriaBean> implements Catego
 
   @Override
   public CategoriaDto persistirCategoriaDeLancamento(CategoriaDto dto) throws
-          CategoriaLancamentoTipoErradoException {
+          CategoriaLancamentoSemPaiException {
     logger.info("Persistindo categoria de conta");
     logger.debug("Categoria: {}", dto);
 
     Categoria entidade = convert(dto);
 
-    if (entidade.getTipo() != TipoCategoriaEnum.LANCAMENTO.getCodigo()) {
-      logger.info("Uma categoria pai com tipo errado");
-      logger.debug("Tipo: {}", TipoCategoriaEnum.valueOf(entidade.getTipo()));
+    if (null == entidade.getCategoria()) {
+      logger.info("A categoria precisa de uma categoria pai");
 
-      throw new CategoriaLancamentoTipoErradoException(TipoCategoriaEnum.valueOf(
-              entidade.getTipo()).getDescricao());
+      throw new CategoriaLancamentoSemPaiException();
     }
+
+    entidade.setTipo(TipoCategoriaEnum.LANCAMENTO.getCodigo());
 
     entidade = service.persist(entidade);
 
@@ -140,20 +136,19 @@ public class CategoriaBean extends AbstractBean<CategoriaBean> implements Catego
   }
 
   @Override
-  public CategoriaDto persistirCategoriaDeLog(CategoriaDto dto) throws
-          CategoriaLogTipoErradoException {
+  public CategoriaDto persistirCategoriaDeLog(CategoriaDto dto) throws CategoriaLogSemPaiException {
     logger.info("Persistindo categoria de conta");
     logger.debug("Categoria: {}", dto);
 
     Categoria entidade = convert(dto);
 
-    if (entidade.getTipo() != TipoCategoriaEnum.LOG.getCodigo()) {
-      logger.info("Uma categoria pai com tipo errado");
-      logger.debug("Tipo: {}", TipoCategoriaEnum.valueOf(entidade.getTipo()));
+    if (null == entidade.getCategoria()) {
+      logger.info("A categoria precisa de uma categoria pai");
 
-      throw new CategoriaLogTipoErradoException(TipoCategoriaEnum.valueOf(
-              entidade.getTipo()).getDescricao());
+      throw new CategoriaLogSemPaiException();
     }
+
+    entidade.setTipo(TipoCategoriaEnum.LOG.getCodigo());
 
     entidade = service.persist(entidade);
 
