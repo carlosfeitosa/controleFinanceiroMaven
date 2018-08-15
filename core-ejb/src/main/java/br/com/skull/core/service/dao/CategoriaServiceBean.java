@@ -4,15 +4,13 @@ import br.com.skull.core.service.dao.entity.impl.Categoria;
 import br.com.skull.core.service.dao.enums.TipoCategoriaEnum;
 
 import java.util.List;
-import javax.ejb.Remote;
 
 /**
  * Interface para o serviço de categoria.
  *
  * @author Carlos Feitosa (carlos.feitosa.nt@gmail.com)
  */
-@Remote
-public interface CategoriaServiceRemote extends AbstractServiceRemote<Categoria> {
+public interface CategoriaServiceBean extends AbstractServiceBean<Categoria> {
 
   /**
    * Lista todas as categorias.

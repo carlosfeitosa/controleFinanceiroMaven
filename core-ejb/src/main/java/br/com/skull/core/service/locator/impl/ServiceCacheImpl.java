@@ -1,7 +1,7 @@
 package br.com.skull.core.service.locator.impl;
 
-import br.com.skull.core.service.dao.AbstractServiceRemote;
-import br.com.skull.core.service.locator.IServiceCache;
+import br.com.skull.core.service.dao.AbstractServiceBean;
+import br.com.skull.core.service.locator.ServiceCache;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,21 +11,21 @@ import java.util.Map;
  *
  * @author Carlos Feitosa (carlos.feitosa.nt@gmail.com)
  */
-public class ServiceCache implements IServiceCache {
+public class ServiceCacheImpl implements ServiceCache {
 
-  private final Map<String, AbstractServiceRemote> services;
+  private final Map<String, AbstractServiceBean> services;
 
-  public ServiceCache() {
+  public ServiceCacheImpl() {
     services = new HashMap<>();
   }
 
   @Override
-  public AbstractServiceRemote getService(String serviceName) {
+  public AbstractServiceBean getService(String serviceName) {
     return services.get(serviceName);
   }
 
   @Override
-  public void addService(String serviceName, AbstractServiceRemote servico) {
+  public void addService(String serviceName, AbstractServiceBean servico) {
     if (null == services.get(serviceName)) {
       services.put(serviceName, servico);
     }

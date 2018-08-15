@@ -6,9 +6,9 @@ import static org.junit.Assert.assertTrue;
 import br.com.skull.core.junit.rule.RepeatRule;
 import br.com.skull.core.junit.rule.RepeatRule.Repeat;
 import br.com.skull.core.junit.runner.EnterpriseRunner;
-import br.com.skull.core.service.dao.CategoriaServiceRemote;
-import br.com.skull.core.service.dao.LogServiceRemote;
-import br.com.skull.core.service.dao.UsuarioServiceRemote;
+import br.com.skull.core.service.dao.CategoriaServiceBean;
+import br.com.skull.core.service.dao.LogServiceBean;
+import br.com.skull.core.service.dao.UsuarioServiceBean;
 import br.com.skull.core.service.dao.entity.impl.Categoria;
 import br.com.skull.core.service.dao.entity.impl.Log;
 import br.com.skull.core.service.dao.entity.impl.Usuario;
@@ -31,7 +31,7 @@ import javax.naming.NamingException;
  * @author Carlos Feitosa (carlos.feitosa.nt@gmail.com)
  */
 @RunWith(EnterpriseRunner.class)
-public class LogServiceTest {
+public class LogServiceBeanImplTest {
 
   private static final String DESCRICAO_LOG_TESTES = "__IGNORE-LogTestes";
   private static final String NOME_CATEGORIA_TESTES = "__IGNORE-CategoriaTestes";
@@ -45,9 +45,9 @@ public class LogServiceTest {
   private static final String PASSWORD_USUARIO_TESTES = "passwd";
   private static final long CODIGO_TIPO_USUARIO_TESTES = TipoUsuarioEnum.REGULAR.getCodigo();
 
-  private static LogServiceRemote SERVICE;
-  private static CategoriaServiceRemote SERVICE_CATEGORIA;
-  private static UsuarioServiceRemote SERVICE_USUARIO;
+  private static LogServiceBean SERVICE;
+  private static CategoriaServiceBean SERVICE_CATEGORIA;
+  private static UsuarioServiceBean SERVICE_USUARIO;
 
   private static Categoria CATEGORIA_TESTES;
   private static Usuario USUARIO_TESTES;
@@ -62,14 +62,14 @@ public class LogServiceTest {
    */
   @BeforeClass
   public static void setUpClass() throws NamingException {
-    SERVICE = (LogServiceRemote) EnterpriseRunner.getContainer().getContext()
-            .lookup("java:global/classes/LogService");
+    SERVICE = (LogServiceBean) EnterpriseRunner.getContainer().getContext()
+            .lookup("java:global/classes/LogServiceBeanImpl");
 
-    SERVICE_CATEGORIA = (CategoriaServiceRemote) EnterpriseRunner.getContainer().getContext()
-            .lookup("java:global/classes/CategoriaService");
+    SERVICE_CATEGORIA = (CategoriaServiceBean) EnterpriseRunner.getContainer().getContext()
+            .lookup("java:global/classes/CategoriaServiceBeanImpl");
 
-    SERVICE_USUARIO = (UsuarioServiceRemote) EnterpriseRunner.getContainer().getContext()
-            .lookup("java:global/classes/UsuarioService");
+    SERVICE_USUARIO = (UsuarioServiceBean) EnterpriseRunner.getContainer().getContext()
+            .lookup("java:global/classes/UsuarioServiceBeanImpl");
 
     init();
   }
@@ -80,7 +80,7 @@ public class LogServiceTest {
   }
 
   /**
-   * Test of persist method, of class LogService.
+   * Test of persist method, of class LogServiceBean.
    */
   @Test
   @Repeat(times = 3)
@@ -98,7 +98,7 @@ public class LogServiceTest {
   }
 
   /**
-   * Test of remove method, of class LogService.
+   * Test of remove method, of class LogServiceBean.
    */
   @Test
   public void testRemoveLog() {
@@ -110,7 +110,7 @@ public class LogServiceTest {
   }
 
   /**
-   * Test of remove method, of class LogService.
+   * Test of remove method, of class LogServiceBean.
    */
   @Test
   public void testRemoveById() {
@@ -122,7 +122,7 @@ public class LogServiceTest {
   }
 
   /**
-   * Test of getById method, of class LogService.
+   * Test of getById method, of class LogServiceBean.
    */
   @Test
   public void testGetById() {
@@ -136,7 +136,7 @@ public class LogServiceTest {
   }
 
   /**
-   * Test of getByMomento method, of class LogService.
+   * Test of getByMomento method, of class LogServiceBean.
    */
   @Test
   public void testGetByMomento() {
@@ -151,7 +151,7 @@ public class LogServiceTest {
   }
 
   /**
-   * Test of getByCategoria method, of class LogService.
+   * Test of getByCategoria method, of class LogServiceBean.
    */
   @Test
   public void testGetByCategoria() {
@@ -164,7 +164,7 @@ public class LogServiceTest {
   }
 
   /**
-   * Test of getByUsuario method, of class LogService.
+   * Test of getByUsuario method, of class LogServiceBean.
    */
   @Test
   public void testGetByUsuario() {
@@ -177,7 +177,7 @@ public class LogServiceTest {
   }
 
   /**
-   * Test of getByCategoriaUsuario method, of class LogService.
+   * Test of getByCategoriaUsuario method, of class LogServiceBean.
    */
   @Test
   public void testGetByCategoriaUsuario() {

@@ -6,7 +6,7 @@ import static org.junit.Assert.assertTrue;
 import br.com.skull.core.junit.rule.RepeatRule;
 import br.com.skull.core.junit.rule.RepeatRule.Repeat;
 import br.com.skull.core.junit.runner.EnterpriseRunner;
-import br.com.skull.core.service.dao.UsuarioServiceRemote;
+import br.com.skull.core.service.dao.UsuarioServiceBean;
 import br.com.skull.core.service.dao.entity.impl.Usuario;
 import br.com.skull.core.service.dao.enums.TipoUsuarioEnum;
 
@@ -27,9 +27,9 @@ import javax.naming.NamingException;
  * @author Carlos Feitosa (carlos.feitosa.nt@gmail.com)
  */
 @RunWith(EnterpriseRunner.class)
-public class UsuarioServiceTest {
+public class UsuarioServiceBeanImplTest {
 
-  private static UsuarioServiceRemote SERVICE;
+  private static UsuarioServiceBean SERVICE;
 
   private static final String NOME_USUARIO_TESTES = "__IGNORE-UsuarioTestes";
   private static final String NOME_APROXIMADO_USUARIO_TESTES = "__IGNORE-Usuario";
@@ -43,14 +43,14 @@ public class UsuarioServiceTest {
   public RepeatRule repeatRule = new RepeatRule();
 
   /**
-   * Inicializa container e serviços.
+   * Inicializa serviços.
    *
    * @throws NamingException caso não ache o bean do serviço
    */
   @BeforeClass
   public static void setUpClass() throws NamingException {
-    SERVICE = (UsuarioServiceRemote) EnterpriseRunner.getContainer().getContext()
-            .lookup("java:global/classes/UsuarioService");
+    SERVICE = (UsuarioServiceBean) EnterpriseRunner.getContainer().getContext()
+            .lookup("java:global/classes/UsuarioServiceBeanImpl");
   }
 
   /**
@@ -62,7 +62,7 @@ public class UsuarioServiceTest {
   }
 
   /**
-   * Test of persist method, of class UsuarioService.
+   * Test of persist method, of class UsuarioServiceBean.
    */
   @Test
   @Repeat(times = 3)
@@ -84,7 +84,7 @@ public class UsuarioServiceTest {
   }
 
   /**
-   * Test of persist method, of class UsuarioService.
+   * Test of persist method, of class UsuarioServiceBean.
    *
    * @throws javax.naming.NamingException caso não encontre o bean
    */
@@ -120,7 +120,7 @@ public class UsuarioServiceTest {
   }
 
   /**
-   * Test of remove method, of class UsuarioService.
+   * Test of remove method, of class UsuarioServiceBean.
    */
   @Test
   public void testRemovePorUsuario() {
@@ -132,7 +132,7 @@ public class UsuarioServiceTest {
   }
 
   /**
-   * Test of remove method, of class UsuarioService.
+   * Test of remove method, of class UsuarioServiceBean.
    */
   @Test
   public void testRemovePorId() {
@@ -144,7 +144,7 @@ public class UsuarioServiceTest {
   }
 
   /**
-   * Test of getTodos method, of class UsuarioService.
+   * Test of getTodos method, of class UsuarioServiceBean.
    */
   @Test
   public void testGetTodos() {
@@ -167,7 +167,7 @@ public class UsuarioServiceTest {
   }
 
   /**
-   * Test of getById method, of class UsuarioService.
+   * Test of getById method, of class UsuarioServiceBean.
    */
   @Test
   public void testGetById() {
@@ -182,7 +182,7 @@ public class UsuarioServiceTest {
   }
 
   /**
-   * Test of getByNome method, of class UsuarioService.
+   * Test of getByNome method, of class UsuarioServiceBean.
    */
   @Test
   public void testGetByNome() {
@@ -207,7 +207,7 @@ public class UsuarioServiceTest {
   }
 
   /**
-   * Test of getByNomeAproximado method, of class UsuarioService.
+   * Test of getByNomeAproximado method, of class UsuarioServiceBean.
    */
   @Test
   public void testGetByNomeAproximado() {
@@ -217,7 +217,7 @@ public class UsuarioServiceTest {
   }
 
   /**
-   * Test of getByEmail method, of class UsuarioService.
+   * Test of getByEmail method, of class UsuarioServiceBean.
    */
   @Test
   public void testGetByEmail() {
@@ -231,7 +231,7 @@ public class UsuarioServiceTest {
   }
 
   /**
-   * Test of getByTipo method, of class UsuarioService.
+   * Test of getByTipo method, of class UsuarioServiceBean.
    */
   @Test
   public void testGetByTipoEnum() {
@@ -257,7 +257,7 @@ public class UsuarioServiceTest {
   }
 
   /**
-   * Test of getByTipo method, of class UsuarioService.
+   * Test of getByTipo method, of class UsuarioServiceBean.
    */
   @Test
   public void testGetByTipoCodigo() {

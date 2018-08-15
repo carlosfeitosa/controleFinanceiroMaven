@@ -6,7 +6,7 @@ import static org.junit.Assert.assertTrue;
 import br.com.skull.core.junit.rule.RepeatRule;
 import br.com.skull.core.junit.rule.RepeatRule.Repeat;
 import br.com.skull.core.junit.runner.EnterpriseRunner;
-import br.com.skull.core.service.dao.CategoriaServiceRemote;
+import br.com.skull.core.service.dao.CategoriaServiceBean;
 import br.com.skull.core.service.dao.entity.impl.Categoria;
 import br.com.skull.core.service.dao.enums.TipoCategoriaEnum;
 
@@ -27,9 +27,9 @@ import javax.ejb.EJBException;
  * @author Carlos Feitosa (carlos.feitosa.nt@gmail.com)
  */
 @RunWith(EnterpriseRunner.class)
-public class CategoriaServiceTest {
+public class CategoriaServiceBeanImplTest {
 
-  private static CategoriaServiceRemote SERVICE;
+  private static CategoriaServiceBean SERVICE;
 
   private static final String NOME_CATEGORIA_TESTES = "__IGNORE-CategoriaTestes";
   private static final String NOME_CATEGORIA_TESTES_PAI = "__IGNORE-CategoriaTestesPai";
@@ -45,14 +45,14 @@ public class CategoriaServiceTest {
   public RepeatRule repeatRule = new RepeatRule();
 
   /**
-   * Inicializa container e serviços.
+   * Inicializa serviços.
    *
    * @throws Exception caso não encontre o bean
    */
   @BeforeClass
   public static void setUp() throws Exception {
-    SERVICE = (CategoriaServiceRemote) EnterpriseRunner.getContainer().getContext()
-            .lookup("java:global/classes/CategoriaService");
+    SERVICE = (CategoriaServiceBean) EnterpriseRunner.getContainer().getContext()
+            .lookup("java:global/classes/CategoriaServiceBeanImpl");
   }
 
   /**
@@ -64,7 +64,7 @@ public class CategoriaServiceTest {
   }
 
   /**
-   * Test of persist method, of class CategoriaService.
+   * Test of persist method, of class CategoriaServiceBean.
    */
   @Test
   @Repeat(times = 3)
@@ -83,7 +83,7 @@ public class CategoriaServiceTest {
   }
 
   /**
-   * Test of persist method, of class CategoriaService.
+   * Test of persist method, of class CategoriaServiceBean.
    */
   @Test(expected = EJBException.class)
   public void testPersistFail() {
@@ -100,7 +100,7 @@ public class CategoriaServiceTest {
   }
 
   /**
-   * Test of getCategoriasTodas method, of class CategoriaService.
+   * Test of getCategoriasTodas method, of class CategoriaServiceBean.
    */
   @Test
   public void testGetTodas() {
@@ -118,7 +118,7 @@ public class CategoriaServiceTest {
   }
 
   /**
-   * Test of remove method, of class CategoriaService.
+   * Test of remove method, of class CategoriaServiceBean.
    */
   @Test
   public void testRemovePorId() {
@@ -130,7 +130,7 @@ public class CategoriaServiceTest {
   }
 
   /**
-   * Test of remove method, of class CategoriaService.
+   * Test of remove method, of class CategoriaServiceBean.
    */
   @Test
   public void testRemovePorCategoria() {
@@ -142,7 +142,7 @@ public class CategoriaServiceTest {
   }
 
   /**
-   * Test of getById method, of class CategoriaService.
+   * Test of getById method, of class CategoriaServiceBean.
    */
   @Test
   public void testGetById() {
@@ -157,7 +157,7 @@ public class CategoriaServiceTest {
   }
 
   /**
-   * Test of getPorNome method, of class CategoriaService.
+   * Test of getPorNome method, of class CategoriaServiceBean.
    */
   @Test
   public void testGetPorNome() {
@@ -175,7 +175,7 @@ public class CategoriaServiceTest {
   }
 
   /**
-   * Test of getPorNomeAproximado method, of class CategoriaService.
+   * Test of getPorNomeAproximado method, of class CategoriaServiceBean.
    */
   @Test
   public void testGetCategoriaspPorNomeAproximado() {
@@ -193,7 +193,7 @@ public class CategoriaServiceTest {
   }
 
   /**
-   * Test of getPorTipo method, of class CategoriaService.
+   * Test of getPorTipo method, of class CategoriaServiceBean.
    */
   @Test
   public void testGetCategoriasPorTipoCodigo() {
@@ -211,7 +211,7 @@ public class CategoriaServiceTest {
   }
 
   /**
-   * Test of getCategoriasPorTipo method, of class CategoriaService.
+   * Test of getCategoriasPorTipo method, of class CategoriaServiceBean.
    */
   @Test
   public void testGetCategoriasPorTipoEnumTipoCategoria() {
@@ -229,7 +229,7 @@ public class CategoriaServiceTest {
   }
 
   /**
-   * Test of getCategoriasFilhas method, of class CategoriaService.
+   * Test of getCategoriasFilhas method, of class CategoriaServiceBean.
    */
   @Test
   public void testGetFilhasPorCategoriaPai() {

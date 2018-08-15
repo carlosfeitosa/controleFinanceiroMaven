@@ -1,6 +1,6 @@
 package br.com.skull.core.service.dao.impl;
 
-import br.com.skull.core.service.dao.CategoriaServiceRemote;
+import br.com.skull.core.service.dao.CategoriaServiceBean;
 import br.com.skull.core.service.dao.entity.impl.Categoria;
 import br.com.skull.core.service.dao.enums.TipoCategoriaEnum;
 
@@ -13,8 +13,9 @@ import javax.ejb.Stateless;
  * @author Carlos Feitosa (carlos.feitosa.nt@gmail.com)
  */
 @Stateless
-public class CategoriaService extends AbstractService<Categoria, CategoriaService>
-        implements CategoriaServiceRemote {
+public class CategoriaServiceBeanImpl
+        extends AbstractServiceBeanImpl<Categoria, CategoriaServiceBeanImpl> implements
+        CategoriaServiceBean {
 
   private static final String QUERY_ALL = "Categoria.findAll";
   private static final String QUERY_POR_ID = "Categoria.findById";
@@ -28,8 +29,8 @@ public class CategoriaService extends AbstractService<Categoria, CategoriaServic
   private static final String ATTR_TIPO = "tipo";
   private static final String ATTR_CATEGORIA_PAI = "categoriaPai";
 
-  public CategoriaService() {
-    super(Categoria.class, CategoriaService.class);
+  public CategoriaServiceBeanImpl() {
+    super(Categoria.class, CategoriaServiceBeanImpl.class);
   }
 
   @Override

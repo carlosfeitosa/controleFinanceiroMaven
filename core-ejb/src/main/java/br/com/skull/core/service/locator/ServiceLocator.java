@@ -1,6 +1,6 @@
 package br.com.skull.core.service.locator;
 
-import br.com.skull.core.service.dao.AbstractServiceRemote;
+import br.com.skull.core.service.dao.AbstractServiceBean;
 
 import javax.naming.NamingException;
 
@@ -9,7 +9,7 @@ import javax.naming.NamingException;
  *
  * @author Carlos Feitosa (carlos.feitosa.nt@gmail.com)
  */
-public interface IServiceLocator {
+public interface ServiceLocator {
 
   /**
    * Localiza e retorna um serviço.
@@ -20,5 +20,5 @@ public interface IServiceLocator {
    *
    * @throws NamingException caso não encontre o serviço
    */
-  public AbstractServiceRemote getService(String serviceName) throws NamingException;
+  public AbstractServiceBean getService(String serviceName) throws NamingException;
 }

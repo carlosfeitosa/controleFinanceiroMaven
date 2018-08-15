@@ -1,6 +1,6 @@
 package br.com.skull.core.service.dao.impl;
 
-import br.com.skull.core.service.dao.UsuarioServiceRemote;
+import br.com.skull.core.service.dao.UsuarioServiceBean;
 import br.com.skull.core.service.dao.entity.impl.Usuario;
 import br.com.skull.core.service.dao.enums.TipoUsuarioEnum;
 
@@ -13,8 +13,8 @@ import javax.ejb.Stateful;
  * @author Carlos Feitosa (carlos.feitosa.nt@gmail.com)
  */
 @Stateful
-public class UsuarioService extends AbstractService<Usuario, UsuarioService>
-        implements UsuarioServiceRemote {
+public class UsuarioServiceBeanImpl extends AbstractServiceBeanImpl<Usuario, UsuarioServiceBeanImpl>
+        implements UsuarioServiceBean {
 
   private static final String QUERY_ALL = "Usuario.findAll";
   private static final String QUERY_POR_ID = "Usuario.findById";
@@ -28,8 +28,8 @@ public class UsuarioService extends AbstractService<Usuario, UsuarioService>
   private static final String ATTR_EMAIL = "email";
   private static final String ATTR_TIPO = "tipo";
 
-  public UsuarioService() {
-    super(Usuario.class, UsuarioService.class);
+  public UsuarioServiceBeanImpl() {
+    super(Usuario.class, UsuarioServiceBeanImpl.class);
   }
 
   @Override

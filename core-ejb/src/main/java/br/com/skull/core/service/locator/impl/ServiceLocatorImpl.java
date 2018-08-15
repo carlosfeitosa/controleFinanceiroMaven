@@ -1,7 +1,7 @@
 package br.com.skull.core.service.locator.impl;
 
-import br.com.skull.core.service.dao.AbstractServiceRemote;
-import br.com.skull.core.service.locator.IServiceLocator;
+import br.com.skull.core.service.dao.AbstractServiceBean;
+import br.com.skull.core.service.locator.ServiceLocator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,20 +15,20 @@ import javax.naming.NamingException;
  *
  * @author Carlos Feitosa (carlos.feitosa.nt@gmail.com)
  */
-public class ServiceLocator implements IServiceLocator {
+public class ServiceLocatorImpl implements ServiceLocator {
 
-  private static ServiceCache cache;
+  private static ServiceCacheImpl cache;
   private static Logger logger;
   private static Context contexto;
 
-  private static IServiceLocator instance;
+  private static ServiceLocator instance;
 
   /**
    * Inicializa o logger e cache.
    */
-  private ServiceLocator() throws NamingException {
+  private ServiceLocatorImpl() throws NamingException {
     logger = LoggerFactory.getLogger(this.getClass());
-    cache = new ServiceCache();
+    cache = new ServiceCacheImpl();
 
     contexto = new InitialContext();
   }
@@ -40,26 +40,26 @@ public class ServiceLocator implements IServiceLocator {
    *
    * @throws javax.naming.NamingException caso não consiga recuperar o contexto inicial
    */
-  public static IServiceLocator getInstance() throws NamingException {
+  public static ServiceLocator getInstance() throws NamingException {
     if (null == instance) {
-      instance = new ServiceLocator();
+      instance = new ServiceLocatorImpl();
     }
 
     return instance;
   }
 
   @Override
-  public AbstractServiceRemote getService(String serviceName) throws NamingException {
+  public AbstractServiceBean getService(String serviceName) throws NamingException {
     logger.info("Recuperando serviço");
     logger.debug(serviceName);
 
-    AbstractServiceRemote servico = cache.getService(serviceName);
+    AbstractServiceBean servico = cache.getService(serviceName);
 
     if (null != servico) {
       return servico;
     }
 
-    servico = (AbstractServiceRemote) contexto.lookup(serviceName);
+    servico = (AbstractServiceBean) contexto.lookup(serviceName);
     cache.addService(serviceName, servico);
 
     return servico;

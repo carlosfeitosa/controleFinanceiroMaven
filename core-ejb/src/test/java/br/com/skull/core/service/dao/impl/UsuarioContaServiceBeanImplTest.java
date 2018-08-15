@@ -6,10 +6,10 @@ import static org.junit.Assert.assertTrue;
 import br.com.skull.core.junit.rule.RepeatRule;
 import br.com.skull.core.junit.rule.RepeatRule.Repeat;
 import br.com.skull.core.junit.runner.EnterpriseRunner;
-import br.com.skull.core.service.dao.CategoriaServiceRemote;
-import br.com.skull.core.service.dao.ContaServiceRemote;
-import br.com.skull.core.service.dao.UsuarioContaServiceRemote;
-import br.com.skull.core.service.dao.UsuarioServiceRemote;
+import br.com.skull.core.service.dao.CategoriaServiceBean;
+import br.com.skull.core.service.dao.ContaServiceBean;
+import br.com.skull.core.service.dao.UsuarioContaServiceBean;
+import br.com.skull.core.service.dao.UsuarioServiceBean;
 import br.com.skull.core.service.dao.entity.impl.Categoria;
 import br.com.skull.core.service.dao.entity.impl.Conta;
 import br.com.skull.core.service.dao.entity.impl.Usuario;
@@ -32,7 +32,7 @@ import javax.naming.NamingException;
  * @author Carlos Feitosa (carlos.feitosa.nt@gmail.com)
  */
 @RunWith(EnterpriseRunner.class)
-public class UsuarioContaServiceTest {
+public class UsuarioContaServiceBeanImplTest {
 
   private static final String NOME_USUARIO_TESTES = "__IGNORE-UsuarioTestes";
   private static final String EMAIL_NOME_USUARIO_TESTES = "testes";
@@ -47,10 +47,10 @@ public class UsuarioContaServiceTest {
   private static final String DESCRICAO_CATEGORIA_CONTA_TESTES = "Descrição categoria conta "
           + "de testes - não utilizar esta conta";
 
-  private static UsuarioContaServiceRemote SERVICE;
-  private static UsuarioServiceRemote SERVICE_USUARIO;
-  private static ContaServiceRemote SERVICE_CONTA;
-  private static CategoriaServiceRemote SERVICE_CATEGORIA;
+  private static UsuarioContaServiceBean SERVICE;
+  private static UsuarioServiceBean SERVICE_USUARIO;
+  private static ContaServiceBean SERVICE_CONTA;
+  private static CategoriaServiceBean SERVICE_CATEGORIA;
 
   private static Categoria CATEGORIA_TESTES;
   private static Conta CONTA_TESTES;
@@ -66,17 +66,17 @@ public class UsuarioContaServiceTest {
    */
   @BeforeClass
   public static void setUpClass() throws NamingException {
-    SERVICE = (UsuarioContaServiceRemote) EnterpriseRunner.getContainer().getContext()
-            .lookup("java:global/classes/UsuarioContaService");
+    SERVICE = (UsuarioContaServiceBean) EnterpriseRunner.getContainer().getContext()
+            .lookup("java:global/classes/UsuarioContaServiceBeanImpl");
 
-    SERVICE_USUARIO = (UsuarioServiceRemote) EnterpriseRunner.getContainer().getContext()
-            .lookup("java:global/classes/UsuarioService");
+    SERVICE_USUARIO = (UsuarioServiceBean) EnterpriseRunner.getContainer().getContext()
+            .lookup("java:global/classes/UsuarioServiceBeanImpl");
 
-    SERVICE_CONTA = (ContaServiceRemote) EnterpriseRunner.getContainer().getContext()
-            .lookup("java:global/classes/ContaService");
+    SERVICE_CONTA = (ContaServiceBean) EnterpriseRunner.getContainer().getContext()
+            .lookup("java:global/classes/ContaServiceBeanImpl");
 
-    SERVICE_CATEGORIA = (CategoriaServiceRemote) EnterpriseRunner.getContainer().getContext()
-            .lookup("java:global/classes/CategoriaService");
+    SERVICE_CATEGORIA = (CategoriaServiceBean) EnterpriseRunner.getContainer().getContext()
+            .lookup("java:global/classes/CategoriaServiceBeanImpl");
 
     init();
   }
@@ -87,7 +87,7 @@ public class UsuarioContaServiceTest {
   }
 
   /**
-   * Test of persist method, of class UsuarioContaService.
+   * Test of persist method, of class UsuarioContaServiceBean.
    */
   @Test
   @Repeat(times = 3)
@@ -104,7 +104,7 @@ public class UsuarioContaServiceTest {
   }
 
   /**
-   * Test of remove method, of class UsuarioContaService.
+   * Test of remove method, of class UsuarioContaServiceBean.
    */
   @Test
   public void testRemovePorUsuarioConta() {
@@ -116,7 +116,7 @@ public class UsuarioContaServiceTest {
   }
 
   /**
-   * Test of remove method, of class UsuarioContaService.
+   * Test of remove method, of class UsuarioContaServiceBean.
    */
   @Test
   public void testRemovePorId() {
@@ -128,7 +128,7 @@ public class UsuarioContaServiceTest {
   }
 
   /**
-   * Test of getById method, of class UsuarioContaService.
+   * Test of getById method, of class UsuarioContaServiceBean.
    */
   @Test
   public void testGetById() {
@@ -144,7 +144,7 @@ public class UsuarioContaServiceTest {
   }
 
   /**
-   * Test of getByConta method, of class UsuarioContaService.
+   * Test of getByConta method, of class UsuarioContaServiceBean.
    */
   @Test
   public void testGetByConta() {
@@ -158,7 +158,7 @@ public class UsuarioContaServiceTest {
   }
 
   /**
-   * Test of getByUsuario method, of class UsuarioContaService.
+   * Test of getByUsuario method, of class UsuarioContaServiceBean.
    */
   @Test
   public void testGetByUsuario() {

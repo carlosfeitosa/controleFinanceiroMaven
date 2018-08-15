@@ -4,15 +4,13 @@ import br.com.skull.core.service.dao.entity.impl.Usuario;
 import br.com.skull.core.service.dao.enums.TipoUsuarioEnum;
 
 import java.util.List;
-import javax.ejb.Remote;
 
 /**
  * Interface para o serviço de usuário.
  *
  * @author Carlos Feitosa (carlos.feitosa.nt@gmail.com)
  */
-@Remote
-public interface UsuarioServiceRemote extends AbstractServiceRemote<Usuario> {
+public interface UsuarioServiceBean extends AbstractServiceBean<Usuario> {
 
   /**
    * Lista todos os usuários.

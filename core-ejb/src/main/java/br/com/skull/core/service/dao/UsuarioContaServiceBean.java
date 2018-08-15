@@ -5,15 +5,13 @@ import br.com.skull.core.service.dao.entity.impl.Usuario;
 import br.com.skull.core.service.dao.entity.impl.UsuarioConta;
 
 import java.util.List;
-import javax.ejb.Remote;
 
 /**
  * Interface para o serviço de relação usuário x conta.
  *
  * @author Carlos Feitosa (carlos.feitosa.nt@gmail.com)
  */
-@Remote
-public interface UsuarioContaServiceRemote extends AbstractServiceRemote<UsuarioConta> {
+public interface UsuarioContaServiceBean extends AbstractServiceBean<UsuarioConta> {
 
   /**
    * Lista relação de usuário com conta por identificador.

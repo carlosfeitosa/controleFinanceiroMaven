@@ -1,6 +1,6 @@
 package br.com.skull.core.service.dao.impl;
 
-import br.com.skull.core.service.dao.LogServiceRemote;
+import br.com.skull.core.service.dao.LogServiceBean;
 import br.com.skull.core.service.dao.entity.impl.Categoria;
 import br.com.skull.core.service.dao.entity.impl.Log;
 import br.com.skull.core.service.dao.entity.impl.Usuario;
@@ -16,7 +16,8 @@ import javax.ejb.Stateless;
  * @author Carlos Feitosa (carlos.feitosa.nt@gmail.com)
  */
 @Stateless
-public class LogService extends AbstractService<Log, LogService> implements LogServiceRemote {
+public class LogServiceBeanImpl extends
+        AbstractServiceBeanImpl<Log, LogServiceBeanImpl> implements LogServiceBean {
 
   private static final String QUERY_POR_ID = "Log.findById";
   private static final String QUERY_POR_MOMENTO = "Log.findByMomento";
@@ -31,8 +32,8 @@ public class LogService extends AbstractService<Log, LogService> implements LogS
   private static final String ATTR_INICIO = "inicioMomento";
   private static final String ATTR_TERMINO = "terminoMomento";
 
-  public LogService() {
-    super(Log.class, LogService.class);
+  public LogServiceBeanImpl() {
+    super(Log.class, LogServiceBeanImpl.class);
   }
 
   @Override

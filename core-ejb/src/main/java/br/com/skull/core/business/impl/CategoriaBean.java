@@ -6,7 +6,6 @@ import br.com.skull.core.business.exception.CategoriaLancamentoSemPaiException;
 import br.com.skull.core.business.exception.CategoriaLogSemPaiException;
 import br.com.skull.core.business.exception.CategoriaPaiNaoVaziaException;
 import br.com.skull.core.business.model.CategoriaDto;
-import br.com.skull.core.service.dao.CategoriaServiceRemote;
 import br.com.skull.core.service.dao.entity.impl.Categoria;
 import br.com.skull.core.service.dao.enums.TipoCategoriaEnum;
 
@@ -15,6 +14,7 @@ import java.util.List;
 import javax.ejb.EJB;
 
 import javax.ejb.Stateless;
+import br.com.skull.core.service.dao.CategoriaServiceBean;
 
 /**
  * Bean para controle de categorias.
@@ -25,7 +25,7 @@ import javax.ejb.Stateless;
 public class CategoriaBean extends AbstractBean<CategoriaBean> implements CategoriaBeanRemote {
 
   @EJB
-  private CategoriaServiceRemote service;
+  private CategoriaServiceBean service;
 
   public CategoriaBean() {
     super(CategoriaBean.class);

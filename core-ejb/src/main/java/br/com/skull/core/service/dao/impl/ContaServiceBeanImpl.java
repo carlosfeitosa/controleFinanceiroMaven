@@ -1,6 +1,6 @@
 package br.com.skull.core.service.dao.impl;
 
-import br.com.skull.core.service.dao.ContaServiceRemote;
+import br.com.skull.core.service.dao.ContaServiceBean;
 import br.com.skull.core.service.dao.entity.impl.Categoria;
 import br.com.skull.core.service.dao.entity.impl.Conta;
 
@@ -13,8 +13,8 @@ import javax.ejb.Stateless;
  * @author Carlos Feitosa (carlos.feitosa.nt@gmail.com)
  */
 @Stateless
-public class ContaService extends AbstractService<Conta, ContaService>
-        implements ContaServiceRemote {
+public class ContaServiceBeanImpl extends AbstractServiceBeanImpl<Conta, ContaServiceBeanImpl>
+        implements ContaServiceBean {
 
   private static final String QUERY_ALL = "Conta.findAll";
   private static final String QUERY_POR_ID = "Conta.findById";
@@ -25,8 +25,8 @@ public class ContaService extends AbstractService<Conta, ContaService>
   private static final String ATTR_NOME = "nome";
   private static final String ATTR_CATEGORIA = "categoria";
 
-  public ContaService() {
-    super(Conta.class, ContaService.class);
+  public ContaServiceBeanImpl() {
+    super(Conta.class, ContaServiceBeanImpl.class);
   }
 
   @Override

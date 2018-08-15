@@ -4,15 +4,13 @@ import br.com.skull.core.service.dao.entity.impl.Categoria;
 import br.com.skull.core.service.dao.entity.impl.Conta;
 
 import java.util.List;
-import javax.ejb.Remote;
 
 /**
  * Interface para o serviço de conta.
  *
  * @author Carlos Feitosa (carlos.feitosa.nt@gmail.com)
  */
-@Remote
-public interface ContaServiceRemote extends AbstractServiceRemote<Conta> {
+public interface ContaServiceBean extends AbstractServiceBean<Conta> {
 
   /**
    * Lista todas as contas.

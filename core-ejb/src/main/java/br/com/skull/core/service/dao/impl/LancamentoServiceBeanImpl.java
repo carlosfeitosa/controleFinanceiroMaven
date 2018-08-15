@@ -1,13 +1,12 @@
 package br.com.skull.core.service.dao.impl;
 
-import br.com.skull.core.service.dao.LancamentoServiceRemote;
+import br.com.skull.core.service.dao.LancamentoServiceBean;
 import br.com.skull.core.service.dao.entity.impl.Categoria;
 import br.com.skull.core.service.dao.entity.impl.Conta;
 import br.com.skull.core.service.dao.entity.impl.Lancamento;
 import br.com.skull.core.service.dao.enums.TipoLancamentoEnum;
 import br.com.skull.core.util.CoreDateUtil;
 
-import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -18,8 +17,9 @@ import javax.ejb.Stateless;
  * @author Carlos Feitosa (carlos.feitosa.nt@gmail.com)
  */
 @Stateless
-public class LancamentoService extends AbstractService<Lancamento, LancamentoService>
-        implements LancamentoServiceRemote {
+public class LancamentoServiceBeanImpl extends
+        AbstractServiceBeanImpl<Lancamento, LancamentoServiceBeanImpl> implements
+        LancamentoServiceBean {
 
   private static final String QUERY_POR_ID = "Lancamento.findById";
   private static final String QUERY_POR_CONTA = "Lancamento.findByContaMomento";
@@ -35,8 +35,8 @@ public class LancamentoService extends AbstractService<Lancamento, LancamentoSer
   private static final String ATTR_INICIO = "inicioMomento";
   private static final String ATTR_TERMINO = "terminoMomento";
 
-  public LancamentoService() {
-    super(Lancamento.class, LancamentoService.class);
+  public LancamentoServiceBeanImpl() {
+    super(Lancamento.class, LancamentoServiceBeanImpl.class);
   }
 
   @Override

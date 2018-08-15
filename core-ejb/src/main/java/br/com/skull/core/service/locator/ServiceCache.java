@@ -1,13 +1,13 @@
 package br.com.skull.core.service.locator;
 
-import br.com.skull.core.service.dao.AbstractServiceRemote;
+import br.com.skull.core.service.dao.AbstractServiceBean;
 
 /**
  * Interface para a construção do cache de serviços.
  *
  * @author Carlos Feitosa (carlos.feitosa.nt@gmail.com)
  */
-public interface IServiceCache {
+public interface ServiceCache {
 
   /**
    * Recupera o serviço do cache.
@@ -16,7 +16,7 @@ public interface IServiceCache {
    *
    * @return serviço
    */
-  public AbstractServiceRemote getService(String serviceName);
+  public AbstractServiceBean getService(String serviceName);
 
   /**
    * Adiciona um serviço no cache.
@@ -24,7 +24,7 @@ public interface IServiceCache {
    * @param serviceName nome do serviço
    * @param servico serviço
    */
-  public void addService(String serviceName, AbstractServiceRemote servico);
+  public void addService(String serviceName, AbstractServiceBean servico);
 
   /**
    * Retorna a quantidade de serviços no cache.

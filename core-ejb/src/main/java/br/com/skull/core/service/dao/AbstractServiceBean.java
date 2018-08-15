@@ -9,7 +9,7 @@ import br.com.skull.core.service.dao.entity.IEntity;
  *
  * @param <E> entidade do serviço
  */
-public interface AbstractServiceRemote<E extends IEntity> {
+public interface AbstractServiceBean<E extends IEntity> {
 
   /**
    * Persiste uma entidade.

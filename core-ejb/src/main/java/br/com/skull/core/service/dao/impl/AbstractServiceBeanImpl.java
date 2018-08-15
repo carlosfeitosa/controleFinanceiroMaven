@@ -1,6 +1,6 @@
 package br.com.skull.core.service.dao.impl;
 
-import br.com.skull.core.service.dao.AbstractServiceRemote;
+import br.com.skull.core.service.dao.AbstractServiceBean;
 import br.com.skull.core.service.dao.entity.IEntity;
 
 import org.slf4j.Logger;
@@ -18,8 +18,8 @@ import javax.validation.ConstraintViolationException;
  * @param <E> entidade do serviço
  * @param <S> DAO do serviço
  */
-public class AbstractService<E extends IEntity, S extends AbstractServiceRemote>
-        implements AbstractServiceRemote<E> {
+public class AbstractServiceBeanImpl<E extends IEntity, S extends AbstractServiceBean>
+        implements AbstractServiceBean<E> {
 
   @PersistenceContext(unitName = "core-ejbPU")
   protected EntityManager em;
@@ -28,7 +28,7 @@ public class AbstractService<E extends IEntity, S extends AbstractServiceRemote>
 
   private Class<E> entidadeBase;
 
-  private AbstractService() {
+  private AbstractServiceBeanImpl() {
   }
 
   /**
@@ -37,7 +37,7 @@ public class AbstractService<E extends IEntity, S extends AbstractServiceRemote>
    * @param entidadeBase classe que representa a entidade base do serviço
    * @param servicoBase classe que representa o serviço
    */
-  protected AbstractService(Class<E> entidadeBase, Class<S> servicoBase) {
+  protected AbstractServiceBeanImpl(Class<E> entidadeBase, Class<S> servicoBase) {
     this.entidadeBase = entidadeBase;
 
     this.logger = LoggerFactory.getLogger(servicoBase);

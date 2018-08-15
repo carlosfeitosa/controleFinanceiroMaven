@@ -6,15 +6,13 @@ import br.com.skull.core.service.dao.entity.impl.Usuario;
 
 import java.util.Date;
 import java.util.List;
-import javax.ejb.Remote;
 
 /**
  * Interface para o serviço de log.
  *
  * @author Carlos Feitosa (carlos.feitosa.nt@gmail.com)
  */
-@Remote
-public interface LogServiceRemote extends AbstractServiceRemote<Log> {
+public interface LogServiceBean extends AbstractServiceBean<Log> {
 
   /**
    * Lista log por identificador.

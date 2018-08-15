@@ -6,8 +6,8 @@ import static org.junit.Assert.assertTrue;
 import br.com.skull.core.junit.rule.RepeatRule;
 import br.com.skull.core.junit.rule.RepeatRule.Repeat;
 import br.com.skull.core.junit.runner.EnterpriseRunner;
-import br.com.skull.core.service.dao.CategoriaServiceRemote;
-import br.com.skull.core.service.dao.ContaServiceRemote;
+import br.com.skull.core.service.dao.CategoriaServiceBean;
+import br.com.skull.core.service.dao.ContaServiceBean;
 import br.com.skull.core.service.dao.entity.impl.Categoria;
 import br.com.skull.core.service.dao.entity.impl.Conta;
 import br.com.skull.core.service.dao.enums.TipoCategoriaEnum;
@@ -28,10 +28,10 @@ import javax.naming.NamingException;
  * @author Carlos Feitosa (carlos.feitosa.nt@gmail.com)
  */
 @RunWith(EnterpriseRunner.class)
-public class ContaServiceTest {
+public class ContaServiceBeanImplTest {
 
-  private static ContaServiceRemote SERVICE;
-  private static CategoriaServiceRemote SERVICE_CATEGORIA;
+  private static ContaServiceBean SERVICE;
+  private static CategoriaServiceBean SERVICE_CATEGORIA;
 
   private static final String NOME_CONTA_TESTES = "__IGNORE-ContaTestes";
   private static final String NOME_CATEGORIA_CONTA_TESTES = "__IGNORE-CategoriaContaTestes";
@@ -46,17 +46,17 @@ public class ContaServiceTest {
   public RepeatRule repeatRule = new RepeatRule();
 
   /**
-   * Inicializa container e serviços.
+   * Inicializa serviços.
    *
    * @throws NamingException caso não encontre o bean
    */
   @BeforeClass
   public static void setUpClass() throws NamingException {
-    SERVICE = (ContaServiceRemote) EnterpriseRunner.getContainer().getContext()
-            .lookup("java:global/classes/ContaService");
+    SERVICE = (ContaServiceBean) EnterpriseRunner.getContainer().getContext()
+            .lookup("java:global/classes/ContaServiceBeanImpl");
 
-    SERVICE_CATEGORIA = (CategoriaServiceRemote) EnterpriseRunner.getContainer().getContext()
-            .lookup("java:global/classes/CategoriaService");
+    SERVICE_CATEGORIA = (CategoriaServiceBean) EnterpriseRunner.getContainer().getContext()
+            .lookup("java:global/classes/CategoriaServiceBeanImpl");
 
     init();
   }
@@ -72,7 +72,7 @@ public class ContaServiceTest {
   }
 
   /**
-   * Test of persist method, of class ContaService.
+   * Test of persist method, of class ContaServiceBean.
    */
   @Test
   @Repeat(times = 3)
@@ -91,7 +91,7 @@ public class ContaServiceTest {
   }
 
   /**
-   * Test of getTodas method, of class ContaService.
+   * Test of getTodas method, of class ContaServiceBean.
    */
   @Test
   public void testGetTodas() {
@@ -110,7 +110,7 @@ public class ContaServiceTest {
   }
 
   /**
-   * Test of remove method, of class ContaService.
+   * Test of remove method, of class ContaServiceBean.
    */
   @Test
   public void testRemovePorId() {
@@ -122,7 +122,7 @@ public class ContaServiceTest {
   }
 
   /**
-   * Test of remove method, of class ContaService.
+   * Test of remove method, of class ContaServiceBean.
    */
   @Test
   public void testRemovePorCategoria() {
@@ -134,7 +134,7 @@ public class ContaServiceTest {
   }
 
   /**
-   * Test of getById method, of class ContaService.
+   * Test of getById method, of class ContaServiceBean.
    */
   @Test
   public void testGetById() {
@@ -149,7 +149,7 @@ public class ContaServiceTest {
   }
 
   /**
-   * Test of getByNome method, of class ContaService.
+   * Test of getByNome method, of class ContaServiceBean.
    */
   @Test
   public void testGetByName() {
@@ -167,7 +167,7 @@ public class ContaServiceTest {
   }
 
   /**
-   * Test of getByCategoria method, of class ContaService.
+   * Test of getByCategoria method, of class ContaServiceBean.
    */
   @Test
   public void testGetByCategoria() {

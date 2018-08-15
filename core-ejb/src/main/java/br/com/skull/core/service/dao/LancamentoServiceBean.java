@@ -5,18 +5,15 @@ import br.com.skull.core.service.dao.entity.impl.Conta;
 import br.com.skull.core.service.dao.entity.impl.Lancamento;
 import br.com.skull.core.service.dao.enums.TipoLancamentoEnum;
 
-import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
-import javax.ejb.Remote;
 
 /**
  * Interface para o serviço de lançamentos.
  *
  * @author Carlos Feitosa (carlos.feitosa.nt@gmail.com)
  */
-@Remote
-public interface LancamentoServiceRemote extends AbstractServiceRemote<Lancamento> {
+public interface LancamentoServiceBean extends AbstractServiceBean<Lancamento> {
 
   /**
    * Lista lançamento por identificador.

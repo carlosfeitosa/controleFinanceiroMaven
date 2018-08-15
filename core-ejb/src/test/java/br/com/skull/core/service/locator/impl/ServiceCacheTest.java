@@ -6,8 +6,8 @@ import static org.junit.Assert.assertTrue;
 import br.com.skull.core.junit.rule.RepeatRule;
 import br.com.skull.core.junit.rule.RepeatRule.Repeat;
 import br.com.skull.core.junit.runner.EnterpriseRunner;
-import br.com.skull.core.service.dao.CategoriaServiceRemote;
-import br.com.skull.core.service.dao.ContaServiceRemote;
+import br.com.skull.core.service.dao.CategoriaServiceBean;
+import br.com.skull.core.service.dao.ContaServiceBean;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -28,13 +28,13 @@ public class ServiceCacheTest {
   private static final String NOME_SERVICO_CATEGORIA = "Categoria";
   private static final String NOME_SERVICO_CONTA = "Conta";
 
-  private static CategoriaServiceRemote SERVICE_CATEGORIA;
-  private static ContaServiceRemote SERVICE_CONTA;
+  private static CategoriaServiceBean SERVICE_CATEGORIA;
+  private static ContaServiceBean SERVICE_CONTA;
 
-  private final ServiceCache cache;
+  private final ServiceCacheImpl cache;
 
   public ServiceCacheTest() {
-    cache = new ServiceCache();
+    cache = new ServiceCacheImpl();
   }
 
   @Rule
@@ -47,11 +47,11 @@ public class ServiceCacheTest {
    */
   @BeforeClass
   public static void setUpClass() throws NamingException {
-    SERVICE_CATEGORIA = (CategoriaServiceRemote) EnterpriseRunner.getContainer().getContext()
-            .lookup("java:global/classes/CategoriaService");
+    SERVICE_CATEGORIA = (CategoriaServiceBean) EnterpriseRunner.getContainer().getContext()
+            .lookup("java:global/classes/CategoriaServiceBeanImpl");
 
-    SERVICE_CONTA = (ContaServiceRemote) EnterpriseRunner.getContainer().getContext()
-            .lookup("java:global/classes/ContaService");
+    SERVICE_CONTA = (ContaServiceBean) EnterpriseRunner.getContainer().getContext()
+            .lookup("java:global/classes/ContaServiceBeanImpl");
   }
 
   @Before
@@ -60,18 +60,18 @@ public class ServiceCacheTest {
   }
 
   /**
-   * Test of getService method, of class ServiceCache.
+   * Test of getService method, of class ServiceCacheImpl.
    */
   @Test
   public void testGetService() {
-    CategoriaServiceRemote categoriaTestes
-            = (CategoriaServiceRemote) cache.getService(NOME_SERVICO_CATEGORIA);
+    CategoriaServiceBean categoriaTestes
+            = (CategoriaServiceBean) cache.getService(NOME_SERVICO_CATEGORIA);
 
-    assertTrue("Serviço diferente do esperado", categoriaTestes instanceof CategoriaServiceRemote);
+    assertTrue("Serviço diferente do esperado", categoriaTestes instanceof CategoriaServiceBean);
   }
 
   /**
-   * Test of addService method, of class ServiceCache.
+   * Test of addService method, of class ServiceCacheImpl.
    */
   @Test
   @Repeat(times = 3)
@@ -82,7 +82,7 @@ public class ServiceCacheTest {
   }
 
   /**
-   * Test of size method, of class ServiceCache.
+   * Test of size method, of class ServiceCacheImpl.
    */
   @Test
   public void testSize() {

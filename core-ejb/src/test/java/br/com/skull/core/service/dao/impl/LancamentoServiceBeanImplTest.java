@@ -6,10 +6,10 @@ import static org.junit.Assert.assertTrue;
 import br.com.skull.core.junit.rule.RepeatRule;
 import br.com.skull.core.junit.rule.RepeatRule.Repeat;
 import br.com.skull.core.junit.runner.EnterpriseRunner;
-import br.com.skull.core.service.dao.CategoriaServiceRemote;
-import br.com.skull.core.service.dao.ContaServiceRemote;
-import br.com.skull.core.service.dao.LancamentoServiceRemote;
-import br.com.skull.core.service.dao.UsuarioServiceRemote;
+import br.com.skull.core.service.dao.CategoriaServiceBean;
+import br.com.skull.core.service.dao.ContaServiceBean;
+import br.com.skull.core.service.dao.LancamentoServiceBean;
+import br.com.skull.core.service.dao.UsuarioServiceBean;
 import br.com.skull.core.service.dao.entity.impl.Categoria;
 import br.com.skull.core.service.dao.entity.impl.Conta;
 import br.com.skull.core.service.dao.entity.impl.Lancamento;
@@ -34,12 +34,12 @@ import javax.naming.NamingException;
  * @author Carlos Feitosa (carlos.feitosa.nt@gmail.com)
  */
 @RunWith(EnterpriseRunner.class)
-public class LancamentoServiceTest {
+public class LancamentoServiceBeanImplTest {
 
-  private static LancamentoServiceRemote SERVICE;
-  private static CategoriaServiceRemote SERVICE_CATEGORIA;
-  private static ContaServiceRemote SERVICE_CONTA;
-  private static UsuarioServiceRemote SERVICE_USUARIO;
+  private static LancamentoServiceBean SERVICE;
+  private static CategoriaServiceBean SERVICE_CATEGORIA;
+  private static ContaServiceBean SERVICE_CONTA;
+  private static UsuarioServiceBean SERVICE_USUARIO;
 
   private static final String NOME_CATEGORIA_TESTES = "__IGNORE-CategoriaTestes";
   private static final String DESCRICAO_CATEGORIA_TESTES = "Descrição categoria de testes"
@@ -71,23 +71,23 @@ public class LancamentoServiceTest {
   public RepeatRule repeatRule = new RepeatRule();
 
   /**
-   * Inicializa container e serviços.
+   * Inicializa serviços.
    *
    * @throws NamingException caso não encontre o bean
    */
   @BeforeClass
   public static void setUpClass() throws NamingException {
-    SERVICE = (LancamentoServiceRemote) EnterpriseRunner.getContainer().getContext()
-            .lookup("java:global/classes/LancamentoService");
+    SERVICE = (LancamentoServiceBean) EnterpriseRunner.getContainer().getContext()
+            .lookup("java:global/classes/LancamentoServiceBeanImpl");
 
-    SERVICE_CATEGORIA = (CategoriaServiceRemote) EnterpriseRunner.getContainer().getContext()
-            .lookup("java:global/classes/CategoriaService");
+    SERVICE_CATEGORIA = (CategoriaServiceBean) EnterpriseRunner.getContainer().getContext()
+            .lookup("java:global/classes/CategoriaServiceBeanImpl");
 
-    SERVICE_CONTA = (ContaServiceRemote) EnterpriseRunner.getContainer().getContext()
-            .lookup("java:global/classes/ContaService");
+    SERVICE_CONTA = (ContaServiceBean) EnterpriseRunner.getContainer().getContext()
+            .lookup("java:global/classes/ContaServiceBeanImpl");
 
-    SERVICE_USUARIO = (UsuarioServiceRemote) EnterpriseRunner.getContainer().getContext()
-            .lookup("java:global/classes/UsuarioService");
+    SERVICE_USUARIO = (UsuarioServiceBean) EnterpriseRunner.getContainer().getContext()
+            .lookup("java:global/classes/UsuarioServiceBeanImpl");
 
     init();
   }
@@ -101,7 +101,7 @@ public class LancamentoServiceTest {
   }
 
   /**
-   * Test of persist method, of class LancamentoService.
+   * Test of persist method, of class LancamentoServiceBean.
    *
    */
   @Test
@@ -125,7 +125,7 @@ public class LancamentoServiceTest {
   }
 
   /**
-   * Test of remove method, of class LancamentoService.
+   * Test of remove method, of class LancamentoServiceBean.
    */
   @Test
   public void testRemoveByLancamento() {
@@ -137,7 +137,7 @@ public class LancamentoServiceTest {
   }
 
   /**
-   * Test of remove method, of class LancamentoService.
+   * Test of remove method, of class LancamentoServiceBean.
    */
   @Test
   public void testRemoveById() {
@@ -149,7 +149,7 @@ public class LancamentoServiceTest {
   }
 
   /**
-   * Test of getById method, of class LancamentoService.
+   * Test of getById method, of class LancamentoServiceBean.
    */
   @Test
   public void testGetById() {
@@ -164,7 +164,7 @@ public class LancamentoServiceTest {
   }
 
   /**
-   * Test of getByConta method, of class LancamentoService.
+   * Test of getByConta method, of class LancamentoServiceBean.
    */
   @Test
   public void testGetByConta() {
@@ -177,7 +177,7 @@ public class LancamentoServiceTest {
   }
 
   /**
-   * Test of getByContaTipo method, of class LancamentoService.
+   * Test of getByContaTipo method, of class LancamentoServiceBean.
    */
   @Test
   public void testGetByContaTipoEnum() {
@@ -191,7 +191,7 @@ public class LancamentoServiceTest {
   }
 
   /**
-   * Test of getByContaTipo method, of class LancamentoService.
+   * Test of getByContaTipo method, of class LancamentoServiceBean.
    */
   @Test
   public void testGetByContaTipoCodigo() {
@@ -205,7 +205,7 @@ public class LancamentoServiceTest {
   }
 
   /**
-   * Test of getByContaCategoria method, of class LancamentoService.
+   * Test of getByContaCategoria method, of class LancamentoServiceBean.
    */
   @Test
   public void testGetByContaCategoria() {
@@ -222,7 +222,7 @@ public class LancamentoServiceTest {
   }
 
   /**
-   * Test of getByContaTipoCategoria method, of class LancamentoService.
+   * Test of getByContaTipoCategoria method, of class LancamentoServiceBean.
    */
   @Test
   public void testGetByContaTipoEnumCategoria() {
@@ -256,7 +256,7 @@ public class LancamentoServiceTest {
   }
 
   /**
-   * Test of getByContaTipoCategoria method, of class LancamentoService.
+   * Test of getByContaTipoCategoria method, of class LancamentoServiceBean.
    */
   @Test
   public void testGetByContaTipoCodigoCategoria() {

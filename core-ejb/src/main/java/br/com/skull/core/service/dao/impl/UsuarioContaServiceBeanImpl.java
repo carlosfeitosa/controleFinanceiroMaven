@@ -1,6 +1,6 @@
 package br.com.skull.core.service.dao.impl;
 
-import br.com.skull.core.service.dao.UsuarioContaServiceRemote;
+import br.com.skull.core.service.dao.UsuarioContaServiceBean;
 import br.com.skull.core.service.dao.entity.impl.Conta;
 import br.com.skull.core.service.dao.entity.impl.Usuario;
 import br.com.skull.core.service.dao.entity.impl.UsuarioConta;
@@ -14,8 +14,9 @@ import javax.ejb.Stateless;
  * @author Carlos Feitosa (carlos.feitosa.nt@gmail.com)
  */
 @Stateless
-public class UsuarioContaService extends AbstractService<UsuarioConta, UsuarioContaService>
-        implements UsuarioContaServiceRemote {
+public class UsuarioContaServiceBeanImpl extends
+        AbstractServiceBeanImpl<UsuarioConta, UsuarioContaServiceBeanImpl> implements
+        UsuarioContaServiceBean {
 
   private static final String QUERY_POR_ID = "UsuarioConta.findById";
   private static final String QUERY_POR_CONTA = "UsuarioConta.findByConta";
@@ -25,8 +26,8 @@ public class UsuarioContaService extends AbstractService<UsuarioConta, UsuarioCo
   private static final String ATTR_CONTA = "conta";
   private static final String ATTR_USUARIO = "usuario";
 
-  public UsuarioContaService() {
-    super(UsuarioConta.class, UsuarioContaService.class);
+  public UsuarioContaServiceBeanImpl() {
+    super(UsuarioConta.class, UsuarioContaServiceBeanImpl.class);
   }
 
   @Override
