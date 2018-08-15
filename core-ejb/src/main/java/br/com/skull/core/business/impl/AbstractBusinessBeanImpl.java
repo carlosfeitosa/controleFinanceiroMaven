@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
  *
  * @param <B> Bean que extende esta classe
  */
-public abstract class AbstractBean<B extends AbstractBean> {
+public abstract class AbstractBusinessBeanImpl<B extends AbstractBusinessBeanImpl> {
 
   protected Logger logger;
 
@@ -19,7 +19,7 @@ public abstract class AbstractBean<B extends AbstractBean> {
    *
    * @param classeBean classe que extende esta classe
    */
-  protected AbstractBean(Class<B> classeBean) {
+  protected AbstractBusinessBeanImpl(Class<B> classeBean) {
     this.logger = LoggerFactory.getLogger(classeBean);
   }
 

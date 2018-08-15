@@ -1,11 +1,12 @@
 package br.com.skull.core.business.impl;
 
-import br.com.skull.core.business.CategoriaBeanRemote;
+import br.com.skull.core.business.CategoriaBusinessBean;
 import br.com.skull.core.business.exception.CategoriaContaSemPaiException;
 import br.com.skull.core.business.exception.CategoriaLancamentoSemPaiException;
 import br.com.skull.core.business.exception.CategoriaLogSemPaiException;
 import br.com.skull.core.business.exception.CategoriaPaiNaoVaziaException;
 import br.com.skull.core.business.model.CategoriaDto;
+import br.com.skull.core.service.dao.CategoriaServiceBean;
 import br.com.skull.core.service.dao.entity.impl.Categoria;
 import br.com.skull.core.service.dao.enums.TipoCategoriaEnum;
 
@@ -14,7 +15,6 @@ import java.util.List;
 import javax.ejb.EJB;
 
 import javax.ejb.Stateless;
-import br.com.skull.core.service.dao.CategoriaServiceBean;
 
 /**
  * Bean para controle de categorias.
@@ -22,13 +22,14 @@ import br.com.skull.core.service.dao.CategoriaServiceBean;
  * @author Carlos Feitosa (carlos.feitosa.nt@gmail.com)
  */
 @Stateless
-public class CategoriaBean extends AbstractBean<CategoriaBean> implements CategoriaBeanRemote {
+public class CategoriaBusinessBeanImpl extends
+        AbstractBusinessBeanImpl<CategoriaBusinessBeanImpl> implements CategoriaBusinessBean {
 
   @EJB
   private CategoriaServiceBean service;
 
-  public CategoriaBean() {
-    super(CategoriaBean.class);
+  public CategoriaBusinessBeanImpl() {
+    super(CategoriaBusinessBeanImpl.class);
   }
 
   @Override

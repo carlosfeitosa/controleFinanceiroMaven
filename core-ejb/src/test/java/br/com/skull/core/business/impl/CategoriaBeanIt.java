@@ -1,6 +1,5 @@
 package br.com.skull.core.business.impl;
 
-import br.com.skull.core.business.CategoriaBeanRemote;
 import br.com.skull.core.business.exception.CategoriaPaiNaoVaziaException;
 
 import br.com.skull.core.business.model.CategoriaDto;
@@ -15,6 +14,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.naming.NamingException;
+import br.com.skull.core.business.CategoriaBusinessBean;
 
 /**
  * Classe de testes para a o bean de categoria.
@@ -28,11 +28,11 @@ public class CategoriaBeanIt {
   private static final String DESCRICAO_CATEGORIA_TESTES = "Descrição categoria de testes"
           + " - não utilizar esta categoria";
 
-  private static CategoriaBeanRemote BEAN;
+  private static CategoriaBusinessBean BEAN;
 
   @BeforeClass
   public static void setUpClass() throws NamingException {
-    BEAN = (CategoriaBeanRemote) EnterpriseRunner.getContainer().getContext()
+    BEAN = (CategoriaBusinessBean) EnterpriseRunner.getContainer().getContext()
             .lookup("java:global/classes/CategoriaBean");
   }
 

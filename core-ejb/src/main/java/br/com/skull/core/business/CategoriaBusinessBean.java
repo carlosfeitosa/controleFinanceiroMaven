@@ -7,15 +7,13 @@ import br.com.skull.core.business.exception.CategoriaPaiNaoVaziaException;
 import br.com.skull.core.business.model.CategoriaDto;
 
 import java.util.List;
-import javax.ejb.Remote;
 
 /**
  * Interface para o Bean que controla as categorias.
  *
  * @author Carlos Feitosa (carlos.feitosa.nt@gmail.com)
  */
-@Remote
-public interface CategoriaBeanRemote {
+public interface CategoriaBusinessBean {
 
   /**
    * Lista todas as categorias pai.
