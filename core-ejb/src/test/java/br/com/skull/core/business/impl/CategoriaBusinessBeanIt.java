@@ -1,7 +1,7 @@
 package br.com.skull.core.business.impl;
 
+import br.com.skull.core.business.CategoriaBusinessBean;
 import br.com.skull.core.business.exception.CategoriaPaiNaoVaziaException;
-
 import br.com.skull.core.business.model.CategoriaDto;
 import br.com.skull.core.junit.runner.EnterpriseRunner;
 
@@ -14,7 +14,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.naming.NamingException;
-import br.com.skull.core.business.CategoriaBusinessBean;
 
 /**
  * Classe de testes para a o bean de categoria.
@@ -22,7 +21,7 @@ import br.com.skull.core.business.CategoriaBusinessBean;
  * @author Carlos Feitosa (carlos.feitosa.nt@gmail.com)
  */
 @RunWith(EnterpriseRunner.class)
-public class CategoriaBeanIt {
+public class CategoriaBusinessBeanIt {
 
   private static final String NOME_CATEGORIA_TESTES = "__IGNORE-CategoriaTestes";
   private static final String DESCRICAO_CATEGORIA_TESTES = "Descrição categoria de testes"
@@ -33,7 +32,7 @@ public class CategoriaBeanIt {
   @BeforeClass
   public static void setUpClass() throws NamingException {
     BEAN = (CategoriaBusinessBean) EnterpriseRunner.getContainer().getContext()
-            .lookup("java:global/classes/CategoriaBean");
+            .lookup("java:global/classes/CategoriaBusinessBeanImpl");
   }
 
   @AfterClass
