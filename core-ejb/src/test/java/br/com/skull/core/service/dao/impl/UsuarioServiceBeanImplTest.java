@@ -100,19 +100,18 @@ public class UsuarioServiceBeanImplTest {
             .concat(incremento)
             .concat(EMAIL_DOMINIO_USUARIO_TESTES));
     novoUsuario.setPassword(PASSWORD_USUARIO_TESTES);
-
-    SERVICE.persist(novoUsuario);
-
-    novoUsuario = new Usuario();
-
-    novoUsuario.setTipo(CODIGO_TIPO_USUARIO_TESTES);
-    novoUsuario.setNome(NOME_USUARIO_TESTES);
-    novoUsuario.setEmail(EMAIL_NOME_USUARIO_TESTES
-            .concat(incremento)
-            .concat(EMAIL_DOMINIO_USUARIO_TESTES));
-    novoUsuario.setPassword(PASSWORD_USUARIO_TESTES);
-
     try {
+      SERVICE.persist(novoUsuario);
+
+      novoUsuario = new Usuario();
+
+      novoUsuario.setTipo(CODIGO_TIPO_USUARIO_TESTES);
+      novoUsuario.setNome(NOME_USUARIO_TESTES);
+      novoUsuario.setEmail(EMAIL_NOME_USUARIO_TESTES
+              .concat(incremento)
+              .concat(EMAIL_DOMINIO_USUARIO_TESTES));
+      novoUsuario.setPassword(PASSWORD_USUARIO_TESTES);
+
       SERVICE.persist(novoUsuario);
     } finally {
       setUpClass();
