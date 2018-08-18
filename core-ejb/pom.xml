@@ -43,6 +43,18 @@
         <hamcrest.version>1.3</hamcrest.version>
         <glassfish.test.version>4.1.2</glassfish.test.version>
     </properties>
+    
+<!--    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.jboss.arquillian</groupId>
+                <artifactId>arquillian-bom</artifactId>
+                <version>1.4.0.Final</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>-->
 
     <dependencies>
         <!-- LOG/LOGGER -->
@@ -65,6 +77,13 @@
         </dependency>
     
         <!-- TESTING -->
+        <!-- arquillian -->
+<!--        <dependency>
+            <groupId>org.jboss.arquillian.junit</groupId>
+            <artifactId>arquillian-junit-container</artifactId>
+            <version>1.4.0.Final</version>
+            <scope>test</scope>
+        </dependency>-->
         <!-- junit -->
         <dependency>
             <groupId>junit</groupId>

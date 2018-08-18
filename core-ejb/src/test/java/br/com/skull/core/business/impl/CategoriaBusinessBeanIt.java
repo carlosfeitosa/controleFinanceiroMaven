@@ -43,7 +43,7 @@ public class CategoriaBusinessBeanIt {
   @Before
   public void setUp() throws NamingException {
     bean = (CategoriaBusinessBean) EnterpriseRunner.getContainer().getContext()
-            .lookup("java:global/classes/CategoriaBusinessBeanImpl");
+            .lookup("java:global/core-ejb-1.0-SNAPSHOT/CategoriaBusinessBeanImpl");
   }
 
   @After
