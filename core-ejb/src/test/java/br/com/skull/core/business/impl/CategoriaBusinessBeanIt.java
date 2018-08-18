@@ -13,6 +13,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import javax.ejb.EJB;
 import javax.naming.NamingException;
 
 /**
@@ -27,12 +28,12 @@ public class CategoriaBusinessBeanIt {
   private static final String DESCRICAO_CATEGORIA_TESTES = "Descrição categoria de testes"
           + " - não utilizar esta categoria";
 
-  private static CategoriaBusinessBean BEAN;
+  @EJB
+  private CategoriaBusinessBean bean;
 
   @BeforeClass
   public static void setUpClass() throws NamingException {
-    BEAN = (CategoriaBusinessBean) EnterpriseRunner.getContainer().getContext()
-            .lookup("java:global/classes/CategoriaBusinessBeanImpl");
+
   }
 
   @AfterClass
@@ -40,7 +41,9 @@ public class CategoriaBusinessBeanIt {
   }
 
   @Before
-  public void setUp() {
+  public void setUp() throws NamingException {
+    bean = (CategoriaBusinessBean) EnterpriseRunner.getContainer().getContext()
+            .lookup("java:global/classes/CategoriaBusinessBeanImpl");
   }
 
   @After
@@ -96,7 +99,7 @@ public class CategoriaBusinessBeanIt {
     categoria.setNome(NOME_CATEGORIA_TESTES);
     categoria.setDescricao(DESCRICAO_CATEGORIA_TESTES);
 
-    BEAN.persistirCategoriaPai(categoria);
+    bean.persistirCategoriaPai(categoria);
   }
 
   /**

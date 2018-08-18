@@ -194,9 +194,12 @@ public class CategoriaBusinessBeanImpl extends
       entidade.setCategoria(categoriaPai);
     }
 
+    if (null != dto.getTipo()) {
+      entidade.setTipo(dto.getTipo().getCodigo());
+    }
+
     entidade.setNome(dto.getNome());
     entidade.setDescricao(dto.getDescricao());
-    entidade.setTipo(dto.getTipo().getCodigo());
 
     logger.debug("Entidade: {}", entidade);
 
