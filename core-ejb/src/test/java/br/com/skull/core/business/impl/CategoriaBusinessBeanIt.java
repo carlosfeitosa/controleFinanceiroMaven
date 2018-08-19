@@ -103,6 +103,29 @@ public class CategoriaBusinessBeanIt {
   }
 
   /**
+   * Test of persistirCategoriaPai method, of class CategoriaBean.
+   *
+   * @throws CategoriaPaiNaoVaziaException caso haja indicado uma categoria pai
+   */
+  @Test(expected = CategoriaPaiNaoVaziaException.class)
+  public void testPersistirCategoriaPaiCategoriaPaiNaoVazia() throws CategoriaPaiNaoVaziaException {
+    CategoriaDto categoriaPai = new CategoriaDto();
+
+    categoriaPai.setNome(NOME_CATEGORIA_TESTES);
+    categoriaPai.setDescricao(DESCRICAO_CATEGORIA_TESTES);
+
+    categoriaPai = bean.persistirCategoriaPai(categoriaPai);
+
+    CategoriaDto categoria = new CategoriaDto();
+
+    categoria.setNome(NOME_CATEGORIA_TESTES);
+    categoria.setDescricao(DESCRICAO_CATEGORIA_TESTES);
+    categoria.setIdCategoriaPai(categoriaPai.getId());
+
+    bean.persistirCategoriaPai(categoria);
+  }
+
+  /**
    * Test of persistirCategoriaDeConta method, of class CategoriaBean.
    */
   @Test

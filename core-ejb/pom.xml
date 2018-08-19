@@ -1,212 +1,250 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <artifactId>controleFinanceiro</artifactId>
-        <groupId>br.com.skull</groupId>
-        <version>1.0-SNAPSHOT</version>
-    </parent>
-
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>controleFinanceiro</artifactId>
     <groupId>br.com.skull</groupId>
-    <artifactId>core-ejb</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <packaging>ejb</packaging>
+  </parent>
 
-    <name>core-ejb</name>
+  <groupId>br.com.skull</groupId>
+  <artifactId>core-ejb</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>ejb</packaging>
 
-    <properties>
-        <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  <name>core-ejb</name>
+
+  <properties>
+    <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         
-        <!-- MAVEN -->
-        <maven.compiler.version>3.1</maven.compiler.version>
-        <maven.compiler.source.version>1.8</maven.compiler.source.version>
-        <maven.compiler.target.version>1.8</maven.compiler.target.version>
-        <maven.ejb.plugin.version>2.3</maven.ejb.plugin.version>
-        <maven.ejb.plugin.ejb.version>3.1</maven.ejb.plugin.ejb.version>
-        <maven.dependency.plugin.version>2.6</maven.dependency.plugin.version>
-        <maven.javaee.endorsed.api.version>7.0</maven.javaee.endorsed.api.version>
-        <maven.failsafe.plugin.version>2.22.0</maven.failsafe.plugin.version>
+    <!-- MAVEN -->
+    <maven.compiler.version>3.1</maven.compiler.version>
+    <maven.compiler.source.version>1.8</maven.compiler.source.version>
+    <maven.compiler.target.version>1.8</maven.compiler.target.version>
+    <maven.ejb.plugin.version>2.3</maven.ejb.plugin.version>
+    <maven.ejb.plugin.ejb.version>3.1</maven.ejb.plugin.ejb.version>
+    <maven.dependency.plugin.version>2.6</maven.dependency.plugin.version>
+    <maven.javaee.endorsed.api.version>7.0</maven.javaee.endorsed.api.version>
+    <maven.surefire.plugin.version>2.22.0</maven.surefire.plugin.version>
+    <maven.failsafe.plugin.version>2.22.0</maven.failsafe.plugin.version>
         
-        <!-- JACOCO -->
-        <jacoco.version>0.8.1</jacoco.version>
+    <!-- JACOCO -->
+    <jacoco.version>0.8.1</jacoco.version>
     
-        <!-- JEE -->
-        <jee.version>7.0</jee.version>
+    <!-- JEE -->
+    <jee.version>7.0</jee.version>
     
-        <!-- LOGGER VERSION -->
-        <slf4j.version>1.7.21</slf4j.version>
-        <logback.version>1.2.3</logback.version>
+    <!-- LOGGER VERSION -->
+    <slf4j.version>1.7.21</slf4j.version>
+    <logback.version>1.2.3</logback.version>
     
-        <!-- TESTING VERSION -->
-        <junit.version>4.12</junit.version>
-        <hamcrest.version>1.3</hamcrest.version>
-        <glassfish.test.version>4.1.2</glassfish.test.version>
-    </properties>
+    <!-- TESTING VERSION -->
+    <junit.version>4.12</junit.version>
+    <hamcrest.version>1.3</hamcrest.version>
+    <glassfish.test.version>4.1.2</glassfish.test.version>
+  </properties>
     
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.jboss.arquillian</groupId>
-                <artifactId>arquillian-bom</artifactId>
-                <version>1.4.0.Final</version>
-                <scope>import</scope>
-                <type>pom</type>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
+  <dependencyManagement>
     <dependencies>
-        <!-- LOG/LOGGER -->
-        <!-- sl4j api -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
-        <!-- logback -->
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-core</artifactId>
-            <version>${logback.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>${logback.version}</version>
-        </dependency>
-    
-        <!-- TESTING -->
-        <!-- arquillian -->
-<!--        <dependency>
-            <groupId>org.jboss.arquillian.junit</groupId>
-            <artifactId>arquillian-junit-container</artifactId>
-            <version>1.4.0.Final</version>
-            <scope>test</scope>
-        </dependency>-->
-        <!-- junit -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <!-- hamcrest -->
-        <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-core</artifactId>
-            <version>${hamcrest.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <!-- glassfish -->
-        <dependency>
-            <groupId>org.glassfish.main.extras</groupId>
-            <artifactId>glassfish-embedded-all</artifactId>
-            <version>${glassfish.test.version}</version>
-            <scope>test</scope>
-        </dependency>
-    
-        <!-- JEE -->
-        <dependency>
-            <groupId>javax</groupId>
-            <artifactId>javaee-api</artifactId>
-            <version>${jee.version}</version>
-            <scope>provided</scope>
-        </dependency>
+      <dependency>
+        <groupId>org.jboss.arquillian</groupId>
+        <artifactId>arquillian-bom</artifactId>
+        <version>1.4.0.Final</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
     </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <!-- LOG/LOGGER -->
+    <!-- sl4j api -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>${slf4j.version}</version>
+    </dependency>
+    <!-- logback -->
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-core</artifactId>
+      <version>${logback.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>${logback.version}</version>
+    </dependency>
     
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven.compiler.version}</version>
-                <configuration>
-                    <source>${maven.compiler.source.version}</source>
-                    <target>${maven.compiler.target.version}</target>
-                    <compilerArguments>
-                        <endorseddirs>${endorsed.dir}</endorseddirs>
-                    </compilerArguments>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-ejb-plugin</artifactId>
-                <version>${maven.ejb.plugin.version}</version>
-                <configuration>
-                    <ejbVersion>${maven.ejb.plugin.ejb.version}</ejbVersion>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>${maven.dependency.plugin.version}</version>
-                <executions>
-                    <execution>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>copy</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${endorsed.dir}</outputDirectory>
-                            <silent>true</silent>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>javax</groupId>
-                                    <artifactId>javaee-endorsed-api</artifactId>
-                                    <version>${maven.javaee.endorsed.api.version}</version>
-                                    <type>jar</type>
-                                </artifactItem>
-                            </artifactItems>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <version>${maven.failsafe.plugin.version}</version>
-                <configuration>
-                    <includes>
-                        <include>**/*It.java</include>
-                    </includes>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>integration-test</goal>
-                            <goal>verify</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>${jacoco.version}</version>
-                <configuration>
-                    <excludes>
-                        <exclude>br/com/skull/core/service/dao/enums/**/*</exclude>
-                        <exclude>br/com/skull/core/service/dao/entity/**/*</exclude>
-                        <exclude>br/com/skull/core/business/model/**/*</exclude>
-                    </excludes>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>report</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
+    <!-- TESTING -->
+    <!-- arquillian -->
+    <!--        <dependency>
+        <groupId>org.jboss.arquillian.junit</groupId>
+        <artifactId>arquillian-junit-container</artifactId>
+        <version>1.4.0.Final</version>
+        <scope>test</scope>
+    </dependency>-->
+    <!-- junit -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <!-- hamcrest -->
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest-core</artifactId>
+      <version>${hamcrest.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <!-- glassfish -->
+    <dependency>
+      <groupId>org.glassfish.main.extras</groupId>
+      <artifactId>glassfish-embedded-all</artifactId>
+      <version>${glassfish.test.version}</version>
+      <scope>test</scope>
+    </dependency>
+    
+    <!-- JEE -->
+    <dependency>
+      <groupId>javax</groupId>
+      <artifactId>javaee-api</artifactId>
+      <version>${jee.version}</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+    
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${maven.compiler.version}</version>
+        <configuration>
+          <source>${maven.compiler.source.version}</source>
+          <target>${maven.compiler.target.version}</target>
+          <compilerArguments>
+            <endorseddirs>${endorsed.dir}</endorseddirs>
+          </compilerArguments>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-ejb-plugin</artifactId>
+        <version>${maven.ejb.plugin.version}</version>
+        <configuration>
+          <ejbVersion>${maven.ejb.plugin.ejb.version}</ejbVersion>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>${maven.dependency.plugin.version}</version>
+        <executions>
+          <execution>
+            <phase>validate</phase>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${endorsed.dir}</outputDirectory>
+              <silent>true</silent>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>javax</groupId>
+                  <artifactId>javaee-endorsed-api</artifactId>
+                  <version>${maven.javaee.endorsed.api.version}</version>
+                  <type>jar</type>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      
+      <!-- MAVEN TEST PLUGINS -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${maven.surefire.plugin.version}</version>
+        <configuration>
+          <argLine>${surefireArgLine}</argLine>
+          <excludes>
+            <exclude>**/It*.java</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>${maven.failsafe.plugin.version}</version>
+        <configuration>
+          <argLine>${failsafeArgLine}</argLine>
+          <includes>
+            <include>**/*It.java</include>
+          </includes>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>integration-test</goal>
+              <goal>verify</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      
+      <!-- JACOCO -->
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>${jacoco.version}</version>
+        <configuration>
+          <excludes>
+            <exclude>br/com/skull/core/service/dao/enums/**/*</exclude>
+            <exclude>br/com/skull/core/service/dao/entity/**/*</exclude>
+            <exclude>br/com/skull/core/business/model/**/*</exclude>
+          </excludes>
+        </configuration>
+        <executions>
+          <execution>
+            <id>pre-unit-test</id>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+            <configuration>
+              <propertyName>surefireArgLine</propertyName>
+            </configuration>
+          </execution>
+          <execution>
+            <id>post-unit-test</id>
+            <phase>test</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>pre-integration-test</id>
+            <phase>pre-integration-test</phase>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+            <configuration>
+              <propertyName>failsafeArgLine</propertyName>
+            </configuration>
+          </execution>
+          <execution>
+            <id>post-integration-test</id>
+            <phase>post-integration-test</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>
