@@ -107,10 +107,10 @@ public class CategoriaBusinessBeanIt {
   /**
    * Test of persistirCategoriaPai method, of class CategoriaBean.
    *
-   * @throws CategoriaPaiNaoVaziaException caso haja indicado uma categoria pai
+   * @throws Exception caso não consiga persistir
    */
   @Test
-  public void testPersistirCategoriaPai() throws CategoriaPaiNaoVaziaException {
+  public void testPersistirCategoriaPai() throws Exception {
     CategoriaDto categoria = new CategoriaDto();
 
     categoria.setNome(NOME_CATEGORIA_TESTES);
@@ -122,10 +122,10 @@ public class CategoriaBusinessBeanIt {
   /**
    * Test of persistirCategoriaPai method, of class CategoriaBean.
    *
-   * @throws CategoriaPaiNaoVaziaException caso haja indicado uma categoria pai
+   * @throws Exception caso não consiga persistir
    */
   @Test(expected = CategoriaPaiNaoVaziaException.class)
-  public void testPersistirCategoriaPaiCategoriaPaiNaoVazia() throws CategoriaPaiNaoVaziaException {
+  public void testPersistirCategoriaPaiCategoriaPaiNaoVazia() throws Exception {
     CategoriaDto categoriaPai = new CategoriaDto();
 
     categoriaPai.setNome(NOME_CATEGORIA_TESTES);
