@@ -3,7 +3,12 @@ package br.com.skull.core.business.impl;
 import br.com.skull.core.business.CategoriaBusinessBean;
 import br.com.skull.core.business.exception.CategoriaPaiNaoVaziaException;
 import br.com.skull.core.business.model.CategoriaDto;
-import br.com.skull.core.junit.runner.EnterpriseRunner;
+
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.asset.EmptyAsset;
+import org.jboss.shrinkwrap.api.spec.JavaArchive;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -21,7 +26,7 @@ import javax.naming.NamingException;
  *
  * @author Carlos Feitosa (carlos.feitosa.nt@gmail.com)
  */
-@RunWith(EnterpriseRunner.class)
+@RunWith(Arquillian.class)
 public class CategoriaBusinessBeanIt {
 
   private static final String NOME_CATEGORIA_TESTES = "__IGNORE-CategoriaTestes";
@@ -30,6 +35,19 @@ public class CategoriaBusinessBeanIt {
 
   @EJB
   private CategoriaBusinessBean bean;
+
+  /**
+   * Realiza o deploy do container de testes.
+   *
+   * @return deploy
+   */
+  @Deployment
+  public static JavaArchive createDeployment() {
+    return ShrinkWrap.create(JavaArchive.class)
+            .addPackages(true, "br.com.skull.core")
+            .addAsResource("META-INF/persistence.xml", "META-INF/persistence.xml")
+            .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
+  }
 
   @BeforeClass
   public static void setUpClass() throws NamingException {
@@ -42,12 +60,11 @@ public class CategoriaBusinessBeanIt {
 
   @Before
   public void setUp() throws NamingException {
-    bean = (CategoriaBusinessBean) EnterpriseRunner.getContainer().getContext()
-            .lookup("java:global/core-ejb-1.0-SNAPSHOT/CategoriaBusinessBeanImpl");
+    //  bean = (CategoriaBusinessBean) EnterpriseRunner.getContainer().getContext()
+    //          .lookup("java:global/core-ejb-1.0-SNAPSHOT/CategoriaBusinessBeanImpl");
   }
 
   @After
-
   public void tearDown() {
   }
 
