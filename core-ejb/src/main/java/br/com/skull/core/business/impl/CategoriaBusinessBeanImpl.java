@@ -33,8 +33,19 @@ public class CategoriaBusinessBeanImpl extends
   }
 
   @Override
+  public CategoriaDto listarCategoriaPorId(long id) {
+    logger.info("Listando categoria por id");
+    logger.debug("ID: {}", id);
+
+    Categoria categoria = service.getById(id);
+
+    return convert(categoria);
+  }
+
+  @Override
   public List<CategoriaDto> listarCategoriasPai() {
     logger.info("Listando todas as categorias pai");
+
     List<Categoria> listaEntidade = service.getByTipo(TipoCategoriaEnum.CATEGORIA);
 
     return convert(listaEntidade);
@@ -43,6 +54,7 @@ public class CategoriaBusinessBeanImpl extends
   @Override
   public List<CategoriaDto> listarCategoriasDeContas() {
     logger.info("Listando todas as categorias de contas");
+
     List<Categoria> listaEntidade = service.getByTipo(TipoCategoriaEnum.CONTA);
 
     return convert(listaEntidade);
@@ -51,6 +63,7 @@ public class CategoriaBusinessBeanImpl extends
   @Override
   public List<CategoriaDto> listarCategoriasDeLancamentos() {
     logger.info("Listando todas as categorias de lançamentos");
+
     List<Categoria> listaEntidade = service.getByTipo(TipoCategoriaEnum.LANCAMENTO);
 
     return convert(listaEntidade);
@@ -59,6 +72,7 @@ public class CategoriaBusinessBeanImpl extends
   @Override
   public List<CategoriaDto> listarCategoriasDeLog() {
     logger.info("Listando todas as categorias de log");
+
     List<Categoria> listaEntidade = service.getByTipo(TipoCategoriaEnum.LOG);
 
     return convert(listaEntidade);
@@ -220,7 +234,11 @@ public class CategoriaBusinessBeanImpl extends
     CategoriaDto dto = new CategoriaDto();
 
     dto.setId(entidade.getId());
-    dto.setIdCategoriaPai(entidade.getCategoria().getId());
+
+    if (null != entidade.getCategoria()) {
+      dto.setIdCategoriaPai(entidade.getCategoria().getId());
+    }
+
     dto.setNome(entidade.getNome());
     dto.setDescricao(entidade.getDescricao());
     dto.setTipo(TipoCategoriaEnum.valueOf(entidade.getTipo()));

@@ -16,6 +16,15 @@ import java.util.List;
 public interface CategoriaBusinessBean {
 
   /**
+   * Recupera categoria por id.
+   *
+   * @param id identificador da categoria
+   *
+   * @return categoria
+   */
+  public CategoriaDto listarCategoriaPorId(long id);
+
+  /**
    * Lista todas as categorias pai.
    *
    * @return lista de categorias
