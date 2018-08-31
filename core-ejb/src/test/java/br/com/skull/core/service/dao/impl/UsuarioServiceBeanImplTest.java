@@ -74,7 +74,7 @@ public class UsuarioServiceBeanImplTest {
     novoUsuario.setTipo(CODIGO_TIPO_USUARIO_TESTES);
     novoUsuario.setNome(NOME_USUARIO_TESTES);
     novoUsuario.setEmail(EMAIL_NOME_USUARIO_TESTES
-            .concat(incremento)
+            .concat("diff").concat(incremento)
             .concat(EMAIL_DOMINIO_USUARIO_TESTES));
     novoUsuario.setPassword(PASSWORD_USUARIO_TESTES);
 
