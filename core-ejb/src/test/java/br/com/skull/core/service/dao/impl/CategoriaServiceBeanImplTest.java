@@ -22,6 +22,7 @@ import org.junit.runner.RunWith;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJBException;
+import org.junit.Ignore;
 
 /**
  * Classe de testes para o serviço DAO de Categoria.
@@ -115,8 +116,6 @@ public class CategoriaServiceBeanImplTest {
     categoriaTestes.setCategoria(categoriaPai);
 
     categoriaTestes = SERVICE.persist(categoriaTestes);
-
-    assertTrue("Id da categoria não é maior que zero", (categoriaTestes.getId() > 0));
   }
 
   /**
@@ -125,8 +124,6 @@ public class CategoriaServiceBeanImplTest {
   @Test(expected = EJBException.class)
   public void testPersistFailNull() {
     categoriaTestes = SERVICE.persist(null);
-
-    assertTrue("Id da categoria não é maior que zero", (categoriaTestes.getId() > 0));
   }
 
   /**
@@ -137,8 +134,6 @@ public class CategoriaServiceBeanImplTest {
     categoriaTestes = Fixture.from(Categoria.class).gimme(CategoriaTemplate.INVALIDO);
 
     categoriaTestes = SERVICE.persist(categoriaTestes);
-
-    assertTrue("Id da categoria não é maior que zero", (categoriaTestes.getId() > 0));
   }
 
   /**
@@ -149,8 +144,6 @@ public class CategoriaServiceBeanImplTest {
     categoriaTestes = Fixture.from(Categoria.class).gimme(CategoriaTemplate.VALIDO);
 
     categoriaTestes = SERVICE.persist(categoriaTestes);
-
-    SERVICE.persist(categoriaTestes);
 
     List<Categoria> listaCategorias = SERVICE.getTodas();
 
@@ -230,8 +223,7 @@ public class CategoriaServiceBeanImplTest {
     String nomeCategoriaParcial = categoriaTestes.getNome()
             .substring(0, Math.round(categoriaTestes.getNome().length() / 2));
 
-    List<Categoria> listaCategorias
-            = SERVICE.getByNomeAproximado(nomeCategoriaParcial);
+    List<Categoria> listaCategorias = SERVICE.getByNomeAproximado(nomeCategoriaParcial);
 
     assertTrue("Lista de categoria não é maior que zero", listaCategorias.size() > 0);
 
@@ -318,6 +310,5 @@ public class CategoriaServiceBeanImplTest {
         SERVICE.remove(categoria.getCategoria());
       }
     }
-    LISTA_CATEGORIAS_CLEANUP.forEach(SERVICE::remove);
   }
 }
