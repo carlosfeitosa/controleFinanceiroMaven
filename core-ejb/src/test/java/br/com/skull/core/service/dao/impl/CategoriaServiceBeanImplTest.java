@@ -76,7 +76,7 @@ public class CategoriaServiceBeanImplTest {
   }
 
   /**
-   * Test of persist method, of class CategoriaServiceBean.
+   * Testa persistir uma categoria.
    */
   @Test
   public void testPersist() {
@@ -88,7 +88,39 @@ public class CategoriaServiceBeanImplTest {
   }
 
   /**
-   * Test of persist method, of class CategoriaServiceBean.
+   * Testa persistir uma categoria com uma categoria pai.
+   */
+  @Test
+  public void testPersistComCategoriaPai() {
+    Categoria categoriaPai = Fixture.from(Categoria.class).gimme(CategoriaTemplate.VALIDO);
+
+    categoriaPai = SERVICE.persist(categoriaPai);
+
+    categoriaTestes = Fixture.from(Categoria.class).gimme(CategoriaTemplate.VALIDO);
+    categoriaTestes.setCategoria(categoriaPai);
+
+    categoriaTestes = SERVICE.persist(categoriaTestes);
+
+    assertTrue("Id da categoria não é maior que zero", (categoriaTestes.getId() > 0));
+  }
+
+  /**
+   * Testa falha na tentativa de persistir uma categoria com categoria pai inválida.
+   */
+  @Test(expected = EJBException.class)
+  public void testPersistComCategoriaPaiFail() {
+    Categoria categoriaPai = Fixture.from(Categoria.class).gimme(CategoriaTemplate.VALIDO);
+
+    categoriaTestes = Fixture.from(Categoria.class).gimme(CategoriaTemplate.VALIDO);
+    categoriaTestes.setCategoria(categoriaPai);
+
+    categoriaTestes = SERVICE.persist(categoriaTestes);
+
+    assertTrue("Id da categoria não é maior que zero", (categoriaTestes.getId() > 0));
+  }
+
+  /**
+   * Testa falha na tentativa de persistir uma categoria nula.
    */
   @Test(expected = EJBException.class)
   public void testPersistFailNull() {
@@ -98,7 +130,7 @@ public class CategoriaServiceBeanImplTest {
   }
 
   /**
-   * Test of persist method, of class CategoriaServiceBean.
+   * Testa falha na tentativa de persistir uma categoria inválida.
    */
   @Test(expected = EJBException.class)
   public void testPersistFail() {
@@ -110,7 +142,7 @@ public class CategoriaServiceBeanImplTest {
   }
 
   /**
-   * Test of getCategoriasTodas method, of class CategoriaServiceBean.
+   * Testa recuperar todas as categorias.
    */
   @Test
   public void testGetTodas() {
@@ -126,7 +158,7 @@ public class CategoriaServiceBeanImplTest {
   }
 
   /**
-   * Test of remove method, of class CategoriaServiceBean.
+   * Testa remover uma categoria por id.
    */
   @Test
   public void testRemovePorId() {
@@ -140,7 +172,7 @@ public class CategoriaServiceBeanImplTest {
   }
 
   /**
-   * Test of remove method, of class CategoriaServiceBean.
+   * Testa remover uma categoria.
    */
   @Test
   public void testRemovePorCategoria() {
@@ -154,7 +186,7 @@ public class CategoriaServiceBeanImplTest {
   }
 
   /**
-   * Test of getById method, of class CategoriaServiceBean.
+   * Testa recuperar uma categoria por id.
    */
   @Test
   public void testGetById() {
@@ -168,7 +200,7 @@ public class CategoriaServiceBeanImplTest {
   }
 
   /**
-   * Test of getPorNome method, of class CategoriaServiceBean.
+   * Testa recuperar uma lista de categorias por nome.
    */
   @Test
   public void testGetPorNome() {
@@ -187,7 +219,7 @@ public class CategoriaServiceBeanImplTest {
   }
 
   /**
-   * Test of getPorNomeAproximado method, of class CategoriaServiceBean.
+   * Testa recuperar uma lista de categorias por nome aproximado.
    */
   @Test
   public void testGetCategoriaspPorNomeAproximado() {
@@ -210,7 +242,7 @@ public class CategoriaServiceBeanImplTest {
   }
 
   /**
-   * Test of getPorTipo method, of class CategoriaServiceBean.
+   * Testa recuperar uma lista de categorias por seu tipo, em código.
    */
   @Test
   public void testGetCategoriasPorTipoCodigo() {
@@ -229,7 +261,7 @@ public class CategoriaServiceBeanImplTest {
   }
 
   /**
-   * Test of getCategoriasPorTipo method, of class CategoriaServiceBean.
+   * Testa recuperar uma lista de categorias por seu tipo enum.
    */
   @Test
   public void testGetCategoriasPorTipoEnumTipoCategoria() {
@@ -252,26 +284,27 @@ public class CategoriaServiceBeanImplTest {
   }
 
   /**
-   * Test of getCategoriasFilhas method, of class CategoriaServiceBean.
+   * Testa recuperar uma lista de categorias através da categoria pai.
    */
   @Test
   public void testGetFilhasPorCategoriaPai() {
-//    Categoria categoriaPai = Fixture.from(Categoria.class).gimme(CategoriaTemplate.VALIDO);
-//
-//    categoriaPai = SERVICE.persist(categoriaPai);
-//
-//    Categoria categoriaFilha = Fixture.from(Categoria.class).gimme(CategoriaTemplate.VALIDO);
-//    categoriaFilha.setCategoria(categoriaPai);
-//
-//    categoriaFilha = SERVICE.persist(categoriaFilha);
-//
-//    List<Categoria> listaCategoriasFilhas = SERVICE.getFilhas(categoriaPai);
-//
-//    assertTrue("Lista de categorias filhas não é maior que zero",
-//            (listaCategoriasFilhas.size() > 0));
-//
-//    assertEquals("Categorias comparadas não são iguais",
-//            categoriaFilha, listaCategoriasFilhas.get(0));
+    Categoria categoriaPai = Fixture.from(Categoria.class).gimme(CategoriaTemplate.VALIDO);
+
+    categoriaPai = SERVICE.persist(categoriaPai);
+
+    categoriaTestes = Fixture.from(Categoria.class).gimme(CategoriaTemplate.VALIDO);
+    categoriaTestes.setCategoria(categoriaPai);
+
+    categoriaTestes = SERVICE.persist(categoriaTestes);
+
+    List<Categoria> listaCategoriasFilhas = SERVICE.getFilhas(categoriaPai);
+
+    assertTrue("Lista de categorias filhas não é maior que zero",
+            (listaCategoriasFilhas.size() > 0));
+
+    for (Categoria categoriaFilha : listaCategoriasFilhas) {
+      assertEquals("Categorias comparadas não são iguais", categoriaTestes, categoriaFilha);
+    }
   }
 
   /**
