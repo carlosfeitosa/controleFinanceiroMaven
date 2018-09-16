@@ -3,21 +3,23 @@ package br.com.skull.core.service.dao.impl;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import br.com.skull.core.junit.rule.RepeatRule;
-import br.com.skull.core.junit.rule.RepeatRule.Repeat;
+import br.com.six2six.fixturefactory.Fixture;
+import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
+
 import br.com.skull.core.junit.runner.EnterpriseRunner;
 import br.com.skull.core.service.dao.CategoriaServiceBean;
 import br.com.skull.core.service.dao.entity.impl.Categoria;
 import br.com.skull.core.service.dao.enums.TipoCategoriaEnum;
+import br.com.skull.core.service.dao.fixture.template.CategoriaTemplate;
 
+import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import javax.ejb.EJBException;
 
@@ -30,19 +32,9 @@ import javax.ejb.EJBException;
 public class CategoriaServiceBeanImplTest {
 
   private static CategoriaServiceBean SERVICE;
+  private static final List<Categoria> LISTA_CATEGORIAS_CLEANUP = new ArrayList<>();
 
-  private static final String NOME_CATEGORIA_TESTES = "__IGNORE-CategoriaTestes";
-  private static final String NOME_CATEGORIA_TESTES_PAI = "__IGNORE-CategoriaTestesPai";
-  private static final String NOME_CATEGORIA_TESTES_FILHA = "__IGNORE-CategoriaTestesFilha";
-  private static final String NOME_CATEGORIA_TESTES_PARCIAL = "__IGNORE-";
-  private static final String DESCRICAO_CATEGORIA_TESTES = "Descrição categoria de testes"
-          + " - não utilizar esta categoria";
-  private static final long CODIGO_TIPO_CATEGORIA_TESTES
-          = TipoCategoriaEnum.CATEGORIA.getCodigo();
-  private static final TipoCategoriaEnum TIPO_CATEGORIA_ENUM_TESTES = TipoCategoriaEnum.CATEGORIA;
-
-  @Rule
-  public RepeatRule repeatRule = new RepeatRule();
+  private Categoria categoriaTestes;
 
   /**
    * Inicializa serviços.
@@ -50,16 +42,36 @@ public class CategoriaServiceBeanImplTest {
    * @throws Exception caso não encontre o bean
    */
   @BeforeClass
-  public static void setUp() throws Exception {
+  public static void setUpClass() throws Exception {
     SERVICE = (CategoriaServiceBean) EnterpriseRunner.getContainer().getContext()
             .lookup("java:global/classes/CategoriaServiceBeanImpl");
+
+    FixtureFactoryLoader.loadTemplates("br.com.skull.core.service.dao.fixture.template");
+  }
+
+  /**
+   * Inicializa entidade de testes.
+   */
+  @Before
+  public void setUp() {
+    categoriaTestes = new Categoria();
+  }
+
+  /**
+   * Armazena categoria para cleanUp.
+   */
+  @After
+  public void tearDown() {
+    if ((null != categoriaTestes) && (null != categoriaTestes.getId())) {
+      LISTA_CATEGORIAS_CLEANUP.add(categoriaTestes);
+    }
   }
 
   /**
    * Finaliza serviços pendentes.
    */
   @AfterClass
-  public static void tearDown() {
+  public static void tearDownClass() {
     cleanUp();
   }
 
@@ -67,19 +79,22 @@ public class CategoriaServiceBeanImplTest {
    * Test of persist method, of class CategoriaServiceBean.
    */
   @Test
-  @Repeat(times = 3)
   public void testPersist() {
-    String sulfixo = Calendar.getInstance().getTime().toString();
+    categoriaTestes = Fixture.from(Categoria.class).gimme(CategoriaTemplate.VALIDO);
 
-    Categoria novaCategoria = new Categoria();
+    categoriaTestes = SERVICE.persist(categoriaTestes);
 
-    novaCategoria.setNome(NOME_CATEGORIA_TESTES);
-    novaCategoria.setDescricao(DESCRICAO_CATEGORIA_TESTES.concat(sulfixo));
-    novaCategoria.setTipo(CODIGO_TIPO_CATEGORIA_TESTES);
+    assertTrue("Id da categoria não é maior que zero", (categoriaTestes.getId() > 0));
+  }
 
-    novaCategoria = SERVICE.persist(novaCategoria);
+  /**
+   * Test of persist method, of class CategoriaServiceBean.
+   */
+  @Test(expected = EJBException.class)
+  public void testPersistFailNull() {
+    categoriaTestes = SERVICE.persist(null);
 
-    assertTrue("Id da categoria não é maior que zero", (novaCategoria.getId() > 0));
+    assertTrue("Id da categoria não é maior que zero", (categoriaTestes.getId() > 0));
   }
 
   /**
@@ -87,16 +102,11 @@ public class CategoriaServiceBeanImplTest {
    */
   @Test(expected = EJBException.class)
   public void testPersistFail() {
-    String sulfixo = Calendar.getInstance().getTime().toString();
+    categoriaTestes = Fixture.from(Categoria.class).gimme(CategoriaTemplate.INVALIDO);
 
-    Categoria novaCategoria = new Categoria();
+    categoriaTestes = SERVICE.persist(categoriaTestes);
 
-    novaCategoria.setDescricao(DESCRICAO_CATEGORIA_TESTES.concat(sulfixo));
-    novaCategoria.setTipo(CODIGO_TIPO_CATEGORIA_TESTES);
-
-    novaCategoria = SERVICE.persist(novaCategoria);
-
-    assertTrue("Id da categoria não é maior que zero", (novaCategoria.getId() > 0));
+    assertTrue("Id da categoria não é maior que zero", (categoriaTestes.getId() > 0));
   }
 
   /**
@@ -104,13 +114,11 @@ public class CategoriaServiceBeanImplTest {
    */
   @Test
   public void testGetTodas() {
-    Categoria novaCategoria = new Categoria();
+    categoriaTestes = Fixture.from(Categoria.class).gimme(CategoriaTemplate.VALIDO);
 
-    novaCategoria.setNome(NOME_CATEGORIA_TESTES);
-    novaCategoria.setDescricao(DESCRICAO_CATEGORIA_TESTES);
-    novaCategoria.setTipo(CODIGO_TIPO_CATEGORIA_TESTES);
+    categoriaTestes = SERVICE.persist(categoriaTestes);
 
-    SERVICE.persist(novaCategoria);
+    SERVICE.persist(categoriaTestes);
 
     List<Categoria> listaCategorias = SERVICE.getTodas();
 
@@ -122,11 +130,13 @@ public class CategoriaServiceBeanImplTest {
    */
   @Test
   public void testRemovePorId() {
-    List<Categoria> listaCategorias = SERVICE.getByNome(NOME_CATEGORIA_TESTES);
+    categoriaTestes = Fixture.from(Categoria.class).gimme(CategoriaTemplate.VALIDO);
 
-    assertTrue("Lista de categoria não é maior que zero", listaCategorias.size() > 0);
+    categoriaTestes = SERVICE.persist(categoriaTestes);
 
-    SERVICE.remove(listaCategorias.get(0).getId());
+    SERVICE.remove(categoriaTestes.getId());
+
+    categoriaTestes = null;
   }
 
   /**
@@ -134,11 +144,13 @@ public class CategoriaServiceBeanImplTest {
    */
   @Test
   public void testRemovePorCategoria() {
-    List<Categoria> listaCategorias = SERVICE.getByNome(NOME_CATEGORIA_TESTES);
+    categoriaTestes = Fixture.from(Categoria.class).gimme(CategoriaTemplate.VALIDO);
 
-    assertTrue("Lista de categoria não é maior que zero", listaCategorias.size() > 0);
+    categoriaTestes = SERVICE.persist(categoriaTestes);
 
-    SERVICE.remove(listaCategorias.get(0));
+    SERVICE.remove(categoriaTestes);
+
+    categoriaTestes = null;
   }
 
   /**
@@ -146,14 +158,13 @@ public class CategoriaServiceBeanImplTest {
    */
   @Test
   public void testGetById() {
-    List<Categoria> listaCategorias = SERVICE.getTodas();
+    categoriaTestes = Fixture.from(Categoria.class).gimme(CategoriaTemplate.VALIDO);
 
-    assertTrue("Lista de categoria não é maior que zero", listaCategorias.size() > 0);
+    categoriaTestes = SERVICE.persist(categoriaTestes);
 
-    Categoria categoriaEsperada = listaCategorias.get(0);
-    Categoria categoriaTeste = SERVICE.getById(categoriaEsperada.getId());
+    Categoria categoriaTeste = SERVICE.getById(categoriaTestes.getId());
 
-    assertEquals("Categorias comparadas não são iguais", categoriaEsperada, categoriaTeste);
+    assertEquals("Categorias comparadas não são iguais", categoriaTestes, categoriaTeste);
   }
 
   /**
@@ -161,17 +172,18 @@ public class CategoriaServiceBeanImplTest {
    */
   @Test
   public void testGetPorNome() {
-    List<Categoria> listaCategorias = SERVICE.getByNome(NOME_CATEGORIA_TESTES);
+    categoriaTestes = Fixture.from(Categoria.class).gimme(CategoriaTemplate.VALIDO);
+
+    categoriaTestes = SERVICE.persist(categoriaTestes);
+
+    List<Categoria> listaCategorias = SERVICE.getByNome(categoriaTestes.getNome());
 
     assertTrue("Lista de categoria não é maior que zero", listaCategorias.size() > 0);
 
-    Categoria categoriaRecuperada = listaCategorias.get(0);
-
-    assertTrue("Não foi possível recuperar categoria de testes",
-            (categoriaRecuperada.getId() > 0));
-
-    assertEquals("Nome da categoria diferente da experada", NOME_CATEGORIA_TESTES,
-            categoriaRecuperada.getNome());
+    for (Categoria categoriaRecuperada : listaCategorias) {
+      assertEquals("Nome da categoria diferente da experada", categoriaTestes.getNome(),
+              categoriaRecuperada.getNome());
+    }
   }
 
   /**
@@ -179,17 +191,22 @@ public class CategoriaServiceBeanImplTest {
    */
   @Test
   public void testGetCategoriaspPorNomeAproximado() {
-    List<Categoria> listaCategorias = SERVICE.getByNomeAproximado(NOME_CATEGORIA_TESTES_PARCIAL);
+    categoriaTestes = Fixture.from(Categoria.class).gimme(CategoriaTemplate.VALIDO);
+
+    categoriaTestes = SERVICE.persist(categoriaTestes);
+
+    String nomeCategoriaParcial = categoriaTestes.getNome()
+            .substring(0, Math.round(categoriaTestes.getNome().length() / 2));
+
+    List<Categoria> listaCategorias
+            = SERVICE.getByNomeAproximado(nomeCategoriaParcial);
 
     assertTrue("Lista de categoria não é maior que zero", listaCategorias.size() > 0);
 
-    Categoria categoriaRecuperada = listaCategorias.get(0);
-
-    assertTrue("Não foi possível recuperar categoria de testes",
-            (categoriaRecuperada.getId() > 0));
-
-    assertTrue("Nome da categoria diferente da experada",
-            categoriaRecuperada.getNome().contains(NOME_CATEGORIA_TESTES_PARCIAL));
+    for (Categoria categoriaRecuperada : listaCategorias) {
+      assertTrue("Nome da categoria diferente da experada",
+              categoriaRecuperada.getNome().contains(nomeCategoriaParcial));
+    }
   }
 
   /**
@@ -197,17 +214,18 @@ public class CategoriaServiceBeanImplTest {
    */
   @Test
   public void testGetCategoriasPorTipoCodigo() {
-    List<Categoria> listaCategorias = SERVICE.getByTipo(CODIGO_TIPO_CATEGORIA_TESTES);
+    categoriaTestes = Fixture.from(Categoria.class).gimme(CategoriaTemplate.VALIDO);
+
+    categoriaTestes = SERVICE.persist(categoriaTestes);
+
+    List<Categoria> listaCategorias = SERVICE.getByTipo(categoriaTestes.getTipo());
 
     assertTrue("Lista de categoria não é maior que zero", listaCategorias.size() > 0);
 
-    Categoria categoriaRecuperada = listaCategorias.get(0);
-
-    assertTrue("Não foi possível recuperar categoria de testes",
-            (categoriaRecuperada.getId() > 0));
-
-    assertEquals("Codigo do tipo de categoria diferente do esperado",
-            categoriaRecuperada.getTipo(), CODIGO_TIPO_CATEGORIA_TESTES);
+    for (Categoria categoriaRecuperada : listaCategorias) {
+      assertEquals("Codigo do tipo de categoria diferente do esperado",
+              categoriaTestes.getTipo(), categoriaRecuperada.getTipo());
+    }
   }
 
   /**
@@ -215,17 +233,22 @@ public class CategoriaServiceBeanImplTest {
    */
   @Test
   public void testGetCategoriasPorTipoEnumTipoCategoria() {
-    List<Categoria> listaCategorias = SERVICE.getByTipo(TIPO_CATEGORIA_ENUM_TESTES);
+    TipoCategoriaEnum tipoTeste = TipoCategoriaEnum.CATEGORIA;
+
+    categoriaTestes = Fixture.from(Categoria.class).gimme(CategoriaTemplate.VALIDO);
+
+    categoriaTestes.setTipo(tipoTeste.getCodigo());
+
+    categoriaTestes = SERVICE.persist(categoriaTestes);
+
+    List<Categoria> listaCategorias = SERVICE.getByTipo(tipoTeste);
 
     assertTrue("Lista de categoria não é maior que zero", listaCategorias.size() > 0);
 
-    Categoria categoriaRecuperada = listaCategorias.get(0);
-
-    assertTrue("Não foi possível recuperar categoria de testes",
-            (categoriaRecuperada.getId() > 0));
-
-    assertEquals("Tipo de categoria diferente do esperado",
-            categoriaRecuperada.getTipo(), TIPO_CATEGORIA_ENUM_TESTES.getCodigo());
+    for (Categoria categoriaRecuperada : listaCategorias) {
+      assertEquals("Tipo de categoria diferente do esperado",
+              tipoTeste.getCodigo(), categoriaRecuperada.getTipo());
+    }
   }
 
   /**
@@ -233,42 +256,35 @@ public class CategoriaServiceBeanImplTest {
    */
   @Test
   public void testGetFilhasPorCategoriaPai() {
-    Categoria categoriaPai = new Categoria();
-
-    categoriaPai.setNome(NOME_CATEGORIA_TESTES_PAI);
-    categoriaPai.setDescricao(DESCRICAO_CATEGORIA_TESTES);
-    categoriaPai.setTipo(CODIGO_TIPO_CATEGORIA_TESTES);
-
-    categoriaPai = SERVICE.persist(categoriaPai);
-
-    Categoria categoriaFilha = new Categoria();
-
-    categoriaFilha.setNome(NOME_CATEGORIA_TESTES_FILHA);
-    categoriaFilha.setDescricao(DESCRICAO_CATEGORIA_TESTES);
-    categoriaFilha.setTipo(CODIGO_TIPO_CATEGORIA_TESTES);
-    categoriaFilha.setCategoria(categoriaPai);
-
-    categoriaFilha = SERVICE.persist(categoriaFilha);
-
-    List<Categoria> listaCategoriasFilhas = SERVICE.getFilhas(categoriaPai);
-
-    assertTrue("Lista de categorias filhas não é maior que zero",
-            (listaCategoriasFilhas.size() > 0));
-
-    assertEquals("Categorias comparadas não são iguais",
-            categoriaFilha, listaCategoriasFilhas.get(0));
+//    Categoria categoriaPai = Fixture.from(Categoria.class).gimme(CategoriaTemplate.VALIDO);
+//
+//    categoriaPai = SERVICE.persist(categoriaPai);
+//
+//    Categoria categoriaFilha = Fixture.from(Categoria.class).gimme(CategoriaTemplate.VALIDO);
+//    categoriaFilha.setCategoria(categoriaPai);
+//
+//    categoriaFilha = SERVICE.persist(categoriaFilha);
+//
+//    List<Categoria> listaCategoriasFilhas = SERVICE.getFilhas(categoriaPai);
+//
+//    assertTrue("Lista de categorias filhas não é maior que zero",
+//            (listaCategoriasFilhas.size() > 0));
+//
+//    assertEquals("Categorias comparadas não são iguais",
+//            categoriaFilha, listaCategoriasFilhas.get(0));
   }
 
   /**
    * Limpa as entidades criadas no teste.
    */
   private static void cleanUp() {
-    List<Categoria> listaCategorias = new ArrayList<>();
+    for (Categoria categoria : LISTA_CATEGORIAS_CLEANUP) {
+      SERVICE.remove(categoria);
 
-    listaCategorias.addAll(SERVICE.getByNome(NOME_CATEGORIA_TESTES));
-    listaCategorias.addAll(SERVICE.getByNome(NOME_CATEGORIA_TESTES_FILHA));
-    listaCategorias.addAll(SERVICE.getByNome(NOME_CATEGORIA_TESTES_PAI));
-
-    listaCategorias.forEach(SERVICE::remove);
+      if (null != categoria.getCategoria()) {
+        SERVICE.remove(categoria.getCategoria());
+      }
+    }
+    LISTA_CATEGORIAS_CLEANUP.forEach(SERVICE::remove);
   }
 }

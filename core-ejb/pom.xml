@@ -40,6 +40,7 @@
         <junit.version>4.12</junit.version>
         <hamcrest.version>1.3</hamcrest.version>
         <glassfish.test.version>4.1.2</glassfish.test.version>
+        <fixture.version>3.1.0</fixture.version>
     
         <!-- JACOCO -->
         <jacoco.version>0.8.1</jacoco.version>
@@ -81,6 +82,14 @@
             <version>${hamcrest.version}</version>
             <scope>test</scope>
         </dependency>
+        <!-- fixture -->
+        <dependency>
+            <groupId>br.com.six2six</groupId>
+            <artifactId>fixture-factory</artifactId>
+            <version>${fixture.version}</version>
+            <scope>test</scope>
+        </dependency>
+
         <!-- glassfish -->
         <dependency>
             <groupId>org.glassfish.main.extras</groupId>
