@@ -7,7 +7,7 @@
         <property name="databaseName" value="controleContas"/>
         <property name="User" value="controleContas"/>
         <property name="Password" value="progpower666"/>
-        <property name="URL" value="jdbc:derby://localhostxxx:1527/controleFinanceiro"/>
+        <property name="URL" value="jdbc:derby://localhost:1527/controleFinanceiro"/>
         <property name="driverClass" value="org.apache.derby.jdbc.ClientDriver"/>
     </jdbc-connection-pool>
     <jdbc-resource enabled="true" jndi-name="java:app/controleFinanceiro" object-type="user" pool-name="derby_net_controleFinanceiro_controleContasPool"/>
