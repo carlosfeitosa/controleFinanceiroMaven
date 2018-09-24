@@ -46,6 +46,7 @@ public class CategoriaBusinessBeanIt {
       BEAN = (CategoriaBusinessBean) EnterpriseRunner.getContainer().getContext()
               .lookup("java:global/core-ejb-1.0-SNAPSHOT/CategoriaBusinessBeanImpl");
     } catch (NamingException ex) {
+      System.out.println("Recuperando serviço no pacote de classes: ".concat(ex.getMessage()));
       BEAN = (CategoriaBusinessBean) EnterpriseRunner.getContainer().getContext()
               .lookup("java:global/classes/CategoriaBusinessBeanImpl");
     }

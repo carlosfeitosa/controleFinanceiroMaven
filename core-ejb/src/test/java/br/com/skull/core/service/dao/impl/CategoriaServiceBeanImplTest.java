@@ -22,7 +22,6 @@ import org.junit.runner.RunWith;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJBException;
-import org.junit.Ignore;
 
 /**
  * Classe de testes para o serviço DAO de Categoria.
