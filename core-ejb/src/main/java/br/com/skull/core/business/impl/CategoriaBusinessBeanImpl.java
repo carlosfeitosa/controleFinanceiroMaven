@@ -259,10 +259,6 @@ public class CategoriaBusinessBeanImpl extends
    * @return lista de DTO
    */
   private List<CategoriaDto> convert(List<Categoria> listaEntidade) {
-    if (0 == listaEntidade.size()) {
-      return null;
-    }
-
     List<CategoriaDto> listaDtos = new ArrayList<>();
 
     for (Categoria entidade : listaEntidade) {
