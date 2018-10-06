@@ -97,6 +97,7 @@ public class CategoriaBusinessBeanImpl extends
     entidade = service.persist(entidade);
 
     dto.setId(entidade.getId());
+    dto.setTipo(TipoCategoriaEnum.CATEGORIA);
     dto.setManutencao(entidade.getManutencao());
 
     return dto;
@@ -121,6 +122,7 @@ public class CategoriaBusinessBeanImpl extends
     entidade = service.persist(entidade);
 
     dto.setId(entidade.getId());
+    dto.setTipo(TipoCategoriaEnum.CONTA);
     dto.setManutencao(entidade.getManutencao());
 
     return dto;
@@ -145,6 +147,7 @@ public class CategoriaBusinessBeanImpl extends
     entidade = service.persist(entidade);
 
     dto.setId(entidade.getId());
+    dto.setTipo(TipoCategoriaEnum.LANCAMENTO);
     dto.setManutencao(entidade.getManutencao());
 
     return dto;
@@ -168,6 +171,7 @@ public class CategoriaBusinessBeanImpl extends
     entidade = service.persist(entidade);
 
     dto.setId(entidade.getId());
+    dto.setTipo(TipoCategoriaEnum.LOG);
     dto.setManutencao(entidade.getManutencao());
 
     return dto;

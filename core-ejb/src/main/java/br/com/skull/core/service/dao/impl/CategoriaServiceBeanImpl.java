@@ -70,7 +70,7 @@ public class CategoriaServiceBeanImpl
   @Override
   public List<Categoria> getByTipo(long codigoTipo) {
     logger.info("Recuperando categorias por tipo");
-    logger.debug("C[odigo do tipo: {}", codigoTipo);
+    logger.debug("Cóodigo do tipo: {}", codigoTipo);
 
     return em.createNamedQuery(QUERY_POR_TIPO, Categoria.class)
             .setParameter(ATTR_TIPO, codigoTipo).getResultList();

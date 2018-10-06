@@ -3,6 +3,7 @@ package br.com.skull.core.business.model;
 import br.com.skull.core.service.dao.enums.TipoCategoriaEnum;
 
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * DTO para categoria.
@@ -64,5 +65,50 @@ public class CategoriaDto extends AbstractDto {
 
   public void setManutencao(Date value) {
     this.manutencao = value;
+  }
+
+  @Override
+  public int hashCode() {
+    int hash = 3;
+    hash = 11 * hash + (int) (this.idCategoriaPai ^ (this.idCategoriaPai >>> 32));
+    hash = 11 * hash + Objects.hashCode(this.descricaoCategoriaPai);
+    hash = 11 * hash + Objects.hashCode(this.nome);
+    hash = 11 * hash + Objects.hashCode(this.descricao);
+    hash = 11 * hash + Objects.hashCode(this.tipo);
+    hash = 11 * hash + Objects.hashCode(this.manutencao);
+    return hash;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (getClass() != obj.getClass()) {
+      return false;
+    }
+    final CategoriaDto other = (CategoriaDto) obj;
+    if (this.idCategoriaPai != other.idCategoriaPai) {
+      return false;
+    }
+    if (!Objects.equals(this.descricaoCategoriaPai, other.descricaoCategoriaPai)) {
+      return false;
+    }
+    if (!Objects.equals(this.nome, other.nome)) {
+      return false;
+    }
+    if (!Objects.equals(this.descricao, other.descricao)) {
+      return false;
+    }
+    if (this.tipo != other.tipo) {
+      return false;
+    }
+    if (!Objects.equals(this.manutencao, other.manutencao)) {
+      return false;
+    }
+    return true;
   }
 }

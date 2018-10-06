@@ -1,6 +1,7 @@
 package br.com.skull.core.business.model;
 
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * DTO para log.
@@ -44,6 +45,43 @@ public class LogDto extends AbstractDto {
 
   public void setMomento(Date value) {
     this.momento = value;
+  }
+
+  @Override
+  public int hashCode() {
+    int hash = 7;
+    hash = 11 * hash + Objects.hashCode(this.categoria);
+    hash = 11 * hash + Objects.hashCode(this.usuario);
+    hash = 11 * hash + Objects.hashCode(this.descricao);
+    hash = 11 * hash + Objects.hashCode(this.momento);
+    return hash;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (getClass() != obj.getClass()) {
+      return false;
+    }
+    final LogDto other = (LogDto) obj;
+    if (!Objects.equals(this.descricao, other.descricao)) {
+      return false;
+    }
+    if (!Objects.equals(this.categoria, other.categoria)) {
+      return false;
+    }
+    if (!Objects.equals(this.usuario, other.usuario)) {
+      return false;
+    }
+    if (!Objects.equals(this.momento, other.momento)) {
+      return false;
+    }
+    return true;
   }
 
 }
