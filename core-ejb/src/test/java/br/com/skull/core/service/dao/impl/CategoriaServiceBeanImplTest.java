@@ -32,7 +32,7 @@ import javax.ejb.EJBException;
 public class CategoriaServiceBeanImplTest {
 
   private static CategoriaServiceBean SERVICE;
-  private static final List<Categoria> LISTA_CATEGORIAS_CLEANUP = new ArrayList<>();
+  private static final List<Categoria> LISTA_ENTIDADE = new ArrayList<>();
 
   private Categoria categoriaTestes;
 
@@ -63,7 +63,7 @@ public class CategoriaServiceBeanImplTest {
   @After
   public void tearDown() {
     if ((null != categoriaTestes) && (null != categoriaTestes.getId())) {
-      LISTA_CATEGORIAS_CLEANUP.add(categoriaTestes);
+      LISTA_ENTIDADE.add(categoriaTestes);
     }
   }
 
@@ -302,7 +302,7 @@ public class CategoriaServiceBeanImplTest {
    * Limpa as entidades criadas no teste.
    */
   private static void cleanUp() {
-    for (Categoria categoria : LISTA_CATEGORIAS_CLEANUP) {
+    for (Categoria categoria : LISTA_ENTIDADE) {
       SERVICE.remove(categoria);
 
       if (null != categoria.getCategoria()) {
