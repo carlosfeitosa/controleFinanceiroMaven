@@ -3,23 +3,27 @@ package br.com.skull.core.service.dao.impl;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import br.com.skull.core.junit.rule.RepeatRule;
-import br.com.skull.core.junit.rule.RepeatRule.Repeat;
+import br.com.six2six.fixturefactory.Fixture;
+import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
+
 import br.com.skull.core.junit.runner.EnterpriseRunner;
 import br.com.skull.core.service.dao.CategoriaServiceBean;
 import br.com.skull.core.service.dao.ContaServiceBean;
 import br.com.skull.core.service.dao.entity.impl.Categoria;
 import br.com.skull.core.service.dao.entity.impl.Conta;
-import br.com.skull.core.service.dao.enums.TipoCategoriaEnum;
+import br.com.skull.core.service.dao.fixture.template.CategoriaTemplate;
+import br.com.skull.core.service.dao.fixture.template.ContaTemplate;
 
+import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.List;
+import javax.ejb.EJBException;
 import javax.naming.NamingException;
 
 /**
@@ -32,18 +36,9 @@ public class ContaServiceBeanImplTest {
 
   private static ContaServiceBean SERVICE;
   private static CategoriaServiceBean SERVICE_CATEGORIA;
+  private static final List<Conta> LISTA_ENTIDADE = new ArrayList<>();
 
-  private static final String NOME_CONTA_TESTES = "__IGNORE-ContaTestes";
-  private static final String NOME_CATEGORIA_CONTA_TESTES = "__IGNORE-CategoriaContaTestes";
-  private static final String DESCRICAO_CONTA_TESTES = "Descrição conta de testes"
-          + " - não utilizar esta conta";
-  private static final String DESCRICAO_CATEGORIA_CONTA_TESTES = "Descrição categoria conta "
-          + "de testes - não utilizar esta conta";
-
-  private static Categoria CATEGORIA_TESTES;
-
-  @Rule
-  public RepeatRule repeatRule = new RepeatRule();
+  private Conta contaTestes;
 
   /**
    * Inicializa serviços.
@@ -58,7 +53,25 @@ public class ContaServiceBeanImplTest {
     SERVICE_CATEGORIA = (CategoriaServiceBean) EnterpriseRunner.getContainer().getContext()
             .lookup("java:global/classes/CategoriaServiceBeanImpl");
 
-    init();
+    FixtureFactoryLoader.loadTemplates("br.com.skull.core.service.dao.fixture.template");
+  }
+
+  /**
+   * Inicializa entidade de testes.
+   */
+  @Before
+  public void setUp() {
+    contaTestes = new Conta();
+  }
+
+  /**
+   * Armazena categoria para cleanUp.
+   */
+  @After
+  public void tearDown() {
+    if ((null != contaTestes) && (null != contaTestes.getId())) {
+      LISTA_ENTIDADE.add(contaTestes);
+    }
   }
 
   /**
@@ -72,37 +85,67 @@ public class ContaServiceBeanImplTest {
   }
 
   /**
-   * Test of persist method, of class ContaServiceBean.
+   * Testa persistir uma conta.
    */
   @Test
-  @Repeat(times = 3)
   public void testPersist() {
-    String sulfixo = Calendar.getInstance().getTime().toString();
+    contaTestes = Fixture.from(Conta.class).gimme(ContaTemplate.VALIDO);
+    Categoria novaCategoria = Fixture.from(Categoria.class).gimme(CategoriaTemplate.VALIDO);
 
-    Conta novaConta = new Conta();
+    novaCategoria = SERVICE_CATEGORIA.persist(novaCategoria);
 
-    novaConta.setNome(NOME_CONTA_TESTES);
-    novaConta.setDescricao(DESCRICAO_CONTA_TESTES.concat(sulfixo));
-    novaConta.setCategoria(CATEGORIA_TESTES);
+    contaTestes.setCategoria(novaCategoria);
 
-    novaConta = SERVICE.persist(novaConta);
+    contaTestes = SERVICE.persist(contaTestes);
 
-    assertTrue("Id da conta não é maior que zero", (novaConta.getId() > 0));
+    assertTrue("Id da conta não é maior que zero", (contaTestes.getId() > 0));
   }
 
   /**
-   * Test of getTodas method, of class ContaServiceBean.
+   * Teste para garantir que uma exceção será lançada caso uma categoria não seja informada.
+   */
+  @Test(expected = EJBException.class)
+  public void testFailPersistirSemCategoria() {
+    contaTestes = Fixture.from(Conta.class).gimme(ContaTemplate.VALIDO);
+
+    contaTestes = SERVICE.persist(contaTestes);
+
+    assertTrue("Id da conta não é maior que zero", (contaTestes.getId() > 0));
+  }
+
+  /**
+   * Testa para falhar na tentativa de persistir uma conta nula.
+   */
+  @Test(expected = EJBException.class)
+  public void testPersistFailNull() {
+    contaTestes = SERVICE.persist(null);
+  }
+
+  /**
+   * Teste para garantir que uma exceção será lançada caso uma conta inválida seja informada.
+   */
+  @Test(expected = EJBException.class)
+  public void testFailPersistirContaInvalida() {
+    contaTestes = Fixture.from(Conta.class).gimme(ContaTemplate.INVALIDO);
+
+    contaTestes = SERVICE.persist(contaTestes);
+
+    assertTrue("Id da conta não é maior que zero", (contaTestes.getId() > 0));
+  }
+
+  /**
+   * Teste para validar a recuperação de todas as categorias.
    */
   @Test
   public void testGetTodas() {
-    Conta novaConta = new Conta();
+    contaTestes = Fixture.from(Conta.class).gimme(ContaTemplate.VALIDO);
+    Categoria novaCategoria = Fixture.from(Categoria.class).gimme(CategoriaTemplate.VALIDO);
 
-    novaConta.setNome(NOME_CONTA_TESTES);
-    novaConta.setDescricao(DESCRICAO_CONTA_TESTES);
+    novaCategoria = SERVICE_CATEGORIA.persist(novaCategoria);
 
-    novaConta.setCategoria(CATEGORIA_TESTES);
+    contaTestes.setCategoria(novaCategoria);
 
-    SERVICE.persist(novaConta);
+    contaTestes = SERVICE.persist(contaTestes);
 
     List<Conta> listaContas = SERVICE.getTodas();
 
@@ -110,31 +153,38 @@ public class ContaServiceBeanImplTest {
   }
 
   /**
-   * Test of remove method, of class ContaServiceBean.
+   * Teste para garantir que uma conta pode ser excluída por id.
    */
   @Test
   public void testRemovePorId() {
-    List<Conta> listaContas = SERVICE.getByNome(NOME_CONTA_TESTES);
+    contaTestes = Fixture.from(Conta.class).gimme(ContaTemplate.VALIDO);
+    Categoria novaCategoria = Fixture.from(Categoria.class).gimme(CategoriaTemplate.VALIDO);
 
-    assertTrue("Lista de contas não é maior que zero", listaContas.size() > 0);
+    novaCategoria = SERVICE_CATEGORIA.persist(novaCategoria);
 
-    SERVICE.remove(listaContas.get(0).getId());
+    contaTestes.setCategoria(novaCategoria);
+
+    contaTestes = SERVICE.persist(contaTestes);
+
+    SERVICE.remove(contaTestes.getId());
   }
 
   /**
-   * Test of remove method, of class ContaServiceBean.
+   * Teste para garantir que uma conta pode ser excluída por conta.
    */
   @Test
-  public void testRemovePorCategoria() {
-    List<Conta> listaContas = SERVICE.getByNome(NOME_CONTA_TESTES);
+  public void testRemovePorConta() {
+    List<Conta> listaContas = SERVICE.getTodas();
 
     assertTrue("Lista de contas não é maior que zero", listaContas.size() > 0);
 
     SERVICE.remove(listaContas.get(0));
+
+    SERVICE_CATEGORIA.remove(listaContas.get(0).getCategoria());
   }
 
   /**
-   * Test of getById method, of class ContaServiceBean.
+   * Teste para recuperar uma conta através do id.
    */
   @Test
   public void testGetById() {
@@ -149,58 +199,53 @@ public class ContaServiceBeanImplTest {
   }
 
   /**
-   * Test of getByNome method, of class ContaServiceBean.
+   * Teste para recuperar uma conta por nome.
    */
   @Test
   public void testGetByName() {
-    List<Conta> listaContas = SERVICE.getByNome(NOME_CONTA_TESTES);
+    List<Conta> listaTodasContas = SERVICE.getTodas();
+
+    assertTrue("Lista de contas não é maior que zero", listaTodasContas.size() > 0);
+
+    List<Conta> listaContas = SERVICE.getByNome(listaTodasContas.get(0).getNome());
 
     assertTrue("Lista de contas não é maior que zero", listaContas.size() > 0);
 
-    Conta contaRecuperada = listaContas.get(0);
-
-    assertTrue("Não foi possível recuperar categoria de testes",
-            (contaRecuperada.getId() > 0));
-
-    assertEquals("Nome da conta diferente da experada", NOME_CONTA_TESTES,
-            contaRecuperada.getNome());
+    for (Conta conta : listaContas) {
+      assertEquals("Nome da conta diferente da experada", listaTodasContas.get(0).getNome(),
+              conta.getNome());
+    }
   }
 
   /**
-   * Test of getByCategoria method, of class ContaServiceBean.
+   * Testa recuperar uma conta por categoria.
    */
   @Test
   public void testGetByCategoria() {
-    List<Conta> listaContas = SERVICE.getByCategoria(CATEGORIA_TESTES);
+    List<Conta> listaTodasContas = SERVICE.getTodas();
+
+    assertTrue("Lista de contas não é maior que zero", listaTodasContas.size() > 0);
+
+    List<Conta> listaContas = SERVICE.getByCategoria(listaTodasContas.get(0).getCategoria());
 
     assertTrue("Lista de contas não é maior que zero",
             (listaContas.size() > 0));
 
     assertEquals("Categorias comparadas não são iguais",
-            CATEGORIA_TESTES, listaContas.get(0).getCategoria());
+            listaTodasContas.get(0).getCategoria(), listaContas.get(0).getCategoria());
   }
 
   /**
    * Limpa as entidades criadas no teste.
    */
   private static void cleanUp() {
-    List<Conta> listaContas = SERVICE.getByNome(NOME_CONTA_TESTES);
+    for (Conta conta : LISTA_ENTIDADE) {
+      SERVICE.remove(conta);
 
-    listaContas.forEach(SERVICE::remove);
-
-    SERVICE_CATEGORIA.remove(CATEGORIA_TESTES);
+      if (null != conta.getCategoria()) {
+        SERVICE_CATEGORIA.remove(conta.getCategoria());
+      }
+    }
   }
 
-  /**
-   * Inicializa as entidades necessárias para os testes.
-   */
-  private static void init() {
-    CATEGORIA_TESTES = new Categoria();
-
-    CATEGORIA_TESTES.setNome(NOME_CATEGORIA_CONTA_TESTES);
-    CATEGORIA_TESTES.setDescricao(DESCRICAO_CATEGORIA_CONTA_TESTES);
-    CATEGORIA_TESTES.setTipo(TipoCategoriaEnum.CONTA.getCodigo());
-
-    CATEGORIA_TESTES = SERVICE_CATEGORIA.persist(CATEGORIA_TESTES);
-  }
 }
