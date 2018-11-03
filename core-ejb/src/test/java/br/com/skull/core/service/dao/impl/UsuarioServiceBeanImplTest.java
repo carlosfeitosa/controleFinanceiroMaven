@@ -3,20 +3,23 @@ package br.com.skull.core.service.dao.impl;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import br.com.skull.core.junit.rule.RepeatRule;
-import br.com.skull.core.junit.rule.RepeatRule.Repeat;
+import br.com.six2six.fixturefactory.Fixture;
+import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
+
 import br.com.skull.core.junit.runner.EnterpriseRunner;
 import br.com.skull.core.service.dao.UsuarioServiceBean;
 import br.com.skull.core.service.dao.entity.impl.Usuario;
 import br.com.skull.core.service.dao.enums.TipoUsuarioEnum;
+import br.com.skull.core.service.dao.fixture.template.UsuarioTemplate;
 
+import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJBException;
 import javax.naming.NamingException;
@@ -30,17 +33,9 @@ import javax.naming.NamingException;
 public class UsuarioServiceBeanImplTest {
 
   private static UsuarioServiceBean SERVICE;
+  private static final List<Usuario> LISTA_ENTIDADE = new ArrayList<>();
 
-  private static final String NOME_USUARIO_TESTES = "__IGNORE-UsuarioTestes";
-  private static final String NOME_APROXIMADO_USUARIO_TESTES = "__IGNORE-Usuario";
-  private static final String EMAIL_NOME_USUARIO_TESTES = "testes";
-  private static final String EMAIL_DOMINIO_USUARIO_TESTES = "@testes.com";
-  private static final String PASSWORD_USUARIO_TESTES = "passwd";
-  private static final TipoUsuarioEnum TIPO_USUARIO_TESTES = TipoUsuarioEnum.REGULAR;
-  private static final long CODIGO_TIPO_USUARIO_TESTES = TIPO_USUARIO_TESTES.getCodigo();
-
-  @Rule
-  public RepeatRule repeatRule = new RepeatRule();
+  Usuario usuarioTestes;
 
   /**
    * Inicializa serviços.
@@ -51,6 +46,26 @@ public class UsuarioServiceBeanImplTest {
   public static void setUpClass() throws NamingException {
     SERVICE = (UsuarioServiceBean) EnterpriseRunner.getContainer().getContext()
             .lookup("java:global/classes/UsuarioServiceBeanImpl");
+
+    FixtureFactoryLoader.loadTemplates("br.com.skull.core.service.dao.fixture.template");
+  }
+
+  /**
+   * Inicializa entidade de testes.
+   */
+  @Before
+  public void setUp() {
+    usuarioTestes = new Usuario();
+  }
+
+  /**
+   * Armazena entidade para cleanUp.
+   */
+  @After
+  public void tearDown() {
+    if ((null != usuarioTestes) && (null != usuarioTestes.getId())) {
+      LISTA_ENTIDADE.add(usuarioTestes);
+    }
   }
 
   /**
@@ -62,103 +77,104 @@ public class UsuarioServiceBeanImplTest {
   }
 
   /**
-   * Test of persist method, of class UsuarioServiceBean.
+   * Teste para persistir usuário.
    */
   @Test
-  @Repeat(times = 3)
-  public void testPersistEmailsDiferentes() {
-    String incremento = Integer.toString(Calendar.getInstance().get(Calendar.MILLISECOND));
+  public void testPersist() {
+    usuarioTestes = Fixture.from(Usuario.class).gimme(UsuarioTemplate.VALIDO);
 
-    Usuario novoUsuario = new Usuario();
+    usuarioTestes = SERVICE.persist(usuarioTestes);
 
-    novoUsuario.setTipo(CODIGO_TIPO_USUARIO_TESTES);
-    novoUsuario.setNome(NOME_USUARIO_TESTES);
-    novoUsuario.setEmail(EMAIL_NOME_USUARIO_TESTES
-            .concat("diff").concat(incremento)
-            .concat(EMAIL_DOMINIO_USUARIO_TESTES));
-    novoUsuario.setPassword(PASSWORD_USUARIO_TESTES);
-
-    novoUsuario = SERVICE.persist(novoUsuario);
-
-    assertTrue("Id do usuário não é maior que zero", (novoUsuario.getId() > 0));
+    assertTrue("Id do usuário não é maior que zero", (usuarioTestes.getId() > 0));
   }
 
   /**
-   * Test of persist method, of class UsuarioServiceBean.
+   * Testa se uma exceção é lançada ao tentar persistir usuários diferentes com o mesmo e-mail.
    *
    * @throws javax.naming.NamingException caso não encontre o bean
    */
   @Test(expected = EJBException.class)
   public void testPersistEmailsIguais() throws NamingException {
-    String incremento = Integer.toString(Calendar.getInstance().get(Calendar.MILLISECOND));
+    usuarioTestes = Fixture.from(Usuario.class).gimme(UsuarioTemplate.VALIDO);
 
-    Usuario novoUsuario = new Usuario();
+    usuarioTestes = SERVICE.persist(usuarioTestes);
 
-    novoUsuario.setTipo(CODIGO_TIPO_USUARIO_TESTES);
-    novoUsuario.setNome(NOME_USUARIO_TESTES);
-    novoUsuario.setEmail(EMAIL_NOME_USUARIO_TESTES
-            .concat(incremento)
-            .concat(EMAIL_DOMINIO_USUARIO_TESTES));
-    novoUsuario.setPassword(PASSWORD_USUARIO_TESTES);
+    Usuario usuarioMesmoEmail = Fixture.from(Usuario.class).gimme(UsuarioTemplate.VALIDO);
+
+    usuarioMesmoEmail.setEmail(usuarioTestes.getEmail());
+
     try {
-      SERVICE.persist(novoUsuario);
+      SERVICE.persist(usuarioMesmoEmail);
 
-      novoUsuario = new Usuario();
-
-      novoUsuario.setTipo(CODIGO_TIPO_USUARIO_TESTES);
-      novoUsuario.setNome(NOME_USUARIO_TESTES);
-      novoUsuario.setEmail(EMAIL_NOME_USUARIO_TESTES
-              .concat(incremento)
-              .concat(EMAIL_DOMINIO_USUARIO_TESTES));
-      novoUsuario.setPassword(PASSWORD_USUARIO_TESTES);
-
-      SERVICE.persist(novoUsuario);
     } finally {
       setUpClass();
     }
   }
 
   /**
-   * Test of remove method, of class UsuarioServiceBean.
+   * Testa se uma exceção está sendo levantada ao tentar salvar um usuário null.
+   *
+   * @throws javax.naming.NamingException caso não encontre o bean
+   */
+  @Test(expected = EJBException.class)
+  public void testPersistFailNull() throws NamingException {
+    try {
+      SERVICE.persist(null);
+
+    } finally {
+      setUpClass();
+    }
+  }
+
+  /**
+   * Testa se uma exceção está sendo levantada ao tentar salvar um usuário inválido.
+   *
+   * @throws javax.naming.NamingException caso não encontre o bean
+   */
+  @Test(expected = EJBException.class)
+  public void testPersistInvalido() throws NamingException {
+    usuarioTestes = Fixture.from(Usuario.class).gimme(UsuarioTemplate.INVALIDO);
+
+    try {
+      usuarioTestes = SERVICE.persist(usuarioTestes);
+
+    } finally {
+      setUpClass();
+    }
+  }
+
+  /**
+   * Testa se é possível remover um usuário através do objeto Usuário.
    */
   @Test
   public void testRemovePorUsuario() {
-    List<Usuario> listaUsuarios = SERVICE.getByNome(NOME_USUARIO_TESTES);
+    usuarioTestes = Fixture.from(Usuario.class).gimme(UsuarioTemplate.VALIDO);
 
-    assertTrue("Lista de usuários não é maior que zero", listaUsuarios.size() > 0);
+    usuarioTestes = SERVICE.persist(usuarioTestes);
 
-    SERVICE.remove(listaUsuarios.get(0));
+    SERVICE.remove(usuarioTestes);
   }
 
   /**
-   * Test of remove method, of class UsuarioServiceBean.
+   * Testa se é possível remover um usuário através de seu id.
    */
   @Test
   public void testRemovePorId() {
-    List<Usuario> listaUsuarios = SERVICE.getByNome(NOME_USUARIO_TESTES);
+    usuarioTestes = Fixture.from(Usuario.class).gimme(UsuarioTemplate.VALIDO);
 
-    assertTrue("Lista de usuários não é maior que zero", listaUsuarios.size() > 0);
+    usuarioTestes = SERVICE.persist(usuarioTestes);
 
-    SERVICE.remove(listaUsuarios.get(0).getId());
+    SERVICE.remove(usuarioTestes.getId());
   }
 
   /**
-   * Test of getTodos method, of class UsuarioServiceBean.
+   * Testa recuperar todos os usuários.
    */
   @Test
   public void testGetTodos() {
-    String incremento = Integer.toString(Calendar.getInstance().get(Calendar.MILLISECOND));
+    usuarioTestes = Fixture.from(Usuario.class).gimme(UsuarioTemplate.VALIDO);
 
-    Usuario novoUsuario = new Usuario();
-
-    novoUsuario.setTipo(CODIGO_TIPO_USUARIO_TESTES);
-    novoUsuario.setNome(NOME_USUARIO_TESTES);
-    novoUsuario.setEmail(EMAIL_NOME_USUARIO_TESTES
-            .concat(incremento)
-            .concat(EMAIL_DOMINIO_USUARIO_TESTES));
-    novoUsuario.setPassword(PASSWORD_USUARIO_TESTES);
-
-    SERVICE.persist(novoUsuario);
+    usuarioTestes = SERVICE.persist(usuarioTestes);
 
     List<Usuario> listaTodosUsuarios = SERVICE.getTodos();
 
@@ -166,11 +182,11 @@ public class UsuarioServiceBeanImplTest {
   }
 
   /**
-   * Test of getById method, of class UsuarioServiceBean.
+   * Testa recuperar um usuário por id.
    */
   @Test
   public void testGetById() {
-    List<Usuario> listaUsuarios = SERVICE.getByNome(NOME_USUARIO_TESTES);
+    List<Usuario> listaUsuarios = SERVICE.getTodos();
 
     assertTrue("Lista de usuários não é maior que zero", listaUsuarios.size() > 0);
 
@@ -181,46 +197,46 @@ public class UsuarioServiceBeanImplTest {
   }
 
   /**
-   * Test of getByNome method, of class UsuarioServiceBean.
+   * Testa recuperar por nome de usuário.
    */
   @Test
   public void testGetByNome() {
-    String incremento = Integer.toString(Calendar.getInstance().get(Calendar.MILLISECOND));
+    usuarioTestes = Fixture.from(Usuario.class).gimme(UsuarioTemplate.VALIDO);
 
-    Usuario novoUsuario = new Usuario();
+    usuarioTestes = SERVICE.persist(usuarioTestes);
 
-    novoUsuario.setTipo(CODIGO_TIPO_USUARIO_TESTES);
-    novoUsuario.setNome(NOME_USUARIO_TESTES);
-    novoUsuario.setEmail(EMAIL_NOME_USUARIO_TESTES
-            .concat(incremento)
-            .concat(EMAIL_DOMINIO_USUARIO_TESTES));
-    novoUsuario.setPassword(PASSWORD_USUARIO_TESTES);
-
-    SERVICE.persist(novoUsuario);
-
-    List<Usuario> listaUsuarios = SERVICE.getByNome(NOME_USUARIO_TESTES);
+    List<Usuario> listaUsuarios = SERVICE.getByNome(usuarioTestes.getNome());
 
     assertTrue("Lista de usuários menor que zero: ", listaUsuarios.size() > 0);
 
-    assertEquals(NOME_USUARIO_TESTES, listaUsuarios.get(0).getNome());
+    assertEquals(usuarioTestes.getNome(), listaUsuarios.get(0).getNome());
   }
 
   /**
-   * Test of getByNomeAproximado method, of class UsuarioServiceBean.
+   * Testa recuperar por nome aproximado de um usuário.
    */
   @Test
   public void testGetByNomeAproximado() {
-    List<Usuario> listaUsuarios = SERVICE.getByNomeAproximado(NOME_APROXIMADO_USUARIO_TESTES);
+    List<Usuario> listaUsuarios = SERVICE.getTodos();
+
+    String nomeAproximado = listaUsuarios.get(0).getNome().substring(0, 10);
+
+    listaUsuarios = SERVICE.getByNomeAproximado(nomeAproximado);
 
     assertTrue("Lista de usuários menor que zero: ", listaUsuarios.size() > 0);
+
+    for (Usuario usuario : listaUsuarios) {
+      assertTrue("Nome aproximado não está contido no nome completo",
+              usuario.getNome().contains(nomeAproximado));
+    }
   }
 
   /**
-   * Test of getByEmail method, of class UsuarioServiceBean.
+   * Testa recuperar um usuário através de seu e-mail.
    */
   @Test
   public void testGetByEmail() {
-    List<Usuario> listaUsuarios = SERVICE.getByNomeAproximado(NOME_APROXIMADO_USUARIO_TESTES);
+    List<Usuario> listaUsuarios = SERVICE.getTodos();
 
     assertTrue("Lista de usuários não é maior que zero", listaUsuarios.size() > 0);
 
@@ -230,54 +246,40 @@ public class UsuarioServiceBeanImplTest {
   }
 
   /**
-   * Test of getByTipo method, of class UsuarioServiceBean.
+   * Testa recuperar usuários por tipo (enum).
    */
   @Test
   public void testGetByTipoEnum() {
-    String incremento = Integer.toString(Calendar.getInstance().get(Calendar.MILLISECOND));
+    usuarioTestes = Fixture.from(Usuario.class).gimme(UsuarioTemplate.VALIDO);
 
-    Usuario novoUsuario = new Usuario();
+    usuarioTestes = SERVICE.persist(usuarioTestes);
 
-    novoUsuario.setTipo(CODIGO_TIPO_USUARIO_TESTES);
-    novoUsuario.setNome(NOME_USUARIO_TESTES);
-    novoUsuario.setEmail(EMAIL_NOME_USUARIO_TESTES
-            .concat(incremento)
-            .concat(EMAIL_DOMINIO_USUARIO_TESTES));
-    novoUsuario.setPassword(PASSWORD_USUARIO_TESTES);
-
-    SERVICE.persist(novoUsuario);
-
-    List<Usuario> listaUsuarios = SERVICE.getByTipo(TIPO_USUARIO_TESTES);
+    List<Usuario> listaUsuarios
+            = SERVICE.getByTipo(TipoUsuarioEnum.valueOf(usuarioTestes.getTipo()));
 
     assertTrue("Lista de usuários menor que zero: ", listaUsuarios.size() > 0);
 
-    assertEquals("Tipo de usuário diferente do esperado", TIPO_USUARIO_TESTES.getCodigo(),
+    assertEquals("Tipo de usuário diferente do esperado",
+            TipoUsuarioEnum.valueOf(usuarioTestes.getTipo()).getCodigo(),
             listaUsuarios.get(0).getTipo());
   }
 
   /**
-   * Test of getByTipo method, of class UsuarioServiceBean.
+   * Testa recuperar usuários por tipo (código).
    */
   @Test
   public void testGetByTipoCodigo() {
-    String incremento = Integer.toString(Calendar.getInstance().get(Calendar.MILLISECOND));
+    usuarioTestes = Fixture.from(Usuario.class).gimme(UsuarioTemplate.VALIDO);
 
-    Usuario novoUsuario = new Usuario();
+    usuarioTestes = SERVICE.persist(usuarioTestes);
 
-    novoUsuario.setTipo(CODIGO_TIPO_USUARIO_TESTES);
-    novoUsuario.setNome(NOME_USUARIO_TESTES);
-    novoUsuario.setEmail(EMAIL_NOME_USUARIO_TESTES
-            .concat(incremento)
-            .concat(EMAIL_DOMINIO_USUARIO_TESTES));
-    novoUsuario.setPassword(PASSWORD_USUARIO_TESTES);
-
-    SERVICE.persist(novoUsuario);
-
-    List<Usuario> listaUsuarios = SERVICE.getByTipo(CODIGO_TIPO_USUARIO_TESTES);
+    List<Usuario> listaUsuarios
+            = SERVICE.getByTipo(usuarioTestes.getTipo());
 
     assertTrue("Lista de usuários menor que zero: ", listaUsuarios.size() > 0);
 
-    assertEquals("Tipo de usuário diferente do esperado", CODIGO_TIPO_USUARIO_TESTES,
+    assertEquals("Tipo de usuário diferente do esperado",
+            usuarioTestes.getTipo(),
             listaUsuarios.get(0).getTipo());
   }
 
@@ -285,9 +287,9 @@ public class UsuarioServiceBeanImplTest {
    * Limpa as entidades criadas no teste.
    */
   private static void cleanUp() {
-    List<Usuario> listaUsuario = SERVICE.getByNomeAproximado(NOME_APROXIMADO_USUARIO_TESTES);
-
-    listaUsuario.forEach(SERVICE::remove);
+    for (Usuario usuario : LISTA_ENTIDADE) {
+      SERVICE.remove(usuario);
+    }
   }
 
 }

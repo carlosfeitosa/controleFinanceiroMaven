@@ -20,8 +20,8 @@ public enum TipoCategoriaEnum {
   private static final Map<Long, TipoCategoriaEnum> map = new HashMap<Long, TipoCategoriaEnum>();
 
   static {
-    for (TipoCategoriaEnum tipoErnum : TipoCategoriaEnum.values()) {
-      map.put(tipoErnum.codigo, tipoErnum);
+    for (TipoCategoriaEnum tipoEnum : TipoCategoriaEnum.values()) {
+      map.put(tipoEnum.codigo, tipoEnum);
     }
   }
 

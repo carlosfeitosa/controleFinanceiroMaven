@@ -65,7 +65,7 @@ public class ContaServiceBeanImplTest {
   }
 
   /**
-   * Armazena categoria para cleanUp.
+   * Armazena entidade para cleanUp.
    */
   @After
   public void tearDown() {

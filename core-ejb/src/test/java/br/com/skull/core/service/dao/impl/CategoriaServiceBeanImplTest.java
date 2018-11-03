@@ -58,7 +58,7 @@ public class CategoriaServiceBeanImplTest {
   }
 
   /**
-   * Armazena categoria para cleanUp.
+   * Armazena entidade para cleanUp.
    */
   @After
   public void tearDown() {

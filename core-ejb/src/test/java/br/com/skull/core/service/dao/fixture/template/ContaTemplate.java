@@ -23,7 +23,7 @@ public class ContaTemplate implements TemplateLoader {
   }
 
   /**
-   * Carrega template de Categoria válida.
+   * Carrega template de Conta válida.
    *
    * @return Rule
    */
@@ -37,7 +37,7 @@ public class ContaTemplate implements TemplateLoader {
   }
 
   /**
-   * Carrega template de Categoria inválida.
+   * Carrega template de Conta inválida.
    *
    * @return Rule
    */

@@ -1,5 +1,8 @@
 package br.com.skull.core.service.dao.enums;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Enum que representa o tipo de usuário.
  *
@@ -11,6 +14,14 @@ public enum TipoUsuarioEnum {
 
   private final long codigo;
   private final String descricao;
+
+  private static final Map<Long, TipoUsuarioEnum> map = new HashMap<Long, TipoUsuarioEnum>();
+
+  static {
+    for (TipoUsuarioEnum tipoEnum : TipoUsuarioEnum.values()) {
+      map.put(tipoEnum.codigo, tipoEnum);
+    }
+  }
 
   /**
    * Construtor privado.
@@ -29,5 +40,9 @@ public enum TipoUsuarioEnum {
 
   public String getDescricao() {
     return this.descricao;
+  }
+
+  public static TipoUsuarioEnum valueOf(Long codigo) {
+    return map.get(codigo);
   }
 }
