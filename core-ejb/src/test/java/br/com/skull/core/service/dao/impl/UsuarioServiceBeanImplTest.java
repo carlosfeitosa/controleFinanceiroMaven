@@ -33,6 +33,7 @@ import javax.naming.NamingException;
 public class UsuarioServiceBeanImplTest {
 
   private static UsuarioServiceBean SERVICE;
+
   private static final List<Usuario> LISTA_ENTIDADE = new ArrayList<>();
 
   Usuario usuarioTestes;

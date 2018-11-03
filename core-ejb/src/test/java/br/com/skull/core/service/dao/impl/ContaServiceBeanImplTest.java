@@ -36,6 +36,7 @@ public class ContaServiceBeanImplTest {
 
   private static ContaServiceBean SERVICE;
   private static CategoriaServiceBean SERVICE_CATEGORIA;
+
   private static final List<Conta> LISTA_ENTIDADE = new ArrayList<>();
 
   private Conta contaTestes;

@@ -32,6 +32,7 @@ import javax.ejb.EJBException;
 public class CategoriaServiceBeanImplTest {
 
   private static CategoriaServiceBean SERVICE;
+
   private static final List<Categoria> LISTA_ENTIDADE = new ArrayList<>();
 
   private Categoria categoriaTestes;

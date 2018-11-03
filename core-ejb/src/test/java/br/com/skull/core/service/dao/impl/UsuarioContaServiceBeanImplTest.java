@@ -1,10 +1,11 @@
 package br.com.skull.core.service.dao.impl;
 
+import br.com.six2six.fixturefactory.Fixture;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import br.com.skull.core.junit.rule.RepeatRule;
-import br.com.skull.core.junit.rule.RepeatRule.Repeat;
+import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
+
 import br.com.skull.core.junit.runner.EnterpriseRunner;
 import br.com.skull.core.service.dao.CategoriaServiceBean;
 import br.com.skull.core.service.dao.ContaServiceBean;
@@ -14,16 +15,20 @@ import br.com.skull.core.service.dao.entity.impl.Categoria;
 import br.com.skull.core.service.dao.entity.impl.Conta;
 import br.com.skull.core.service.dao.entity.impl.Usuario;
 import br.com.skull.core.service.dao.entity.impl.UsuarioConta;
-import br.com.skull.core.service.dao.enums.TipoCategoriaEnum;
-import br.com.skull.core.service.dao.enums.TipoUsuarioEnum;
+import br.com.skull.core.service.dao.fixture.template.CategoriaTemplate;
+import br.com.skull.core.service.dao.fixture.template.ContaTemplate;
+import br.com.skull.core.service.dao.fixture.template.UsuarioTemplate;
 
+import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.ArrayList;
 import java.util.List;
+import javax.ejb.EJBException;
 import javax.naming.NamingException;
 
 /**
@@ -34,30 +39,14 @@ import javax.naming.NamingException;
 @RunWith(EnterpriseRunner.class)
 public class UsuarioContaServiceBeanImplTest {
 
-  private static final String NOME_USUARIO_TESTES = "__IGNORE-UsuarioTestes";
-  private static final String EMAIL_NOME_USUARIO_TESTES = "testes";
-  private static final String EMAIL_DOMINIO_USUARIO_TESTES = "@testes.com";
-  private static final String PASSWORD_USUARIO_TESTES = "passwd";
-  private static final long CODIGO_TIPO_USUARIO_TESTES = TipoUsuarioEnum.REGULAR.getCodigo();
-
-  private static final String NOME_CONTA_TESTES = "__IGNORE-ContaTestes";
-  private static final String NOME_CATEGORIA_CONTA_TESTES = "__IGNORE-CategoriaContaTestes";
-  private static final String DESCRICAO_CONTA_TESTES = "Descrição conta de testes"
-          + " - não utilizar esta conta";
-  private static final String DESCRICAO_CATEGORIA_CONTA_TESTES = "Descrição categoria conta "
-          + "de testes - não utilizar esta conta";
-
   private static UsuarioContaServiceBean SERVICE;
   private static UsuarioServiceBean SERVICE_USUARIO;
   private static ContaServiceBean SERVICE_CONTA;
   private static CategoriaServiceBean SERVICE_CATEGORIA;
 
-  private static Categoria CATEGORIA_TESTES;
-  private static Conta CONTA_TESTES;
-  private static Usuario USUARIO_TESTES;
+  private static final List<UsuarioConta> LISTA_ENTIDADE = new ArrayList<>();
 
-  @Rule
-  public RepeatRule repeatRule = new RepeatRule();
+  UsuarioConta usuarioContaTestes;
 
   /**
    * Instancia os serviços para o teste.
@@ -78,7 +67,25 @@ public class UsuarioContaServiceBeanImplTest {
     SERVICE_CATEGORIA = (CategoriaServiceBean) EnterpriseRunner.getContainer().getContext()
             .lookup("java:global/classes/CategoriaServiceBeanImpl");
 
-    init();
+    FixtureFactoryLoader.loadTemplates("br.com.skull.core.service.dao.fixture.template");
+  }
+
+  /**
+   * Inicializa entidade de testes.
+   */
+  @Before
+  public void setUp() {
+    usuarioContaTestes = new UsuarioConta();
+  }
+
+  /**
+   * Armazena entidade para cleanUp.
+   */
+  @After
+  public void tearDown() {
+    if ((null != usuarioContaTestes) && (null != usuarioContaTestes.getId())) {
+      LISTA_ENTIDADE.add(usuarioContaTestes);
+    }
   }
 
   @AfterClass
@@ -87,52 +94,101 @@ public class UsuarioContaServiceBeanImplTest {
   }
 
   /**
-   * Test of persist method, of class UsuarioContaServiceBean.
+   * Teste para persistir Usuario x Conta.
    */
   @Test
-  @Repeat(times = 3)
   public void testPersist() {
-    UsuarioConta usuarioContaTeste = new UsuarioConta();
+    Usuario novoUsuario = Fixture.from(Usuario.class).gimme(UsuarioTemplate.VALIDO);
+    Categoria novaCategoria = Fixture.from(Categoria.class).gimme(CategoriaTemplate.VALIDO);
+    Conta novaConta = Fixture.from(Conta.class).gimme(ContaTemplate.VALIDO);
 
-    usuarioContaTeste.setConta(CONTA_TESTES);
-    usuarioContaTeste.setUsuario(USUARIO_TESTES);
+    novoUsuario = SERVICE_USUARIO.persist(novoUsuario);
 
-    usuarioContaTeste = SERVICE.persist(usuarioContaTeste);
+    novaCategoria = SERVICE_CATEGORIA.persist(novaCategoria);
+
+    novaConta.setCategoria(novaCategoria);
+    novaConta = SERVICE_CONTA.persist(novaConta);
+
+    usuarioContaTestes.setConta(novaConta);
+    usuarioContaTestes.setUsuario(novoUsuario);
+
+    usuarioContaTestes = SERVICE.persist(usuarioContaTestes);
 
     assertTrue("Id da relação entre usuário e conta não é maior que zero",
-            (usuarioContaTeste.getId() > 0));
+            (usuarioContaTestes.getId() > 0));
   }
 
   /**
-   * Test of remove method, of class UsuarioContaServiceBean.
+   * Testa se uma exceção será lançada na tentativa de persistir nulo.
+   */
+  @Test(expected = EJBException.class)
+  public void testPersistFailNull() {
+    SERVICE.persist(null);
+  }
+
+  /**
+   * Testa se uma exceção será lançada a tentativa de persistir um modelo vazio.
+   */
+  @Test(expected = EJBException.class)
+  public void testPersistFailUsuarioContaInvalida() {
+    SERVICE.persist(usuarioContaTestes);
+  }
+
+  /**
+   * Testa remover uma relação de usuário conta por modelo.
    */
   @Test
   public void testRemovePorUsuarioConta() {
-    List<UsuarioConta> listaUsuarioContaTeste = SERVICE.getByConta(CONTA_TESTES);
+    Usuario novoUsuario = Fixture.from(Usuario.class).gimme(UsuarioTemplate.VALIDO);
+    Categoria novaCategoria = Fixture.from(Categoria.class).gimme(CategoriaTemplate.VALIDO);
+    Conta novaConta = Fixture.from(Conta.class).gimme(ContaTemplate.VALIDO);
 
-    assertTrue("Lista de usuários não é maior que zero", listaUsuarioContaTeste.size() > 0);
+    novoUsuario = SERVICE_USUARIO.persist(novoUsuario);
 
-    SERVICE.remove(listaUsuarioContaTeste.get(0));
+    novaCategoria = SERVICE_CATEGORIA.persist(novaCategoria);
+
+    novaConta.setCategoria(novaCategoria);
+    novaConta = SERVICE_CONTA.persist(novaConta);
+
+    usuarioContaTestes.setConta(novaConta);
+    usuarioContaTestes.setUsuario(novoUsuario);
+
+    usuarioContaTestes = SERVICE.persist(usuarioContaTestes);
+
+    SERVICE.remove(usuarioContaTestes);
   }
 
   /**
-   * Test of remove method, of class UsuarioContaServiceBean.
+   * Testa remover uma relação de usuário conta por id.
    */
   @Test
   public void testRemovePorId() {
-    List<UsuarioConta> listaUsuarioContaTeste = SERVICE.getByConta(CONTA_TESTES);
+    Usuario novoUsuario = Fixture.from(Usuario.class).gimme(UsuarioTemplate.VALIDO);
+    Categoria novaCategoria = Fixture.from(Categoria.class).gimme(CategoriaTemplate.VALIDO);
+    Conta novaConta = Fixture.from(Conta.class).gimme(ContaTemplate.VALIDO);
 
-    assertTrue("Lista de usuários não é maior que zero", listaUsuarioContaTeste.size() > 0);
+    novoUsuario = SERVICE_USUARIO.persist(novoUsuario);
 
-    SERVICE.remove(listaUsuarioContaTeste.get(0).getId());
+    novaCategoria = SERVICE_CATEGORIA.persist(novaCategoria);
+
+    novaConta.setCategoria(novaCategoria);
+    novaConta = SERVICE_CONTA.persist(novaConta);
+
+    usuarioContaTestes.setConta(novaConta);
+    usuarioContaTestes.setUsuario(novoUsuario);
+
+    usuarioContaTestes = SERVICE.persist(usuarioContaTestes);
+
+    SERVICE.remove(usuarioContaTestes.getId());
   }
 
   /**
-   * Test of getById method, of class UsuarioContaServiceBean.
+   * Testa recuperar uma relação usuário conta por id.
    */
   @Test
   public void testGetById() {
-    List<UsuarioConta> listaUsuarioContaTeste = SERVICE.getByConta(CONTA_TESTES);
+    List<UsuarioConta> listaUsuarioContaTeste
+            = SERVICE.getByConta(LISTA_ENTIDADE.get(0).getConta());
 
     assertTrue("Lista de relações entre usuários e conta não é maior que zero",
             listaUsuarioContaTeste.size() > 0);
@@ -144,30 +200,32 @@ public class UsuarioContaServiceBeanImplTest {
   }
 
   /**
-   * Test of getByConta method, of class UsuarioContaServiceBean.
+   * Testa recuperar uma relação usuário conta por conta.
    */
   @Test
   public void testGetByConta() {
-    List<UsuarioConta> listaUsuarioContaTeste = SERVICE.getByConta(CONTA_TESTES);
+    List<UsuarioConta> listaUsuarioContaTeste
+            = SERVICE.getByConta(LISTA_ENTIDADE.get(0).getConta());
 
     assertTrue("Lista de relações entre usuário e conta não é maior que zero",
             listaUsuarioContaTeste.size() > 0);
 
-    assertEquals("Conta diferente da esperada", CONTA_TESTES,
+    assertEquals("Conta diferente da esperada", LISTA_ENTIDADE.get(0).getConta(),
             listaUsuarioContaTeste.get(0).getConta());
   }
 
   /**
-   * Test of getByUsuario method, of class UsuarioContaServiceBean.
+   * Testa recuperar uma relação usuário conta por usuário.
    */
   @Test
   public void testGetByUsuario() {
-    List<UsuarioConta> listaUsuarioContaTeste = SERVICE.getByUsuario(USUARIO_TESTES);
+    List<UsuarioConta> listaUsuarioContaTeste
+            = SERVICE.getByUsuario(LISTA_ENTIDADE.get(0).getUsuario());
 
     assertTrue("Lista de relações entre usuário e conta não é maior que zero",
             listaUsuarioContaTeste.size() > 0);
 
-    assertEquals("Usuário diferente do esperado", USUARIO_TESTES,
+    assertEquals("Usuário diferente do esperado", LISTA_ENTIDADE.get(0).getUsuario(),
             listaUsuarioContaTeste.get(0).getUsuario());
   }
 
@@ -175,43 +233,12 @@ public class UsuarioContaServiceBeanImplTest {
    * Limpa as entidades criadas no teste.
    */
   private static void cleanUp() {
-    List<UsuarioConta> listaUsuarioContaTeste = SERVICE.getByUsuario(USUARIO_TESTES);
+    for (UsuarioConta usuarioConta : LISTA_ENTIDADE) {
+      SERVICE.remove(usuarioConta);
 
-    listaUsuarioContaTeste.forEach(SERVICE::remove);
-
-    SERVICE_CONTA.remove(CONTA_TESTES);
-    SERVICE_CATEGORIA.remove(CATEGORIA_TESTES);
-    SERVICE_USUARIO.remove(USUARIO_TESTES);
-  }
-
-  /**
-   * Inicializa as entidades para os testes.
-   */
-  private static void init() {
-    USUARIO_TESTES = new Usuario();
-
-    USUARIO_TESTES.setTipo(CODIGO_TIPO_USUARIO_TESTES);
-    USUARIO_TESTES.setNome(NOME_USUARIO_TESTES);
-    USUARIO_TESTES.setEmail(EMAIL_NOME_USUARIO_TESTES
-            .concat(EMAIL_DOMINIO_USUARIO_TESTES));
-    USUARIO_TESTES.setPassword(PASSWORD_USUARIO_TESTES);
-
-    USUARIO_TESTES = SERVICE_USUARIO.persist(USUARIO_TESTES);
-
-    CATEGORIA_TESTES = new Categoria();
-
-    CATEGORIA_TESTES.setNome(NOME_CATEGORIA_CONTA_TESTES);
-    CATEGORIA_TESTES.setDescricao(DESCRICAO_CATEGORIA_CONTA_TESTES);
-    CATEGORIA_TESTES.setTipo(TipoCategoriaEnum.CONTA.getCodigo());
-
-    CATEGORIA_TESTES = SERVICE_CATEGORIA.persist(CATEGORIA_TESTES);
-
-    CONTA_TESTES = new Conta();
-
-    CONTA_TESTES.setNome(NOME_CONTA_TESTES);
-    CONTA_TESTES.setDescricao(DESCRICAO_CONTA_TESTES);
-    CONTA_TESTES.setCategoria(CATEGORIA_TESTES);
-
-    CONTA_TESTES = SERVICE_CONTA.persist(CONTA_TESTES);
+      SERVICE_CONTA.remove(usuarioConta.getConta());
+      SERVICE_CATEGORIA.remove(usuarioConta.getConta().getCategoria());
+      SERVICE_USUARIO.remove(usuarioConta.getUsuario());
+    }
   }
 }
