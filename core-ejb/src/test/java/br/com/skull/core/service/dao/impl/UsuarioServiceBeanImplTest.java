@@ -210,7 +210,9 @@ public class UsuarioServiceBeanImplTest {
 
     assertTrue("Lista de usuários menor que zero: ", listaUsuarios.size() > 0);
 
-    assertEquals(usuarioTestes.getNome(), listaUsuarios.get(0).getNome());
+    for (Usuario usuario : listaUsuarios) {
+      assertEquals(usuarioTestes.getNome(), usuario.getNome());
+    }
   }
 
   /**
@@ -220,7 +222,7 @@ public class UsuarioServiceBeanImplTest {
   public void testGetByNomeAproximado() {
     List<Usuario> listaUsuarios = SERVICE.getTodos();
 
-    String nomeAproximado = listaUsuarios.get(0).getNome().substring(0, 10);
+    String nomeAproximado = listaUsuarios.get(0).getNome().substring(0, 4);
 
     listaUsuarios = SERVICE.getByNomeAproximado(nomeAproximado);
 
@@ -260,9 +262,11 @@ public class UsuarioServiceBeanImplTest {
 
     assertTrue("Lista de usuários menor que zero: ", listaUsuarios.size() > 0);
 
-    assertEquals("Tipo de usuário diferente do esperado",
-            TipoUsuarioEnum.valueOf(usuarioTestes.getTipo()).getCodigo(),
-            listaUsuarios.get(0).getTipo());
+    for (Usuario usuario : listaUsuarios) {
+      assertEquals("Tipo de usuário diferente do esperado",
+              TipoUsuarioEnum.valueOf(usuarioTestes.getTipo()).getCodigo(),
+              usuario.getTipo());
+    }
   }
 
   /**
@@ -279,9 +283,11 @@ public class UsuarioServiceBeanImplTest {
 
     assertTrue("Lista de usuários menor que zero: ", listaUsuarios.size() > 0);
 
-    assertEquals("Tipo de usuário diferente do esperado",
-            usuarioTestes.getTipo(),
-            listaUsuarios.get(0).getTipo());
+    for (Usuario usuario : listaUsuarios) {
+      assertEquals("Tipo de usuário diferente do esperado",
+              usuarioTestes.getTipo(), usuario.getTipo());
+    }
+
   }
 
   /**

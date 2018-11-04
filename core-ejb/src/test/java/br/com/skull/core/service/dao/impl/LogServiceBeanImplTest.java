@@ -3,8 +3,9 @@ package br.com.skull.core.service.dao.impl;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import br.com.skull.core.junit.rule.RepeatRule;
-import br.com.skull.core.junit.rule.RepeatRule.Repeat;
+import br.com.six2six.fixturefactory.Fixture;
+import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
+
 import br.com.skull.core.junit.runner.EnterpriseRunner;
 import br.com.skull.core.service.dao.CategoriaServiceBean;
 import br.com.skull.core.service.dao.LogServiceBean;
@@ -12,17 +13,20 @@ import br.com.skull.core.service.dao.UsuarioServiceBean;
 import br.com.skull.core.service.dao.entity.impl.Categoria;
 import br.com.skull.core.service.dao.entity.impl.Log;
 import br.com.skull.core.service.dao.entity.impl.Usuario;
-import br.com.skull.core.service.dao.enums.TipoCategoriaEnum;
-import br.com.skull.core.service.dao.enums.TipoUsuarioEnum;
+import br.com.skull.core.service.dao.fixture.template.CategoriaTemplate;
+import br.com.skull.core.service.dao.fixture.template.LogTemplate;
+import br.com.skull.core.service.dao.fixture.template.UsuarioTemplate;
 
+import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.List;
+import javax.ejb.EJBException;
 import javax.naming.NamingException;
 
 /**
@@ -33,27 +37,13 @@ import javax.naming.NamingException;
 @RunWith(EnterpriseRunner.class)
 public class LogServiceBeanImplTest {
 
-  private static final String DESCRICAO_LOG_TESTES = "__IGNORE-LogTestes";
-  private static final String NOME_CATEGORIA_TESTES = "__IGNORE-CategoriaTestes";
-  private static final String DESCRICAO_CATEGORIA_TESTES = "Descrição categoria de testes"
-          + " - não utilizar esta categoria";
-  private static final long CODIGO_TIPO_CATEGORIA_TESTES
-          = TipoCategoriaEnum.CATEGORIA.getCodigo();
-  private static final String NOME_USUARIO_TESTES = "__IGNORE-UsuarioTestes";
-  private static final String EMAIL_NOME_USUARIO_TESTES = "testes";
-  private static final String EMAIL_DOMINIO_USUARIO_TESTES = "@testes.com";
-  private static final String PASSWORD_USUARIO_TESTES = "passwd";
-  private static final long CODIGO_TIPO_USUARIO_TESTES = TipoUsuarioEnum.REGULAR.getCodigo();
-
   private static LogServiceBean SERVICE;
   private static CategoriaServiceBean SERVICE_CATEGORIA;
   private static UsuarioServiceBean SERVICE_USUARIO;
 
-  private static Categoria CATEGORIA_TESTES;
-  private static Usuario USUARIO_TESTES;
+  private static final List<Log> LISTA_ENTIDADE = new ArrayList<>();
 
-  @Rule
-  public RepeatRule repeatRule = new RepeatRule();
+  private Log logTestes;
 
   /**
    * Instancia os serviços para o testes.
@@ -71,7 +61,25 @@ public class LogServiceBeanImplTest {
     SERVICE_USUARIO = (UsuarioServiceBean) EnterpriseRunner.getContainer().getContext()
             .lookup("java:global/classes/UsuarioServiceBeanImpl");
 
-    init();
+    FixtureFactoryLoader.loadTemplates("br.com.skull.core.service.dao.fixture.template");
+  }
+
+  /**
+   * Inicializa entidade de testes.
+   */
+  @Before
+  public void setUp() {
+    logTestes = new Log();
+  }
+
+  /**
+   * Armazena entidade para cleanUp.
+   */
+  @After
+  public void tearDown() {
+    if ((null != logTestes) && (null != logTestes.getId())) {
+      LISTA_ENTIDADE.add(logTestes);
+    }
   }
 
   @AfterClass
@@ -80,49 +88,94 @@ public class LogServiceBeanImplTest {
   }
 
   /**
-   * Test of persist method, of class LogServiceBean.
+   * Testa persistir um log.
    */
   @Test
-  @Repeat(times = 3)
   public void testPersist() {
-    Log logTeste = new Log();
+    logTestes = Fixture.from(Log.class).gimme(LogTemplate.VALIDO);
 
-    logTeste.setCategoria(CATEGORIA_TESTES);
-    logTeste.setUsuario(USUARIO_TESTES);
-    logTeste.setDescricao(DESCRICAO_LOG_TESTES);
-    logTeste.setMomento(Calendar.getInstance().getTime());
+    Categoria categoriaTeste = Fixture.from(Categoria.class).gimme(CategoriaTemplate.VALIDO);
 
-    logTeste = SERVICE.persist(logTeste);
+    categoriaTeste = SERVICE_CATEGORIA.persist(categoriaTeste);
 
-    assertTrue("Id do log não é maior que zero", (logTeste.getId() > 0));
+    Usuario usuarioTeste = Fixture.from(Usuario.class).gimme(UsuarioTemplate.VALIDO);
+
+    usuarioTeste = SERVICE_USUARIO.persist(usuarioTeste);
+
+    logTestes.setCategoria(categoriaTeste);
+    logTestes.setUsuario(usuarioTeste);
+
+    logTestes = SERVICE.persist(logTestes);
+
+    assertTrue("Id do log não é maior que zero", (logTestes.getId() > 0));
   }
 
   /**
-   * Test of remove method, of class LogServiceBean.
+   * Testa se uma exceção será lançada na tentativa de persistir null.
+   */
+  @Test(expected = EJBException.class)
+  public void testPersistNull() {
+    SERVICE.persist(null);
+  }
+
+  /**
+   * Testa se uma exceção será lançada na tentativa de persistir um elemento inválido.
+   */
+  @Test(expected = EJBException.class)
+  public void testPersistInvalido() {
+    logTestes = Fixture.from(Log.class).gimme(LogTemplate.INVALIDO);
+
+    SERVICE.persist(logTestes);
+  }
+
+  /**
+   * Testa a possibilidade de excluir um log através do objeto Log (entidade).
    */
   @Test
   public void testRemoveLog() {
-    List<Log> listaLogs = SERVICE.getByMomento(null, null);
+    logTestes = Fixture.from(Log.class).gimme(LogTemplate.VALIDO);
 
-    assertTrue("Lista de logs não é maior que zero", listaLogs.size() > 0);
+    Categoria categoriaTeste = Fixture.from(Categoria.class).gimme(CategoriaTemplate.VALIDO);
 
-    SERVICE.remove(listaLogs.get(0));
+    categoriaTeste = SERVICE_CATEGORIA.persist(categoriaTeste);
+
+    Usuario usuarioTeste = Fixture.from(Usuario.class).gimme(UsuarioTemplate.VALIDO);
+
+    usuarioTeste = SERVICE_USUARIO.persist(usuarioTeste);
+
+    logTestes.setCategoria(categoriaTeste);
+    logTestes.setUsuario(usuarioTeste);
+
+    logTestes = SERVICE.persist(logTestes);
+
+    SERVICE.remove(logTestes);
   }
 
   /**
-   * Test of remove method, of class LogServiceBean.
+   * Testa a possibilidade de excluir um log através de seu id.
    */
   @Test
   public void testRemoveById() {
-    List<Log> listaLogs = SERVICE.getByMomento(null, null);
+    logTestes = Fixture.from(Log.class).gimme(LogTemplate.VALIDO);
 
-    assertTrue("Lista de logs não é maior que zero", listaLogs.size() > 0);
+    Categoria categoriaTeste = Fixture.from(Categoria.class).gimme(CategoriaTemplate.VALIDO);
 
-    SERVICE.remove(listaLogs.get(0).getId());
+    categoriaTeste = SERVICE_CATEGORIA.persist(categoriaTeste);
+
+    Usuario usuarioTeste = Fixture.from(Usuario.class).gimme(UsuarioTemplate.VALIDO);
+
+    usuarioTeste = SERVICE_USUARIO.persist(usuarioTeste);
+
+    logTestes.setCategoria(categoriaTeste);
+    logTestes.setUsuario(usuarioTeste);
+
+    logTestes = SERVICE.persist(logTestes);
+
+    SERVICE.remove(logTestes.getId());
   }
 
   /**
-   * Test of getById method, of class LogServiceBean.
+   * Testa recuperar um log através de seu id.
    */
   @Test
   public void testGetById() {
@@ -136,7 +189,7 @@ public class LogServiceBeanImplTest {
   }
 
   /**
-   * Test of getByMomento method, of class LogServiceBean.
+   * Testa recuperar um log pelo momento em que ele foi inserido.
    */
   @Test
   public void testGetByMomento() {
@@ -144,36 +197,54 @@ public class LogServiceBeanImplTest {
 
     assertTrue("Lista de logs não é maior que zero", listaLogs.size() > 0);
 
-    List<Log> listaLogsTeste = SERVICE.getByMomento(listaLogs.get(0).getMomento(),
-            listaLogs.get(0).getMomento());
+    Log logTeste = listaLogs.get(0);
 
-    assertEquals("Log diferente do esperado", listaLogs.get(0), listaLogsTeste.get(0));
+    List<Log> listaLogsTeste = SERVICE.getByMomento(logTeste.getMomento(),
+            logTeste.getMomento());
+
+    for (Log log : listaLogsTeste) {
+      assertEquals("Log diferente do esperado", logTeste, log);
+    }
   }
 
   /**
-   * Test of getByCategoria method, of class LogServiceBean.
+   * Testa recuperar logs pela categoria.
    */
   @Test
   public void testGetByCategoria() {
-    List<Log> listaLogs = SERVICE.getByCategoria(CATEGORIA_TESTES, null, null);
+    List<Log> listaLogs = SERVICE.getByMomento(null, null);
 
     assertTrue("Lista de logs não é maior que zero", listaLogs.size() > 0);
 
-    assertEquals("Categoria diferente da esperada", CATEGORIA_TESTES,
-            listaLogs.get(0).getCategoria());
+    Categoria categoriaTeste = listaLogs.get(0).getCategoria();
+
+    listaLogs = SERVICE.getByCategoria(categoriaTeste, null, null);
+
+    assertTrue("Lista de logs não é maior que zero", listaLogs.size() > 0);
+
+    for (Log log : listaLogs) {
+      assertEquals("Categoria diferente da esperada", categoriaTeste, log.getCategoria());
+    }
   }
 
   /**
-   * Test of getByUsuario method, of class LogServiceBean.
+   * Testa recuperar logs pelo usuário.
    */
   @Test
   public void testGetByUsuario() {
-    List<Log> listaLogs = SERVICE.getByUsuario(USUARIO_TESTES, null, null);
+    List<Log> listaLogs = SERVICE.getByMomento(null, null);
 
     assertTrue("Lista de logs não é maior que zero", listaLogs.size() > 0);
 
-    assertEquals("Usuário diferente do esperado", USUARIO_TESTES,
-            listaLogs.get(0).getUsuario());
+    Usuario usuarioTeste = listaLogs.get(0).getUsuario();
+
+    listaLogs = SERVICE.getByUsuario(usuarioTeste, null, null);
+
+    assertTrue("Lista de logs não é maior que zero", listaLogs.size() > 0);
+
+    for (Log log : listaLogs) {
+      assertEquals("Usuário diferente do esperado", usuarioTeste, log.getUsuario());
+    }
   }
 
   /**
@@ -185,47 +256,32 @@ public class LogServiceBeanImplTest {
 
     assertTrue("Lista de logs não é maior que zero", listaLogs.size() > 0);
 
-    List<Log> listaLogsTeste = SERVICE.getByCategoriaUsuario(listaLogs.get(0).getCategoria(),
-            listaLogs.get(0).getUsuario(), null, null);
+    Categoria categoriaTeste = listaLogs.get(0).getCategoria();
+    Usuario usuarioTeste = listaLogs.get(0).getUsuario();
+
+    List<Log> listaLogsTeste = SERVICE.getByCategoriaUsuario(categoriaTeste, usuarioTeste,
+            null, null);
 
     assertTrue("Lista de logs não é maior que zero", listaLogsTeste.size() > 0);
 
-    assertEquals("Log diferente do esperado", listaLogs.get(0), listaLogsTeste.get(0));
+    for (Log log : listaLogsTeste) {
+      assertEquals("Categoria diferente da esperada", categoriaTeste, log.getCategoria());
+      assertEquals("Usuario diferente do esperado", usuarioTeste, log.getUsuario());
+    }
+
   }
 
   /**
    * Limpa as entidades criadas no teste.
    */
   private static void cleanUp() {
-    List<Log> listaLogs = SERVICE.getByMomento(null, null);
+    for (Log log : LISTA_ENTIDADE) {
+      SERVICE.remove(log);
 
-    listaLogs.forEach(SERVICE::remove);
+      SERVICE_CATEGORIA.remove(log.getCategoria());
 
-    SERVICE_USUARIO.remove(USUARIO_TESTES);
-    SERVICE_CATEGORIA.remove(CATEGORIA_TESTES);
-  }
-
-  /**
-   * Inicializa as entidades do teste.
-   */
-  private static void init() {
-    CATEGORIA_TESTES = new Categoria();
-
-    CATEGORIA_TESTES.setNome(NOME_CATEGORIA_TESTES);
-    CATEGORIA_TESTES.setDescricao(DESCRICAO_CATEGORIA_TESTES);
-    CATEGORIA_TESTES.setTipo(CODIGO_TIPO_CATEGORIA_TESTES);
-
-    CATEGORIA_TESTES = SERVICE_CATEGORIA.persist(CATEGORIA_TESTES);
-
-    USUARIO_TESTES = new Usuario();
-
-    USUARIO_TESTES.setTipo(CODIGO_TIPO_USUARIO_TESTES);
-    USUARIO_TESTES.setNome(NOME_USUARIO_TESTES);
-    USUARIO_TESTES.setEmail(EMAIL_NOME_USUARIO_TESTES
-            .concat(EMAIL_DOMINIO_USUARIO_TESTES));
-    USUARIO_TESTES.setPassword(PASSWORD_USUARIO_TESTES);
-
-    USUARIO_TESTES = SERVICE_USUARIO.persist(USUARIO_TESTES);
+      SERVICE_USUARIO.remove(log.getUsuario());
+    }
   }
 
 }

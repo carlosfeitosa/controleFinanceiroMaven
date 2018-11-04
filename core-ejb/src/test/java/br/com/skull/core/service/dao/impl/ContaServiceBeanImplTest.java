@@ -175,13 +175,16 @@ public class ContaServiceBeanImplTest {
    */
   @Test
   public void testRemovePorConta() {
-    List<Conta> listaContas = SERVICE.getTodas();
+    contaTestes = Fixture.from(Conta.class).gimme(ContaTemplate.VALIDO);
+    Categoria novaCategoria = Fixture.from(Categoria.class).gimme(CategoriaTemplate.VALIDO);
 
-    assertTrue("Lista de contas não é maior que zero", listaContas.size() > 0);
+    novaCategoria = SERVICE_CATEGORIA.persist(novaCategoria);
 
-    SERVICE.remove(listaContas.get(0));
+    contaTestes.setCategoria(novaCategoria);
 
-    SERVICE_CATEGORIA.remove(listaContas.get(0).getCategoria());
+    contaTestes = SERVICE.persist(contaTestes);
+
+    SERVICE.remove(contaTestes);
   }
 
   /**
