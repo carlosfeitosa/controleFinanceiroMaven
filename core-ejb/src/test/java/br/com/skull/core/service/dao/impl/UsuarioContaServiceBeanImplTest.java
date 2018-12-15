@@ -1,9 +1,9 @@
 package br.com.skull.core.service.dao.impl;
 
-import br.com.six2six.fixturefactory.Fixture;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
 
 import br.com.skull.core.junit.runner.EnterpriseRunner;
@@ -49,7 +49,7 @@ public class UsuarioContaServiceBeanImplTest {
   UsuarioConta usuarioContaTestes;
 
   /**
-   * Instancia os serviços para o teste.
+   * Instância os serviços para o teste.
    *
    * @throws NamingException caso não encontre os beans
    */
