@@ -46,7 +46,7 @@ public class UsuarioContaServiceBeanImplTest {
 
   private static final List<UsuarioConta> LISTA_ENTIDADE = new ArrayList<>();
 
-  UsuarioConta usuarioContaTestes;
+  private UsuarioConta usuarioContaTestes;
 
   /**
    * Instância os serviços para o teste.
@@ -98,16 +98,16 @@ public class UsuarioContaServiceBeanImplTest {
    */
   @Test
   public void testPersist() {
-    Usuario novoUsuario = Fixture.from(Usuario.class).gimme(UsuarioTemplate.VALIDO);
     Categoria novaCategoria = Fixture.from(Categoria.class).gimme(CategoriaTemplate.VALIDO);
-    Conta novaConta = Fixture.from(Conta.class).gimme(ContaTemplate.VALIDO);
-
-    novoUsuario = SERVICE_USUARIO.persist(novoUsuario);
-
     novaCategoria = SERVICE_CATEGORIA.persist(novaCategoria);
 
+    Conta novaConta = Fixture.from(Conta.class).gimme(ContaTemplate.VALIDO);
     novaConta.setCategoria(novaCategoria);
     novaConta = SERVICE_CONTA.persist(novaConta);
+
+    Usuario novoUsuario = Fixture.from(Usuario.class).gimme(UsuarioTemplate.VALIDO);
+
+    novoUsuario = SERVICE_USUARIO.persist(novoUsuario);
 
     usuarioContaTestes.setConta(novaConta);
     usuarioContaTestes.setUsuario(novoUsuario);
@@ -139,16 +139,15 @@ public class UsuarioContaServiceBeanImplTest {
    */
   @Test
   public void testRemovePorUsuarioConta() {
-    Usuario novoUsuario = Fixture.from(Usuario.class).gimme(UsuarioTemplate.VALIDO);
     Categoria novaCategoria = Fixture.from(Categoria.class).gimme(CategoriaTemplate.VALIDO);
-    Conta novaConta = Fixture.from(Conta.class).gimme(ContaTemplate.VALIDO);
-
-    novoUsuario = SERVICE_USUARIO.persist(novoUsuario);
-
     novaCategoria = SERVICE_CATEGORIA.persist(novaCategoria);
 
+    Conta novaConta = Fixture.from(Conta.class).gimme(ContaTemplate.VALIDO);
     novaConta.setCategoria(novaCategoria);
     novaConta = SERVICE_CONTA.persist(novaConta);
+
+    Usuario novoUsuario = Fixture.from(Usuario.class).gimme(UsuarioTemplate.VALIDO);
+    novoUsuario = SERVICE_USUARIO.persist(novoUsuario);
 
     usuarioContaTestes.setConta(novaConta);
     usuarioContaTestes.setUsuario(novoUsuario);
@@ -163,16 +162,15 @@ public class UsuarioContaServiceBeanImplTest {
    */
   @Test
   public void testRemovePorId() {
-    Usuario novoUsuario = Fixture.from(Usuario.class).gimme(UsuarioTemplate.VALIDO);
     Categoria novaCategoria = Fixture.from(Categoria.class).gimme(CategoriaTemplate.VALIDO);
-    Conta novaConta = Fixture.from(Conta.class).gimme(ContaTemplate.VALIDO);
-
-    novoUsuario = SERVICE_USUARIO.persist(novoUsuario);
-
     novaCategoria = SERVICE_CATEGORIA.persist(novaCategoria);
 
+    Conta novaConta = Fixture.from(Conta.class).gimme(ContaTemplate.VALIDO);
     novaConta.setCategoria(novaCategoria);
     novaConta = SERVICE_CONTA.persist(novaConta);
+
+    Usuario novoUsuario = Fixture.from(Usuario.class).gimme(UsuarioTemplate.VALIDO);
+    novoUsuario = SERVICE_USUARIO.persist(novoUsuario);
 
     usuarioContaTestes.setConta(novaConta);
     usuarioContaTestes.setUsuario(novoUsuario);
