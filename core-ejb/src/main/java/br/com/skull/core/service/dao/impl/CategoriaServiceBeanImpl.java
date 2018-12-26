@@ -70,7 +70,7 @@ public class CategoriaServiceBeanImpl
   @Override
   public List<Categoria> getByTipo(long codigoTipo) {
     logger.info("Recuperando categorias por tipo");
-    logger.debug("Cóodigo do tipo: {}", codigoTipo);
+    logger.debug("Tipo: {}", codigoTipo);
 
     return em.createNamedQuery(QUERY_POR_TIPO, Categoria.class)
             .setParameter(ATTR_TIPO, codigoTipo).getResultList();
@@ -79,7 +79,7 @@ public class CategoriaServiceBeanImpl
   @Override
   public List<Categoria> getByTipo(TipoCategoriaEnum tipo) {
     logger.info("Recuperando categorias por tipo (enum)");
-    logger.debug("Enum: {}", tipo);
+    logger.debug("Tipo (enum): {}", tipo);
 
     return this.getByTipo(tipo.getCodigo());
   }

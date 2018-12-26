@@ -71,20 +71,11 @@ public class LancamentoServiceBeanImpl extends
           Date inicio, Date termino) {
     logger.info("Recuperando lançamento por conta e tipo");
     logger.debug("Conta: {}", conta);
-    logger.debug("Tipo: {}", tipo);
+    logger.debug("Tipo (enum): {}", tipo);
     logger.debug("Início: {}", inicio);
     logger.debug("Término: {}", termino);
 
-    inicio = CoreDateUtil.valorDefaulSeValorNulo(inicio, CoreDateUtil.firstDate());
-    termino = CoreDateUtil.valorDefaulSeValorNulo(termino, CoreDateUtil.now());
-    logger.debug("Início após validação de default: {}", inicio);
-    logger.debug("Término após validação de default: {}", termino);
-
-    return em.createNamedQuery(QUERY_POR_CONTA_TIPO, Lancamento.class)
-            .setParameter(ATTR_CONTA, conta)
-            .setParameter(ATTR_TIPO, tipo.getCodigo())
-            .setParameter(ATTR_INICIO, inicio)
-            .setParameter(ATTR_TERMINO, termino).getResultList();
+    return this.getByContaTipo(conta, tipo.getCodigo(), inicio, termino);
   }
 
   @Override
@@ -134,22 +125,12 @@ public class LancamentoServiceBeanImpl extends
           Categoria categoria, Date inicio, Date termino) {
     logger.info("Recuperando lançamento por conta, tipo e categoria");
     logger.debug("Conta: {}", conta);
-    logger.debug("Tipo: {}", tipo);
+    logger.debug("Tipo (enum): {}", tipo);
     logger.debug("Categoria: {}", categoria);
     logger.debug("Início: {}", inicio);
     logger.debug("Término: {}", termino);
 
-    inicio = CoreDateUtil.valorDefaulSeValorNulo(inicio, CoreDateUtil.firstDate());
-    termino = CoreDateUtil.valorDefaulSeValorNulo(termino, CoreDateUtil.now());
-    logger.debug("Início após validação de default: {}", inicio);
-    logger.debug("Término após validação de default: {}", termino);
-
-    return em.createNamedQuery(QUERY_POR_CONTA_TIPO_CATEGORIA, Lancamento.class)
-            .setParameter(ATTR_CONTA, conta)
-            .setParameter(ATTR_TIPO, tipo.getCodigo())
-            .setParameter(ATTR_CATEGORIA, categoria)
-            .setParameter(ATTR_INICIO, inicio)
-            .setParameter(ATTR_TERMINO, termino).getResultList();
+    return this.getByContaTipoCategoria(conta, tipo.getCodigo(), categoria, inicio, termino);
   }
 
   @Override

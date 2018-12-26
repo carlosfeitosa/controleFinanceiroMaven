@@ -17,7 +17,7 @@ public class CoreDateUtil {
   }
 
   /**
-   * Retorna o início default de data.
+   * Retorna o início default de data do sistema.
    *
    * @return data default de início
    */
@@ -34,9 +34,9 @@ public class CoreDateUtil {
   }
 
   /**
-   * Retorna o término default de data.
+   * Retorna o momento atual.
    *
-   * @return data default de termino
+   * @return momento atual
    */
   public static Date now() {
     return Calendar.getInstance().getTime();
