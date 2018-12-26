@@ -1,8 +1,11 @@
 package br.com.skull.core.service.dao.enums;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Enum que representa o tipo de lançamento.
- * 
+ *
  * @author Carlos Feitosa (carlos.feitosa.nt@gmail.com)
  */
 public enum TipoLancamentoEnum {
@@ -13,6 +16,14 @@ public enum TipoLancamentoEnum {
 
   private final long codigo;
   private final String descricao;
+
+  private static final Map<Long, TipoLancamentoEnum> map = new HashMap<Long, TipoLancamentoEnum>();
+
+  static {
+    for (TipoLancamentoEnum tipoEnum : TipoLancamentoEnum.values()) {
+      map.put(tipoEnum.codigo, tipoEnum);
+    }
+  }
 
   /**
    * Construtor privado.
@@ -31,5 +42,9 @@ public enum TipoLancamentoEnum {
 
   public String getDescricao() {
     return this.descricao;
+  }
+
+  public static TipoLancamentoEnum valueOf(Long codigo) {
+    return map.get(codigo);
   }
 }

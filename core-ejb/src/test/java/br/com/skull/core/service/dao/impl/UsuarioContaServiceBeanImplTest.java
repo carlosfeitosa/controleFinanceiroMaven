@@ -208,8 +208,10 @@ public class UsuarioContaServiceBeanImplTest {
     assertTrue("Lista de relações entre usuário e conta não é maior que zero",
             listaUsuarioContaTeste.size() > 0);
 
-    assertEquals("Conta diferente da esperada", LISTA_ENTIDADE.get(0).getConta(),
-            listaUsuarioContaTeste.get(0).getConta());
+    for (UsuarioConta usuarioConta : listaUsuarioContaTeste) {
+      assertEquals("Conta diferente da esperada", LISTA_ENTIDADE.get(0).getConta(),
+              usuarioConta.getConta());
+    }
   }
 
   /**
@@ -223,8 +225,10 @@ public class UsuarioContaServiceBeanImplTest {
     assertTrue("Lista de relações entre usuário e conta não é maior que zero",
             listaUsuarioContaTeste.size() > 0);
 
-    assertEquals("Usuário diferente do esperado", LISTA_ENTIDADE.get(0).getUsuario(),
-            listaUsuarioContaTeste.get(0).getUsuario());
+    for (UsuarioConta usuarioConta : listaUsuarioContaTeste) {
+      assertEquals("Usuário diferente do esperado", LISTA_ENTIDADE.get(0).getUsuario(),
+              usuarioConta.getUsuario());
+    }
   }
 
   /**
