@@ -1,6 +1,6 @@
 package br.com.skull.core.service.dao;
 
-import br.com.skull.core.service.dao.entity.IEntity;
+import br.com.skull.core.service.dao.entity.Entidade;
 
 /**
  * Interface abstrata para EntityManager.
@@ -9,7 +9,7 @@ import br.com.skull.core.service.dao.entity.IEntity;
  *
  * @param <E> entidade do serviço
  */
-public interface AbstractServiceBean<E extends IEntity> {
+public interface AbstractServiceBean<E extends Entidade> {
 
   /**
    * Persiste uma entidade.

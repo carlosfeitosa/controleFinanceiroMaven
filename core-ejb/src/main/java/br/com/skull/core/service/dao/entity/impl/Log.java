@@ -1,6 +1,6 @@
 package br.com.skull.core.service.dao.entity.impl;
 
-import br.com.skull.core.service.dao.entity.IEntity;
+import br.com.skull.core.service.dao.entity.Entidade;
 
 import java.io.Serializable;
 import java.util.Calendar;
@@ -50,7 +50,7 @@ import javax.xml.bind.annotation.XmlRootElement;
                   + "WHERE l.usuario = :usuario "
                   + "AND l.categoria = :categoria "
                   + "AND l.momento BETWEEN :inicioMomento AND :terminoMomento")})
-public class Log implements IEntity, Serializable {
+public class Log implements Entidade, Serializable {
 
   private static final long serialVersionUID = 1L;
   @Id

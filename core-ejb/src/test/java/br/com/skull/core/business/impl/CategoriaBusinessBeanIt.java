@@ -15,7 +15,9 @@ import br.com.skull.core.business.fixture.template.CategoriaDtoTemplate;
 import br.com.skull.core.business.model.CategoriaDto;
 import br.com.skull.core.junit.runner.EnterpriseRunner;
 
+import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,6 +41,9 @@ public class CategoriaBusinessBeanIt {
   private static final List<CategoriaDto> LISTA_DTO = new ArrayList<>();
   private static final List<CategoriaDto> LISTA_DTO_PAI = new ArrayList<>();
 
+  CategoriaDto categoriaTestes;
+  CategoriaDto categoriaPaiTestes;
+
   /**
    * Inicializa o bean BO de categoria.
    *
@@ -59,11 +64,50 @@ public class CategoriaBusinessBeanIt {
   }
 
   /**
+   * Inicializa entidade de testes.
+   */
+  @Before
+  public void setUp() {
+    categoriaTestes = new CategoriaDto();
+    categoriaPaiTestes = new CategoriaDto();
+  }
+
+  /**
+   * Armazena entidade para cleanUp.
+   */
+  @After
+  public void tearDown() {
+    if ((null != categoriaTestes) && (categoriaTestes.getId() > 0)) {
+      LISTA_DTO.add(categoriaTestes);
+    }
+
+    if ((null != categoriaPaiTestes) && (categoriaPaiTestes.getId() > 0)) {
+      LISTA_DTO_PAI.add(categoriaPaiTestes);
+    }
+  }
+
+  /**
    * Finaliza serviços pendentes.
    */
   @AfterClass
-  public static void tearDown() {
+  public static void tearDownClass() {
     cleanUp();
+  }
+
+  /**
+   * Limpa as entidades criadas no teste.
+   */
+  private static void cleanUp() {
+    for (CategoriaDto categoria : LISTA_DTO) {
+      BEAN.removerCategoria(categoria);
+    }
+
+    for (CategoriaDto categoria : LISTA_DTO_PAI) {
+      BEAN.removerCategoria(categoria);
+    }
+
+    LISTA_DTO.clear();
+    LISTA_DTO_PAI.clear();
   }
 
   /**
@@ -95,32 +139,30 @@ public class CategoriaBusinessBeanIt {
    */
   @Test
   public void testPersistirListarPorIdECategoriasPai() throws Exception {
-    CategoriaDto categoria = Fixture.from(CategoriaDto.class)
+    categoriaPaiTestes = Fixture.from(CategoriaDto.class)
             .gimme(CategoriaDtoTemplate.VALIDO_SEM_PAI);
 
-    categoria = BEAN.persistirCategoriaPai(categoria);
+    categoriaPaiTestes = BEAN.persistirCategoriaPai(categoriaPaiTestes);
 
-    CategoriaDto categoriaRecuperada = BEAN.listarCategoriaPorId(categoria.getId());
+    CategoriaDto categoriaRecuperada = BEAN.listarCategoriaPorId(categoriaPaiTestes.getId());
 
-    assertEquals("Categorias não são iguais", categoria, categoriaRecuperada);
+    assertEquals("Categorias não são iguais", categoriaPaiTestes, categoriaRecuperada);
 
-    String nomeCategoriaEdit = categoria.getNome().concat(categoria.getNome());
+    String nomeCategoriaEdit = categoriaPaiTestes.getNome().concat(categoriaPaiTestes.getNome());
 
-    categoria.setNome(nomeCategoriaEdit);
+    categoriaPaiTestes.setNome(nomeCategoriaEdit);
 
-    categoria = BEAN.persistirCategoriaPai(categoria);
-
-    LISTA_DTO_PAI.add(categoria);
+    categoriaPaiTestes = BEAN.persistirCategoriaPai(categoriaPaiTestes);
 
     List<CategoriaDto> listaCategorias = BEAN.listarCategoriasPai();
 
     boolean itemFound = false;
 
     for (CategoriaDto item : listaCategorias) {
-      if (categoria.getId() == item.getId()) {
+      if (categoriaPaiTestes.getId() == item.getId()) {
         itemFound = true;
 
-        assertEquals("Categorias não são iguais", categoria, item);
+        assertEquals("Categorias não são iguais", categoriaPaiTestes, item);
       }
     }
 
@@ -136,31 +178,26 @@ public class CategoriaBusinessBeanIt {
    */
   @Test
   public void testPersistirListarCategoriaDeContas() throws Exception {
-    CategoriaDto categoriaPai = Fixture.from(CategoriaDto.class)
+    categoriaPaiTestes = Fixture.from(CategoriaDto.class)
             .gimme(CategoriaDtoTemplate.VALIDO_SEM_PAI);
 
-    categoriaPai = BEAN.persistirCategoriaPai(categoriaPai);
+    categoriaPaiTestes = BEAN.persistirCategoriaPai(categoriaPaiTestes);
 
-    LISTA_DTO_PAI.add(categoriaPai);
+    categoriaTestes = Fixture.from(CategoriaDto.class).gimme(CategoriaDtoTemplate.VALIDO_SEM_PAI);
 
-    CategoriaDto categoria = Fixture.from(CategoriaDto.class)
-            .gimme(CategoriaDtoTemplate.VALIDO_SEM_PAI);
+    categoriaTestes.setIdCategoriaPai(categoriaPaiTestes.getId());
 
-    categoria.setIdCategoriaPai(categoriaPai.getId());
-
-    categoria = BEAN.persistirCategoriaDeConta(categoria);
-
-    LISTA_DTO.add(categoria);
+    categoriaTestes = BEAN.persistirCategoriaDeConta(categoriaTestes);
 
     List<CategoriaDto> listaCategoriasDeContas = BEAN.listarCategoriasDeContas();
 
     boolean itemFound = false;
 
     for (CategoriaDto item : listaCategoriasDeContas) {
-      if (categoria.getId() == item.getId()) {
+      if (categoriaTestes.getId() == item.getId()) {
         itemFound = true;
 
-        assertEquals("Categorias não são iguais", categoria, item);
+        assertEquals("Categorias não são iguais", categoriaTestes, item);
       }
     }
 
@@ -190,29 +227,24 @@ public class CategoriaBusinessBeanIt {
    */
   @Test
   public void testPersistirListarCategoriasDeLancamentos() throws Exception {
-    CategoriaDto categoriaPai = Fixture.from(CategoriaDto.class)
+    categoriaPaiTestes = Fixture.from(CategoriaDto.class)
             .gimme(CategoriaDtoTemplate.VALIDO_SEM_PAI);
 
-    categoriaPai = BEAN.persistirCategoriaPai(categoriaPai);
+    categoriaPaiTestes = BEAN.persistirCategoriaPai(categoriaPaiTestes);
 
-    LISTA_DTO_PAI.add(categoriaPai);
+    categoriaTestes = Fixture.from(CategoriaDto.class).gimme(CategoriaDtoTemplate.VALIDO_SEM_PAI);
 
-    CategoriaDto categoria = Fixture.from(CategoriaDto.class)
-            .gimme(CategoriaDtoTemplate.VALIDO_SEM_PAI);
+    categoriaTestes.setIdCategoriaPai(categoriaPaiTestes.getId());
 
-    categoria.setIdCategoriaPai(categoriaPai.getId());
-
-    categoria = BEAN.persistirCategoriaDeLancamento(categoria);
-
-    LISTA_DTO.add(categoria);
+    categoriaTestes = BEAN.persistirCategoriaDeLancamento(categoriaTestes);
 
     List<CategoriaDto> listaCategoriasDeLancamento = BEAN.listarCategoriasDeLancamentos();
 
     boolean itemFound = false;
 
     for (CategoriaDto item : listaCategoriasDeLancamento) {
-      if (categoria.getId() == item.getId()) {
-        assertEquals("Categorias não são iguais", categoria, item);
+      if (categoriaTestes.getId() == item.getId()) {
+        assertEquals("Categorias não são iguais", categoriaTestes, item);
 
         itemFound = true;
       }
@@ -244,29 +276,24 @@ public class CategoriaBusinessBeanIt {
    */
   @Test
   public void testPersistirListarCategoriasDeLog() throws Exception {
-    CategoriaDto categoriaPai = Fixture.from(CategoriaDto.class)
+    categoriaPaiTestes = Fixture.from(CategoriaDto.class)
             .gimme(CategoriaDtoTemplate.VALIDO_SEM_PAI);
 
-    categoriaPai = BEAN.persistirCategoriaPai(categoriaPai);
+    categoriaPaiTestes = BEAN.persistirCategoriaPai(categoriaPaiTestes);
 
-    LISTA_DTO_PAI.add(categoriaPai);
+    categoriaTestes = Fixture.from(CategoriaDto.class).gimme(CategoriaDtoTemplate.VALIDO_SEM_PAI);
 
-    CategoriaDto categoria = Fixture.from(CategoriaDto.class)
-            .gimme(CategoriaDtoTemplate.VALIDO_SEM_PAI);
+    categoriaTestes.setIdCategoriaPai(categoriaPaiTestes.getId());
 
-    categoria.setIdCategoriaPai(categoriaPai.getId());
-
-    categoria = BEAN.persistirCategoriaDeLog(categoria);
-
-    LISTA_DTO.add(categoria);
+    categoriaTestes = BEAN.persistirCategoriaDeLog(categoriaTestes);
 
     List<CategoriaDto> listaCategoriasDeLog = BEAN.listarCategoriasDeLog();
 
     boolean itemFound = false;
 
     for (CategoriaDto item : listaCategoriasDeLog) {
-      if (categoria.getId() == item.getId()) {
-        assertEquals("Categorias não são iguais", categoria, item);
+      if (categoriaTestes.getId() == item.getId()) {
+        assertEquals("Categorias não são iguais", categoriaTestes, item);
 
         itemFound = true;
       }
@@ -298,34 +325,16 @@ public class CategoriaBusinessBeanIt {
    */
   @Test(expected = CategoriaPaiNaoVaziaException.class)
   public void testPersistirCategoriaPaiCategoriaPaiNaoVazia() throws Exception {
-    CategoriaDto categoriaPai = Fixture.from(CategoriaDto.class)
+    categoriaPaiTestes = Fixture.from(CategoriaDto.class)
             .gimme(CategoriaDtoTemplate.VALIDO_SEM_PAI);
 
-    categoriaPai = BEAN.persistirCategoriaPai(categoriaPai);
-
-    LISTA_DTO_PAI.add(categoriaPai);
+    categoriaPaiTestes = BEAN.persistirCategoriaPai(categoriaPaiTestes);
 
     CategoriaDto categoria = Fixture.from(CategoriaDto.class)
             .gimme(CategoriaDtoTemplate.VALIDO_SEM_PAI);
 
-    categoria.setIdCategoriaPai(categoriaPai.getId());
+    categoria.setIdCategoriaPai(categoriaPaiTestes.getId());
 
     BEAN.persistirCategoriaPai(categoria);
-  }
-
-  /**
-   * Limpa as entidades criadas no teste.
-   */
-  private static void cleanUp() {
-    for (CategoriaDto categoria : LISTA_DTO) {
-      BEAN.removerCategoria(categoria);
-    }
-
-    for (CategoriaDto categoria : LISTA_DTO_PAI) {
-      BEAN.removerCategoria(categoria);
-    }
-
-    LISTA_DTO.clear();
-    LISTA_DTO_PAI.clear();
   }
 }

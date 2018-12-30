@@ -1,7 +1,6 @@
 package br.com.skull.core.service.dao.impl;
 
 import br.com.skull.core.service.dao.AbstractServiceBean;
-import br.com.skull.core.service.dao.entity.IEntity;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.validation.ConstraintViolationException;
+import br.com.skull.core.service.dao.entity.Entidade;
 
 /**
  * Bean abstrato para controle de entidades.
@@ -18,7 +18,7 @@ import javax.validation.ConstraintViolationException;
  * @param <E> entidade do serviço
  * @param <S> DAO do serviço
  */
-public class AbstractServiceBeanImpl<E extends IEntity, S extends AbstractServiceBean>
+public class AbstractServiceBeanImpl<E extends Entidade, S extends AbstractServiceBean>
         implements AbstractServiceBean<E> {
 
   @PersistenceContext(unitName = "core-ejbPU")

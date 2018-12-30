@@ -86,6 +86,19 @@ public class ContaServiceBeanImplTest {
   }
 
   /**
+   * Limpa as entidades criadas no teste.
+   */
+  private static void cleanUp() {
+    for (Conta conta : LISTA_ENTIDADE) {
+      SERVICE.remove(conta);
+
+      if (null != conta.getCategoria()) {
+        SERVICE_CATEGORIA.remove(conta.getCategoria());
+      }
+    }
+  }
+
+  /**
    * Testa persistir uma conta.
    */
   @Test
@@ -235,21 +248,10 @@ public class ContaServiceBeanImplTest {
     assertTrue("Lista de contas não é maior que zero",
             (listaContas.size() > 0));
 
-    assertEquals("Categorias comparadas não são iguais",
-            listaTodasContas.get(0).getCategoria(), listaContas.get(0).getCategoria());
-  }
-
-  /**
-   * Limpa as entidades criadas no teste.
-   */
-  private static void cleanUp() {
-    for (Conta conta : LISTA_ENTIDADE) {
-      SERVICE.remove(conta);
-
-      if (null != conta.getCategoria()) {
-        SERVICE_CATEGORIA.remove(conta.getCategoria());
-      }
+    for (Conta conta : listaContas) {
+      assertEquals("Categorias comparadas não são iguais",
+              listaTodasContas.get(0).getCategoria(), conta.getCategoria());
     }
-  }
 
+  }
 }

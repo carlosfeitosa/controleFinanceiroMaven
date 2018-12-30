@@ -94,6 +94,19 @@ public class UsuarioContaServiceBeanImplTest {
   }
 
   /**
+   * Limpa as entidades criadas no teste.
+   */
+  private static void cleanUp() {
+    for (UsuarioConta usuarioConta : LISTA_ENTIDADE) {
+      SERVICE.remove(usuarioConta);
+
+      SERVICE_CONTA.remove(usuarioConta.getConta());
+      SERVICE_CATEGORIA.remove(usuarioConta.getConta().getCategoria());
+      SERVICE_USUARIO.remove(usuarioConta.getUsuario());
+    }
+  }
+
+  /**
    * Teste para persistir Usuario x Conta.
    */
   @Test
@@ -228,19 +241,6 @@ public class UsuarioContaServiceBeanImplTest {
     for (UsuarioConta usuarioConta : listaUsuarioContaTeste) {
       assertEquals("Usuário diferente do esperado", LISTA_ENTIDADE.get(0).getUsuario(),
               usuarioConta.getUsuario());
-    }
-  }
-
-  /**
-   * Limpa as entidades criadas no teste.
-   */
-  private static void cleanUp() {
-    for (UsuarioConta usuarioConta : LISTA_ENTIDADE) {
-      SERVICE.remove(usuarioConta);
-
-      SERVICE_CONTA.remove(usuarioConta.getConta());
-      SERVICE_CATEGORIA.remove(usuarioConta.getConta().getCategoria());
-      SERVICE_USUARIO.remove(usuarioConta.getUsuario());
     }
   }
 }

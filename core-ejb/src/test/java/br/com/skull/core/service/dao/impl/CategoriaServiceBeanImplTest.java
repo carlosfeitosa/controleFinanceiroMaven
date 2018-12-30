@@ -77,6 +77,19 @@ public class CategoriaServiceBeanImplTest {
   }
 
   /**
+   * Limpa as entidades criadas no teste.
+   */
+  private static void cleanUp() {
+    for (Categoria categoria : LISTA_ENTIDADE) {
+      SERVICE.remove(categoria);
+
+      if (null != categoria.getCategoria()) {
+        SERVICE.remove(categoria.getCategoria());
+      }
+    }
+  }
+
+  /**
    * Testa persistir uma categoria.
    */
   @Test
@@ -296,19 +309,6 @@ public class CategoriaServiceBeanImplTest {
 
     for (Categoria categoriaFilha : listaCategoriasFilhas) {
       assertEquals("Categorias comparadas não são iguais", categoriaTestes, categoriaFilha);
-    }
-  }
-
-  /**
-   * Limpa as entidades criadas no teste.
-   */
-  private static void cleanUp() {
-    for (Categoria categoria : LISTA_ENTIDADE) {
-      SERVICE.remove(categoria);
-
-      if (null != categoria.getCategoria()) {
-        SERVICE.remove(categoria.getCategoria());
-      }
     }
   }
 }

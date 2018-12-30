@@ -78,6 +78,15 @@ public class UsuarioServiceBeanImplTest {
   }
 
   /**
+   * Limpa as entidades criadas no teste.
+   */
+  private static void cleanUp() {
+    for (Usuario usuario : LISTA_ENTIDADE) {
+      SERVICE.remove(usuario);
+    }
+  }
+
+  /**
    * Teste para persistir usuário.
    */
   @Test
@@ -288,15 +297,6 @@ public class UsuarioServiceBeanImplTest {
               usuarioTestes.getTipo(), usuario.getTipo());
     }
 
-  }
-
-  /**
-   * Limpa as entidades criadas no teste.
-   */
-  private static void cleanUp() {
-    for (Usuario usuario : LISTA_ENTIDADE) {
-      SERVICE.remove(usuario);
-    }
   }
 
 }

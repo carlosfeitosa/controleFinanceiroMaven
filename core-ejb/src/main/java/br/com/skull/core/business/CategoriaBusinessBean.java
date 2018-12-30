@@ -9,7 +9,7 @@ import br.com.skull.core.business.model.CategoriaDto;
 import java.util.List;
 
 /**
- * Interface para o Bean que controla as categorias.
+ * Interface para bean que controla as categorias.
  *
  * @author Carlos Feitosa (carlos.feitosa.nt@gmail.com)
  */

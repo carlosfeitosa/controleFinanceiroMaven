@@ -1,6 +1,6 @@
 package br.com.skull.core.service.dao.entity.impl;
 
-import br.com.skull.core.service.dao.entity.IEntity;
+import br.com.skull.core.service.dao.entity.Entidade;
 
 import java.io.Serializable;
 import java.util.Calendar;
@@ -25,26 +25,26 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Classe que representa a entidade "Categoria"
- * 
+ *
  * @author Carlos Feitosa (carlos.feitosa.nt@gmail.com)
  */
 @Entity
 @Table(name = "CATEGORIA")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Categoria.findAll", 
-            query = "SELECT c FROM Categoria c"),
-    @NamedQuery(name = "Categoria.findById", 
-            query = "SELECT c FROM Categoria c WHERE c.id = :id"),
-    @NamedQuery(name = "Categoria.findByNome", 
-            query = "SELECT c FROM Categoria c WHERE c.nome = :nome"),
-    @NamedQuery(name = "Categoria.findByNomeAproximado", 
-            query = "SELECT c FROM Categoria c WHERE c.nome LIKE :nome"),
-    @NamedQuery(name = "Categoria.findByTipo", 
-            query = "SELECT c FROM Categoria c WHERE c.tipo = :tipo"),
-    @NamedQuery(name = "Categoria.findByCategoriaPai", 
-            query = "SELECT c FROM Categoria c WHERE c.categoria = :categoriaPai")})
-public class Categoria implements IEntity, Serializable {
+    @NamedQuery(name = "Categoria.findAll",
+          query = "SELECT c FROM Categoria c"),
+    @NamedQuery(name = "Categoria.findById",
+          query = "SELECT c FROM Categoria c WHERE c.id = :id"),
+    @NamedQuery(name = "Categoria.findByNome",
+          query = "SELECT c FROM Categoria c WHERE c.nome = :nome"),
+    @NamedQuery(name = "Categoria.findByNomeAproximado",
+          query = "SELECT c FROM Categoria c WHERE c.nome LIKE :nome"),
+    @NamedQuery(name = "Categoria.findByTipo",
+          query = "SELECT c FROM Categoria c WHERE c.tipo = :tipo"),
+    @NamedQuery(name = "Categoria.findByCategoriaPai",
+          query = "SELECT c FROM Categoria c WHERE c.categoria = :categoriaPai")})
+public class Categoria implements Entidade, Serializable {
 
   private static final long serialVersionUID = 1L;
   @Id
@@ -71,7 +71,7 @@ public class Categoria implements IEntity, Serializable {
   @JoinColumn(name = "ID_CATEGORIA", referencedColumnName = "ID")
   @ManyToOne
   private Categoria categoria;
-  
+
   /**
    * Prepara entidade para persistência.
    */
@@ -155,5 +155,5 @@ public class Categoria implements IEntity, Serializable {
   @Override
   public String toString() {
     return "br.com.skull.core.model.Categoria[ id=" + id + " | nome=" + nome + " ]";
-  }  
+  }
 }

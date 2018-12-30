@@ -100,6 +100,19 @@ public class LancamentoServiceBeanImplTest {
   }
 
   /**
+   * Limpa as entidades criadas no teste.
+   */
+  private static void cleanUp() {
+    for (Lancamento lancamento : LISTA_ENTIDADE) {
+      SERVICE.remove(lancamento);
+
+      SERVICE_CONTA.remove(lancamento.getConta());
+      SERVICE_USUARIO.remove(lancamento.getUsuario());
+      SERVICE_CATEGORIA.remove(lancamento.getCategoria());
+    }
+  }
+
+  /**
    * Testa persistir um lançamento.
    *
    */
@@ -349,19 +362,6 @@ public class LancamentoServiceBeanImplTest {
       assertEquals("Categoria diferente da esperada", lancamento.getCategoria(),
               listaLancamentos.get(0).getCategoria());
 
-    }
-  }
-
-  /**
-   * Limpa as entidades criadas no teste.
-   */
-  private static void cleanUp() {
-    for (Lancamento lancamento : LISTA_ENTIDADE) {
-      SERVICE.remove(lancamento);
-
-      SERVICE_CONTA.remove(lancamento.getConta());
-      SERVICE_USUARIO.remove(lancamento.getUsuario());
-      SERVICE_CATEGORIA.remove(lancamento.getCategoria());
     }
   }
 

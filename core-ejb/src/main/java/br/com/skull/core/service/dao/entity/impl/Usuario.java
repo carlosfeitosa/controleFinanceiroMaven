@@ -1,6 +1,6 @@
 package br.com.skull.core.service.dao.entity.impl;
 
-import br.com.skull.core.service.dao.entity.IEntity;
+import br.com.skull.core.service.dao.entity.Entidade;
 
 import java.io.Serializable;
 import java.util.Calendar;
@@ -43,7 +43,7 @@ import javax.xml.bind.annotation.XmlRootElement;
             query = "SELECT u FROM Usuario u WHERE u.email = :email"),
     @NamedQuery(name = "Usuario.findByTipo", 
             query = "SELECT u FROM Usuario u WHERE u.tipo = :tipo")})
-public class Usuario implements IEntity, Serializable {
+public class Usuario implements Entidade, Serializable {
 
   private static final long serialVersionUID = 1L;
   @Id

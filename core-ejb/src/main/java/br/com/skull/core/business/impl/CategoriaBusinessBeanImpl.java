@@ -6,18 +6,18 @@ import br.com.skull.core.business.exception.CategoriaLancamentoSemPaiException;
 import br.com.skull.core.business.exception.CategoriaLogSemPaiException;
 import br.com.skull.core.business.exception.CategoriaPaiNaoVaziaException;
 import br.com.skull.core.business.model.CategoriaDto;
+import br.com.skull.core.business.model.converter.impl.CategoriaConverter;
 import br.com.skull.core.service.dao.CategoriaServiceBean;
 import br.com.skull.core.service.dao.entity.impl.Categoria;
 import br.com.skull.core.service.dao.enums.TipoCategoriaEnum;
 
-import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 
 import javax.ejb.Stateless;
 
 /**
- * Bean para controle de categorias.
+ * Implementação da interface de negócio para Categoria.
  *
  * @author Carlos Feitosa (carlos.feitosa.nt@gmail.com)
  */
@@ -27,6 +27,8 @@ public class CategoriaBusinessBeanImpl extends
 
   @EJB
   private CategoriaServiceBean service;
+
+  private final CategoriaConverter converter = new CategoriaConverter();
 
   public CategoriaBusinessBeanImpl() {
     super(CategoriaBusinessBeanImpl.class);
@@ -39,7 +41,7 @@ public class CategoriaBusinessBeanImpl extends
 
     Categoria categoria = service.getById(id);
 
-    return convert(categoria);
+    return converter.convert(categoria);
   }
 
   @Override
@@ -48,7 +50,7 @@ public class CategoriaBusinessBeanImpl extends
 
     List<Categoria> listaEntidade = service.getByTipo(TipoCategoriaEnum.CATEGORIA);
 
-    return convert(listaEntidade);
+    return converter.convert(listaEntidade);
   }
 
   @Override
@@ -57,7 +59,7 @@ public class CategoriaBusinessBeanImpl extends
 
     List<Categoria> listaEntidade = service.getByTipo(TipoCategoriaEnum.CONTA);
 
-    return convert(listaEntidade);
+    return converter.convert(listaEntidade);
   }
 
   @Override
@@ -66,7 +68,7 @@ public class CategoriaBusinessBeanImpl extends
 
     List<Categoria> listaEntidade = service.getByTipo(TipoCategoriaEnum.LANCAMENTO);
 
-    return convert(listaEntidade);
+    return converter.convert(listaEntidade);
   }
 
   @Override
@@ -75,7 +77,7 @@ public class CategoriaBusinessBeanImpl extends
 
     List<Categoria> listaEntidade = service.getByTipo(TipoCategoriaEnum.LOG);
 
-    return convert(listaEntidade);
+    return converter.convert(listaEntidade);
   }
 
   @Override
@@ -83,13 +85,14 @@ public class CategoriaBusinessBeanImpl extends
     logger.info("Persistindo categoria pai");
     logger.debug("Categoria: {}", dto);
 
-    Categoria entidade = convert(dto);
+    Categoria entidade = converter.convert(dto);
 
     if (null != entidade.getCategoria()) {
       logger.info("Uma categoria pai não deve possuir uma categoria pai");
       logger.debug("Categoria {}", entidade.getCategoria());
 
-      throw new CategoriaPaiNaoVaziaException(entidade.getCategoria().getNome());
+      throw new CategoriaPaiNaoVaziaException(service.getById(
+              entidade.getCategoria().getId()).getNome());
     }
 
     entidade.setTipo(TipoCategoriaEnum.CATEGORIA.getCodigo());
@@ -97,7 +100,7 @@ public class CategoriaBusinessBeanImpl extends
     entidade = service.persist(entidade);
 
     dto.setId(entidade.getId());
-    dto.setTipo(TipoCategoriaEnum.CATEGORIA);
+    dto.setTipo(TipoCategoriaEnum.valueOf(entidade.getTipo()));
     dto.setManutencao(entidade.getManutencao());
 
     return dto;
@@ -109,7 +112,7 @@ public class CategoriaBusinessBeanImpl extends
     logger.info("Persistindo categoria de conta");
     logger.debug("Categoria: {}", dto);
 
-    Categoria entidade = convert(dto);
+    Categoria entidade = converter.convert(dto);
 
     if (null == entidade.getCategoria()) {
       logger.info("A categoria precisa de uma categoria pai");
@@ -122,7 +125,8 @@ public class CategoriaBusinessBeanImpl extends
     entidade = service.persist(entidade);
 
     dto.setId(entidade.getId());
-    dto.setTipo(TipoCategoriaEnum.CONTA);
+    dto.setDescricaoCategoriaPai(service.getById(entidade.getCategoria().getId()).getDescricao());
+    dto.setTipo(TipoCategoriaEnum.valueOf(entidade.getTipo()));
     dto.setManutencao(entidade.getManutencao());
 
     return dto;
@@ -134,7 +138,7 @@ public class CategoriaBusinessBeanImpl extends
     logger.info("Persistindo categoria de conta");
     logger.debug("Categoria: {}", dto);
 
-    Categoria entidade = convert(dto);
+    Categoria entidade = converter.convert(dto);
 
     if (null == entidade.getCategoria()) {
       logger.info("A categoria precisa de uma categoria pai");
@@ -147,7 +151,8 @@ public class CategoriaBusinessBeanImpl extends
     entidade = service.persist(entidade);
 
     dto.setId(entidade.getId());
-    dto.setTipo(TipoCategoriaEnum.LANCAMENTO);
+    dto.setDescricaoCategoriaPai(service.getById(entidade.getCategoria().getId()).getDescricao());
+    dto.setTipo(TipoCategoriaEnum.valueOf(entidade.getTipo()));
     dto.setManutencao(entidade.getManutencao());
 
     return dto;
@@ -158,7 +163,7 @@ public class CategoriaBusinessBeanImpl extends
     logger.info("Persistindo categoria de conta");
     logger.debug("Categoria: {}", dto);
 
-    Categoria entidade = convert(dto);
+    Categoria entidade = converter.convert(dto);
 
     if (null == entidade.getCategoria()) {
       logger.info("A categoria precisa de uma categoria pai");
@@ -171,7 +176,8 @@ public class CategoriaBusinessBeanImpl extends
     entidade = service.persist(entidade);
 
     dto.setId(entidade.getId());
-    dto.setTipo(TipoCategoriaEnum.LOG);
+    dto.setDescricaoCategoriaPai(service.getById(entidade.getCategoria().getId()).getDescricao());
+    dto.setTipo(TipoCategoriaEnum.valueOf(entidade.getTipo()));
     dto.setManutencao(entidade.getManutencao());
 
     return dto;
@@ -182,90 +188,9 @@ public class CategoriaBusinessBeanImpl extends
     logger.info("Removendo categoria");
     logger.debug("Categoria: {}", dto);
 
-    Categoria categoria = convert(dto);
+    Categoria categoria = converter.convert(dto);
 
     service.remove(categoria);
-  }
-
-  /**
-   * Converte DTO em Entidade.
-   *
-   * @param dto dto de categoria
-   *
-   * @return entidade de categoria
-   */
-  private Categoria convert(CategoriaDto dto) {
-    logger.info("Convertendo objetos");
-    logger.debug("DTO: {}", dto);
-
-    Categoria entidade;
-
-    if (dto.getId() > 0) {
-      entidade = service.getById(dto.getId());
-    } else {
-      entidade = new Categoria();
-    }
-
-    if (dto.getIdCategoriaPai() > 0) {
-      Categoria categoriaPai = service.getById(dto.getIdCategoriaPai());
-
-      entidade.setCategoria(categoriaPai);
-    }
-
-    if (null != dto.getTipo()) {
-      entidade.setTipo(dto.getTipo().getCodigo());
-    }
-
-    entidade.setNome(dto.getNome());
-    entidade.setDescricao(dto.getDescricao());
-
-    logger.debug("Entidade: {}", entidade);
-
-    return entidade;
-  }
-
-  /**
-   * Converte Entidade em DTO.
-   *
-   * @param entidade entidade categoria
-   *
-   * @return dto de categoria
-   */
-  private CategoriaDto convert(Categoria entidade) {
-    logger.info("Convertendo objetos");
-    logger.debug("Entidade: {}", entidade);
-
-    CategoriaDto dto = new CategoriaDto();
-
-    dto.setId(entidade.getId());
-
-    if (null != entidade.getCategoria()) {
-      dto.setIdCategoriaPai(entidade.getCategoria().getId());
-    }
-
-    dto.setNome(entidade.getNome());
-    dto.setDescricao(entidade.getDescricao());
-    dto.setTipo(TipoCategoriaEnum.valueOf(entidade.getTipo()));
-    dto.setManutencao(entidade.getManutencao());
-
-    return dto;
-  }
-
-  /**
-   * Converte lista de Entidade em lista de DTO.
-   *
-   * @param listaEntidade lista de entidade (Categoria)
-   *
-   * @return lista de DTO
-   */
-  private List<CategoriaDto> convert(List<Categoria> listaEntidade) {
-    List<CategoriaDto> listaDtos = new ArrayList<>();
-
-    for (Categoria entidade : listaEntidade) {
-      listaDtos.add(convert(entidade));
-    }
-
-    return listaDtos;
   }
 
 }

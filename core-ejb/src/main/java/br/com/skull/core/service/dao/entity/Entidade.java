@@ -5,7 +5,7 @@ package br.com.skull.core.service.dao.entity;
  * 
  * @author Carlos Feitosa (carlos.feitosa.nt@gmail.com>)
  */
-public interface IEntity {
+public interface Entidade {
 
   public Long getId();
 

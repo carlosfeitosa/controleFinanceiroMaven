@@ -88,6 +88,19 @@ public class LogServiceBeanImplTest {
   }
 
   /**
+   * Limpa as entidades criadas no teste.
+   */
+  private static void cleanUp() {
+    for (Log log : LISTA_ENTIDADE) {
+      SERVICE.remove(log);
+
+      SERVICE_CATEGORIA.remove(log.getCategoria());
+
+      SERVICE_USUARIO.remove(log.getUsuario());
+    }
+  }
+
+  /**
    * Testa persistir um log.
    */
   @Test
@@ -270,18 +283,4 @@ public class LogServiceBeanImplTest {
     }
 
   }
-
-  /**
-   * Limpa as entidades criadas no teste.
-   */
-  private static void cleanUp() {
-    for (Log log : LISTA_ENTIDADE) {
-      SERVICE.remove(log);
-
-      SERVICE_CATEGORIA.remove(log.getCategoria());
-
-      SERVICE_USUARIO.remove(log.getUsuario());
-    }
-  }
-
 }
