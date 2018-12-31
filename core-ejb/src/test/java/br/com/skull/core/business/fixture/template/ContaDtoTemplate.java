@@ -3,7 +3,7 @@ package br.com.skull.core.business.fixture.template;
 import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.Rule;
 import br.com.six2six.fixturefactory.loader.TemplateLoader;
-import br.com.skull.core.business.model.ContaDto;
+import br.com.skull.core.business.model.impl.ContaDto;
 
 /**
  * Template de fixture para conta.

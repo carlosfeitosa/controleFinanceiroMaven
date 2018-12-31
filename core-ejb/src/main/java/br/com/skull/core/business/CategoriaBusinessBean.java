@@ -4,7 +4,7 @@ import br.com.skull.core.business.exception.CategoriaContaSemPaiException;
 import br.com.skull.core.business.exception.CategoriaLancamentoSemPaiException;
 import br.com.skull.core.business.exception.CategoriaLogSemPaiException;
 import br.com.skull.core.business.exception.CategoriaPaiNaoVaziaException;
-import br.com.skull.core.business.model.CategoriaDto;
+import br.com.skull.core.business.model.impl.CategoriaDto;
 
 import java.util.List;
 

@@ -1,5 +1,6 @@
-package br.com.skull.core.business.model;
+package br.com.skull.core.business.model.impl;
 
+import br.com.skull.core.business.model.AbstractDto;
 import br.com.skull.core.service.dao.enums.TipoCategoriaEnum;
 
 import java.util.Date;
@@ -13,7 +14,6 @@ import java.util.Objects;
 public class CategoriaDto extends AbstractDto {
 
   private long idCategoriaPai;
-  private String descricaoCategoriaPai;
   private String nome;
   private String descricao;
   private TipoCategoriaEnum tipo;
@@ -25,14 +25,6 @@ public class CategoriaDto extends AbstractDto {
 
   public void setIdCategoriaPai(long value) {
     this.idCategoriaPai = value;
-  }
-
-  public String getDescricaoCategoriaPai() {
-    return descricaoCategoriaPai;
-  }
-
-  public void setDescricaoCategoriaPai(String value) {
-    this.descricaoCategoriaPai = value;
   }
 
   public String getNome() {
@@ -71,7 +63,6 @@ public class CategoriaDto extends AbstractDto {
   public int hashCode() {
     int hash = 3;
     hash = 11 * hash + (int) (this.idCategoriaPai ^ (this.idCategoriaPai >>> 32));
-    hash = 11 * hash + Objects.hashCode(this.descricaoCategoriaPai);
     hash = 11 * hash + Objects.hashCode(this.nome);
     hash = 11 * hash + Objects.hashCode(this.descricao);
     hash = 11 * hash + Objects.hashCode(this.tipo);
@@ -92,9 +83,6 @@ public class CategoriaDto extends AbstractDto {
     }
     final CategoriaDto other = (CategoriaDto) obj;
     if (this.idCategoriaPai != other.idCategoriaPai) {
-      return false;
-    }
-    if (!Objects.equals(this.descricaoCategoriaPai, other.descricaoCategoriaPai)) {
       return false;
     }
     if (!Objects.equals(this.nome, other.nome)) {

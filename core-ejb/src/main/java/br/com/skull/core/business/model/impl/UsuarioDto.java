@@ -1,5 +1,6 @@
-package br.com.skull.core.business.model;
+package br.com.skull.core.business.model.impl;
 
+import br.com.skull.core.business.model.AbstractDto;
 import br.com.skull.core.service.dao.enums.TipoUsuarioEnum;
 
 import java.util.Date;

@@ -1,7 +1,8 @@
 package br.com.skull.core.business.model.converter.impl;
 
-import br.com.skull.core.business.model.CategoriaDto;
 import br.com.skull.core.business.model.converter.Converter;
+import br.com.skull.core.business.model.impl.CategoriaDto;
+
 import br.com.skull.core.service.dao.entity.impl.Categoria;
 import br.com.skull.core.service.dao.enums.TipoCategoriaEnum;
 
@@ -13,11 +14,11 @@ import java.util.List;
  *
  * @author Carlos Feitosa (carlos.feitosa.nt@gmail.com)
  */
-public class CategoriaConverter extends AbstractConverter<CategoriaConverter>
+public class CategoriaConverterImpl extends AbstractConverter<CategoriaConverterImpl>
         implements Converter<CategoriaDto, Categoria> {
 
-  public CategoriaConverter() {
-    super(CategoriaConverter.class);
+  public CategoriaConverterImpl() {
+    super(CategoriaConverterImpl.class);
   }
 
   @Override
@@ -31,7 +32,6 @@ public class CategoriaConverter extends AbstractConverter<CategoriaConverter>
 
     if (null != entidade.getCategoria()) {
       dto.setIdCategoriaPai(entidade.getCategoria().getId());
-      dto.setDescricaoCategoriaPai(entidade.getCategoria().getDescricao());
     }
 
     dto.setNome(entidade.getNome());
@@ -59,7 +59,6 @@ public class CategoriaConverter extends AbstractConverter<CategoriaConverter>
     if (dto.getIdCategoriaPai() > 0) {
       entidade.setCategoria(new Categoria());
       entidade.getCategoria().setId(dto.getIdCategoriaPai());
-      entidade.getCategoria().setDescricao(dto.getDescricaoCategoriaPai());
     }
 
     if (null != dto.getTipo()) {
@@ -71,13 +70,7 @@ public class CategoriaConverter extends AbstractConverter<CategoriaConverter>
     return entidade;
   }
 
-  /**
-   * Converte lista de Entidade em lista de DTO.
-   *
-   * @param listaEntidade lista de entidade (Categoria)
-   *
-   * @return lista de DTO
-   */
+  @Override
   public List<CategoriaDto> convert(List<Categoria> listaEntidade) {
     List<CategoriaDto> listaDtos = new ArrayList<>();
 

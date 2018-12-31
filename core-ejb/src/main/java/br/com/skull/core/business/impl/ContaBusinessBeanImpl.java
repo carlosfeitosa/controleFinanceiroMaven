@@ -1,7 +1,7 @@
 package br.com.skull.core.business.impl;
 
 import br.com.skull.core.business.ContaBusinessBean;
-import br.com.skull.core.business.model.ContaDto;
+import br.com.skull.core.business.model.impl.ContaDto;
 import br.com.skull.core.service.dao.CategoriaServiceBean;
 import br.com.skull.core.service.dao.ContaServiceBean;
 import br.com.skull.core.service.dao.entity.impl.Categoria;

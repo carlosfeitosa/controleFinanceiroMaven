@@ -6,8 +6,8 @@ import br.com.skull.core.business.CategoriaBusinessBean;
 import br.com.skull.core.business.ContaBusinessBean;
 import br.com.skull.core.business.fixture.template.CategoriaDtoTemplate;
 import br.com.skull.core.business.fixture.template.ContaDtoTemplate;
-import br.com.skull.core.business.model.CategoriaDto;
-import br.com.skull.core.business.model.ContaDto;
+import br.com.skull.core.business.model.impl.CategoriaDto;
+import br.com.skull.core.business.model.impl.ContaDto;
 
 import br.com.skull.core.junit.runner.EnterpriseRunner;
 

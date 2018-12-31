@@ -4,7 +4,7 @@ import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.Rule;
 import br.com.six2six.fixturefactory.loader.TemplateLoader;
 
-import br.com.skull.core.business.model.CategoriaDto;
+import br.com.skull.core.business.model.impl.CategoriaDto;
 
 /**
  * Fixture para CagegoriaDto.

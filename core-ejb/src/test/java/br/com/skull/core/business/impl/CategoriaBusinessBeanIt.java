@@ -12,7 +12,7 @@ import br.com.skull.core.business.exception.CategoriaLancamentoSemPaiException;
 import br.com.skull.core.business.exception.CategoriaLogSemPaiException;
 import br.com.skull.core.business.exception.CategoriaPaiNaoVaziaException;
 import br.com.skull.core.business.fixture.template.CategoriaDtoTemplate;
-import br.com.skull.core.business.model.CategoriaDto;
+import br.com.skull.core.business.model.impl.CategoriaDto;
 import br.com.skull.core.junit.runner.EnterpriseRunner;
 
 import org.junit.After;

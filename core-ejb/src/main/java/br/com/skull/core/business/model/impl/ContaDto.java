@@ -1,4 +1,6 @@
-package br.com.skull.core.business.model;
+package br.com.skull.core.business.model.impl;
+
+import br.com.skull.core.business.model.AbstractDto;
 
 import java.util.Date;
 import java.util.Objects;

@@ -1,6 +1,6 @@
 package br.com.skull.core.business;
 
-import br.com.skull.core.business.model.ContaDto;
+import br.com.skull.core.business.model.impl.ContaDto;
 
 import java.util.List;
 

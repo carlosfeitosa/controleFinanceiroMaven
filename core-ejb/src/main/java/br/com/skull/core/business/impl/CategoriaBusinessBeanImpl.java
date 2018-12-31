@@ -5,8 +5,9 @@ import br.com.skull.core.business.exception.CategoriaContaSemPaiException;
 import br.com.skull.core.business.exception.CategoriaLancamentoSemPaiException;
 import br.com.skull.core.business.exception.CategoriaLogSemPaiException;
 import br.com.skull.core.business.exception.CategoriaPaiNaoVaziaException;
-import br.com.skull.core.business.model.CategoriaDto;
-import br.com.skull.core.business.model.converter.impl.CategoriaConverter;
+import br.com.skull.core.business.model.converter.Converter;
+import br.com.skull.core.business.model.converter.impl.CategoriaConverterImpl;
+import br.com.skull.core.business.model.impl.CategoriaDto;
 import br.com.skull.core.service.dao.CategoriaServiceBean;
 import br.com.skull.core.service.dao.entity.impl.Categoria;
 import br.com.skull.core.service.dao.enums.TipoCategoriaEnum;
@@ -28,10 +29,15 @@ public class CategoriaBusinessBeanImpl extends
   @EJB
   private CategoriaServiceBean service;
 
-  private final CategoriaConverter converter = new CategoriaConverter();
+  private final Converter<CategoriaDto, Categoria> converter;
 
+  /**
+   * Construtor do Bean de negócio Categoria.
+   */
   public CategoriaBusinessBeanImpl() {
     super(CategoriaBusinessBeanImpl.class);
+
+    converter = new CategoriaConverterImpl();
   }
 
   @Override
@@ -99,9 +105,7 @@ public class CategoriaBusinessBeanImpl extends
 
     entidade = service.persist(entidade);
 
-    dto.setId(entidade.getId());
-    dto.setTipo(TipoCategoriaEnum.valueOf(entidade.getTipo()));
-    dto.setManutencao(entidade.getManutencao());
+    dto = converter.convert(entidade);
 
     return dto;
   }
@@ -124,10 +128,7 @@ public class CategoriaBusinessBeanImpl extends
 
     entidade = service.persist(entidade);
 
-    dto.setId(entidade.getId());
-    dto.setDescricaoCategoriaPai(service.getById(entidade.getCategoria().getId()).getDescricao());
-    dto.setTipo(TipoCategoriaEnum.valueOf(entidade.getTipo()));
-    dto.setManutencao(entidade.getManutencao());
+    dto = converter.convert(entidade);
 
     return dto;
   }
@@ -150,10 +151,7 @@ public class CategoriaBusinessBeanImpl extends
 
     entidade = service.persist(entidade);
 
-    dto.setId(entidade.getId());
-    dto.setDescricaoCategoriaPai(service.getById(entidade.getCategoria().getId()).getDescricao());
-    dto.setTipo(TipoCategoriaEnum.valueOf(entidade.getTipo()));
-    dto.setManutencao(entidade.getManutencao());
+    dto = converter.convert(entidade);
 
     return dto;
   }
@@ -175,10 +173,7 @@ public class CategoriaBusinessBeanImpl extends
 
     entidade = service.persist(entidade);
 
-    dto.setId(entidade.getId());
-    dto.setDescricaoCategoriaPai(service.getById(entidade.getCategoria().getId()).getDescricao());
-    dto.setTipo(TipoCategoriaEnum.valueOf(entidade.getTipo()));
-    dto.setManutencao(entidade.getManutencao());
+    dto = converter.convert(entidade);
 
     return dto;
   }

@@ -5,14 +5,16 @@ package br.com.skull.core.business.model;
  *
  * @author Carlos Feitosa (carlos.feitosa.nt@gmail.com)
  */
-public abstract class AbstractDto {
+public abstract class AbstractDto implements GenericDto {
 
   protected long id;
 
+  @Override
   public long getId() {
     return id;
   }
 
+  @Override
   public void setId(long value) {
     this.id = value;
   }
