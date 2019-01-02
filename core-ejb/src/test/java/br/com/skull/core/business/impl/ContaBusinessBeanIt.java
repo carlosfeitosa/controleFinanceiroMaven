@@ -125,7 +125,7 @@ public class ContaBusinessBeanIt {
   public void testExcecaoTentarPersistirContaInvalidaCategoriaValida() throws Exception {
     contaTestes = Fixture.from(ContaDto.class).gimme(ContaDtoTemplate.INVALIDA);
     contaTestes.setCategoria(Fixture.from(CategoriaDto.class)
-            .gimme(CategoriaDtoTemplate.VALIDO_SEM_PAI));
+            .gimme(CategoriaDtoTemplate.VALIDO));
 
     BEAN.persistirConta(contaTestes);
   }

@@ -140,7 +140,7 @@ public class CategoriaBusinessBeanIt {
   @Test
   public void testPersistirListarPorIdECategoriasPai() throws Exception {
     categoriaPaiTestes = Fixture.from(CategoriaDto.class)
-            .gimme(CategoriaDtoTemplate.VALIDO_SEM_PAI);
+            .gimme(CategoriaDtoTemplate.VALIDO);
 
     categoriaPaiTestes = BEAN.persistirCategoriaPai(categoriaPaiTestes);
 
@@ -179,11 +179,11 @@ public class CategoriaBusinessBeanIt {
   @Test
   public void testPersistirListarCategoriaDeContas() throws Exception {
     categoriaPaiTestes = Fixture.from(CategoriaDto.class)
-            .gimme(CategoriaDtoTemplate.VALIDO_SEM_PAI);
+            .gimme(CategoriaDtoTemplate.VALIDO);
 
     categoriaPaiTestes = BEAN.persistirCategoriaPai(categoriaPaiTestes);
 
-    categoriaTestes = Fixture.from(CategoriaDto.class).gimme(CategoriaDtoTemplate.VALIDO_SEM_PAI);
+    categoriaTestes = Fixture.from(CategoriaDto.class).gimme(CategoriaDtoTemplate.VALIDO);
 
     categoriaTestes.setIdCategoriaPai(categoriaPaiTestes.getId());
 
@@ -215,7 +215,7 @@ public class CategoriaBusinessBeanIt {
   public void testPersistirCategoriaDeContasCategoriaPaiVazia()
           throws CategoriaContaSemPaiException {
     CategoriaDto categoria = Fixture.from(CategoriaDto.class)
-            .gimme(CategoriaDtoTemplate.VALIDO_SEM_PAI);
+            .gimme(CategoriaDtoTemplate.VALIDO);
 
     BEAN.persistirCategoriaDeConta(categoria);
   }
@@ -228,11 +228,11 @@ public class CategoriaBusinessBeanIt {
   @Test
   public void testPersistirListarCategoriasDeLancamentos() throws Exception {
     categoriaPaiTestes = Fixture.from(CategoriaDto.class)
-            .gimme(CategoriaDtoTemplate.VALIDO_SEM_PAI);
+            .gimme(CategoriaDtoTemplate.VALIDO);
 
     categoriaPaiTestes = BEAN.persistirCategoriaPai(categoriaPaiTestes);
 
-    categoriaTestes = Fixture.from(CategoriaDto.class).gimme(CategoriaDtoTemplate.VALIDO_SEM_PAI);
+    categoriaTestes = Fixture.from(CategoriaDto.class).gimme(CategoriaDtoTemplate.VALIDO);
 
     categoriaTestes.setIdCategoriaPai(categoriaPaiTestes.getId());
 
@@ -264,7 +264,7 @@ public class CategoriaBusinessBeanIt {
   public void testPersistirCategoriaDeLancamentoCategoriaPaiVazia()
           throws CategoriaLancamentoSemPaiException {
     CategoriaDto categoria = Fixture.from(CategoriaDto.class)
-            .gimme(CategoriaDtoTemplate.VALIDO_SEM_PAI);
+            .gimme(CategoriaDtoTemplate.VALIDO);
 
     BEAN.persistirCategoriaDeLancamento(categoria);
   }
@@ -277,11 +277,11 @@ public class CategoriaBusinessBeanIt {
   @Test
   public void testPersistirListarCategoriasDeLog() throws Exception {
     categoriaPaiTestes = Fixture.from(CategoriaDto.class)
-            .gimme(CategoriaDtoTemplate.VALIDO_SEM_PAI);
+            .gimme(CategoriaDtoTemplate.VALIDO);
 
     categoriaPaiTestes = BEAN.persistirCategoriaPai(categoriaPaiTestes);
 
-    categoriaTestes = Fixture.from(CategoriaDto.class).gimme(CategoriaDtoTemplate.VALIDO_SEM_PAI);
+    categoriaTestes = Fixture.from(CategoriaDto.class).gimme(CategoriaDtoTemplate.VALIDO);
 
     categoriaTestes.setIdCategoriaPai(categoriaPaiTestes.getId());
 
@@ -313,7 +313,7 @@ public class CategoriaBusinessBeanIt {
   public void testPersistirCategoriaDeLogCategoriaPaiVazia()
           throws CategoriaLogSemPaiException {
     CategoriaDto categoria = Fixture.from(CategoriaDto.class)
-            .gimme(CategoriaDtoTemplate.VALIDO_SEM_PAI);
+            .gimme(CategoriaDtoTemplate.VALIDO);
 
     BEAN.persistirCategoriaDeLog(categoria);
   }
@@ -326,12 +326,12 @@ public class CategoriaBusinessBeanIt {
   @Test(expected = CategoriaPaiNaoVaziaException.class)
   public void testPersistirCategoriaPaiCategoriaPaiNaoVazia() throws Exception {
     categoriaPaiTestes = Fixture.from(CategoriaDto.class)
-            .gimme(CategoriaDtoTemplate.VALIDO_SEM_PAI);
+            .gimme(CategoriaDtoTemplate.VALIDO);
 
     categoriaPaiTestes = BEAN.persistirCategoriaPai(categoriaPaiTestes);
 
     CategoriaDto categoria = Fixture.from(CategoriaDto.class)
-            .gimme(CategoriaDtoTemplate.VALIDO_SEM_PAI);
+            .gimme(CategoriaDtoTemplate.VALIDO);
 
     categoria.setIdCategoriaPai(categoriaPaiTestes.getId());
 

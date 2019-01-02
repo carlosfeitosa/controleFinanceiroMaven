@@ -5,7 +5,6 @@ import br.com.skull.core.business.exception.CategoriaContaSemPaiException;
 import br.com.skull.core.business.exception.CategoriaLancamentoSemPaiException;
 import br.com.skull.core.business.exception.CategoriaLogSemPaiException;
 import br.com.skull.core.business.exception.CategoriaPaiNaoVaziaException;
-import br.com.skull.core.business.model.converter.Converter;
 import br.com.skull.core.business.model.converter.impl.CategoriaConverterImpl;
 import br.com.skull.core.business.model.impl.CategoriaDto;
 import br.com.skull.core.service.dao.CategoriaServiceBean;
@@ -24,20 +23,17 @@ import javax.ejb.Stateless;
  */
 @Stateless
 public class CategoriaBusinessBeanImpl extends
-        AbstractBusinessBeanImpl<CategoriaBusinessBeanImpl> implements CategoriaBusinessBean {
+        AbstractBusinessBeanImpl<CategoriaBusinessBeanImpl, CategoriaDto, Categoria, 
+        CategoriaConverterImpl> implements CategoriaBusinessBean {
 
   @EJB
   private CategoriaServiceBean service;
-
-  private final Converter<CategoriaDto, Categoria> converter;
 
   /**
    * Construtor do Bean de negócio Categoria.
    */
   public CategoriaBusinessBeanImpl() {
-    super(CategoriaBusinessBeanImpl.class);
-
-    converter = new CategoriaConverterImpl();
+    super(CategoriaBusinessBeanImpl.class, CategoriaConverterImpl.class);
   }
 
   @Override

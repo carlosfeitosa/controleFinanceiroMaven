@@ -28,7 +28,9 @@ public class CategoriaConverterImpl extends AbstractConverter<CategoriaConverter
 
     CategoriaDto dto = new CategoriaDto();
 
-    dto.setId(entidade.getId());
+    if (null != entidade.getId()) {
+      dto.setId(entidade.getId());
+    }
 
     if (null != entidade.getCategoria()) {
       dto.setIdCategoriaPai(entidade.getCategoria().getId());

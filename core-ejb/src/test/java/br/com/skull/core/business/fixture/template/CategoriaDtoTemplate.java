@@ -5,6 +5,7 @@ import br.com.six2six.fixturefactory.Rule;
 import br.com.six2six.fixturefactory.loader.TemplateLoader;
 
 import br.com.skull.core.business.model.impl.CategoriaDto;
+import br.com.skull.core.service.dao.enums.TipoCategoriaEnum;
 
 /**
  * Fixture para CagegoriaDto.
@@ -13,13 +14,15 @@ import br.com.skull.core.business.model.impl.CategoriaDto;
  */
 public class CategoriaDtoTemplate implements TemplateLoader {
 
-  public static String VALIDO_SEM_PAI = "VALIDO_SEM_PAI";
+  public static String VALIDO = "VALIDO";
+  public static String VALIDO_COM_ID = "VALIDO_COM_ID";
   public static String INVALIDO = "INVALIDO";
 
   @Override
   public void load() {
     Fixture.of(CategoriaDto.class)
-            .addTemplate(VALIDO_SEM_PAI, loadCategoriaDtoValidaSemPai())
+            .addTemplate(VALIDO, loadCategoriaDtoValidaSemPai())
+            .addTemplate(VALIDO_COM_ID, loadCategoriaDtoValidaSemPaiComIdComManutencao())
             .addTemplate(INVALIDO, loadCategoriaDtoInvalida());
   }
 
@@ -33,6 +36,25 @@ public class CategoriaDtoTemplate implements TemplateLoader {
       {
         add("nome", name());
         add("descricao", name());
+        add("tipo", random(TipoCategoriaEnum.CATEGORIA, TipoCategoriaEnum.CONTA,
+                TipoCategoriaEnum.LANCAMENTO, TipoCategoriaEnum.LOG));
+      }
+    };
+  }
+
+  /**
+   * Carrega modelo válido de Categoria dto.
+   *
+   * @return categoria dto
+   */
+  private Rule loadCategoriaDtoValidaSemPaiComIdComManutencao() {
+    return new Rule() {
+      {
+        add("id", random(9L, 99L, 999L, 9999L, 99999L));
+        add("nome", name());
+        add("descricao", name());
+        add("tipo", random(TipoCategoriaEnum.CATEGORIA, TipoCategoriaEnum.CONTA,
+                TipoCategoriaEnum.LANCAMENTO, TipoCategoriaEnum.LOG));
       }
     };
   }
